@@ -1,59 +1,56 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
-// const express = require('express');
-// const app = express();
+const express = require('express');
+const app = express();
 
-// app.use(express.json());
+app.get(express.json());
 
-// app.post('/', async function (req, res) {
-// 	res.send(`hello world`);
-// });
+app.get('/', async function (req, res) {
+	res.send(`hello world`);
+});
 
-// app.post('/link', async function (req, res, next) {
-// 	console.log(req.body)
-//   	const link = await getLink(req.body.njiir)
-// 	console.log(link);
-//   	res.json(link)
-// })
+app.get('/link', async function (req, res, next) {
+	// console.log(req.query.njiir)
+  	const link = await getLink(req.query.njiir)
+	// console.log(link);
+  	res.send(link)
+})
 
-// app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
 
 
 const getLink = async njirr => {
-	let seconds = 0;
-	const browser = await puppeteer.launch();
-	console.log("puppeteer launched");
+	// let seconds = 0;
+	const browser = await puppeteer.launch({args: ['--no-sandbox']});
+	// console.log("puppeteer launched");
 
-	const counter = setInterval(function(){ seconds++; }, 1000);
+	// const counter = setInterval(function(){ seconds++; }, 1000);
 
 	const page = await browser.newPage();
-	console.log("going to njiir https://www.tetew.info/njir/?r="+njirr);
-	await page.goto("https://www.tetew.info/njir/?r="+njirr, {timeout: 0});
+	// console.log("going to "+njirr);
+	await page.goto(njirr, {timeout: 0});
 	await page.waitForNavigation({
 	  timeout: 0,
 	  waitUntil: 'networkidle0'
 	});
-	console.log("page retrieved");
+	// console.log("page retrieved");
 	
-	const content = await page.content();
-	fs.writeFile("njiir.txt", content, (err) => {
-	  	if (err) console.log(err);
-	  	clearInterval(counter);
-	  	console.log(`Successfully Written to File - ${seconds} seconds`);
-	});
+	// const content = await page.content();
+	// fs.writeFile("njiir.txt", content, (err) => {
+	  	// if (err) console.log(err);
+	  	// clearInterval(counter);
+	  	// console.log(`Successfully Written to File - ${seconds} seconds`);
+	// });
 
-	const resultDiv = await page.$eval('div.result', nodes => {
-		nodes.map( element => {
-			return element.querySelector('a').getAttribute('href')
-		})
-	})
+	const resultDiv = await page.$('div.result');
+	const link = await resultDiv.$eval('a', el => el.getAttribute('href'));
 
 	await browser.close();
 
-	return resultDiv;
+	return link;
 }
 
-(async () => {
-	const link = await getLink("aHR0cHM6Ly93d3cubmppaXIuY29tL3Avc3RvcGluZy1nZW9tZXRyaWVzLmh0bWw/dXJsPUl5TmZaMk5mSlRGQldDVXhSQ1UxUTNFbE1VVlpaa1JhWTBWYWFVUmhKVFZGV1dadlNWOGxOVUlsTVVNbE4wSmFaaVUxUkNVeE9TVXhOVXhCSlRFM1JrMVlSeVV3TjBWSFN5VXdOazFFVDBkSFR5VXdOazBsTlVWQldrd2xNRGNsTURjbE1USWxOVUpZSlRWREpUVkRKVFF3SXlNJTNE")
-	console.log(link)
-})();
+// (async () => {
+// 	const link = await getLink("https://www.tetew.info/njir/?r=aHR0cHM6Ly93d3cubmppaXIuY29tL3Avc3RvcGluZy1nZW9tZXRyaWVzLmh0bWw/dXJsPUl5TmZaMk5mSlRGQldDVXhSQ1UxUTNFbE1VVlpaa1JhWTBWYWFVUmhKVFZGV1dadlNWOGxOVUlsTVVNbE4wSmFaaVUxUkNVeE9TVXhOVXhCSlRFM1JrMVlSeVV3TjBWSFN5VXdOazFFVDBkSFR5VXdOazBsTlVWQldrd2xNRGNsTURjbE1USWxOVUpZSlRWREpUVkRKVFF3SXlNJTNE")
+// 	console.log(link)
+// })();
