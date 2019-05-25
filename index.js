@@ -19,7 +19,7 @@ app.get('/link', async function (req, res, next) {
 })
 
 app.listen(process.env.PORT || 8080, async () => {
-	browser = await puppeteer.launch({headless: false, args: ['--no-sandbox']});
+	browser = await puppeteer.launch({args: ['--no-sandbox']});
 });
 
 const getLink = async njirr => {
