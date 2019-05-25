@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
-const fs = require("fs");
 const express = require('express');
 const app = express();
+
+let browser;
 
 app.get(express.json());
 
@@ -10,44 +11,43 @@ app.get('/', async function (req, res) {
 });
 
 app.get('/link', async function (req, res, next) {
-	// console.log(req.query.njiir)
   	const link = await getLink(req.query.njiir)
-	// console.log(link);
+  	if (!link)
+  		res.status(404).send('Something went wrong');
+
   	res.send(link)
 })
 
-app.listen(process.env.PORT || 8080);
-
+app.listen(process.env.PORT || 8080, async () => {
+	browser = await puppeteer.launch({headless: false, args: ['--no-sandbox']});
+});
 
 const getLink = async njirr => {
-	// let seconds = 0;
-	const browser = await puppeteer.launch({args: ['--no-sandbox']});
-	// console.log("puppeteer launched");
+	let link;
 
-	// const counter = setInterval(function(){ seconds++; }, 1000);
+	try {
+		const page = await browser.newPage();
 
-	const page = await browser.newPage();
-	// console.log("going to "+njirr);
-	await page.goto(njirr, {timeout: 0});
-	await page.waitForNavigation({
-	  timeout: 0,
-	  waitUntil: 'networkidle0'
-	});
-	// console.log("page retrieved");
-	
-	// const content = await page.content();
-	// fs.writeFile("njiir.txt", content, (err) => {
-	  	// if (err) console.log(err);
-	  	// clearInterval(counter);
-	  	// console.log(`Successfully Written to File - ${seconds} seconds`);
-	// });
+		await page.goto(njirr, {timeout: 300000});
 
-	const resultDiv = await page.$('div.result');
-	const link = await resultDiv.$eval('a', el => el.getAttribute('href'));
+		await page.waitForSelector('div.result > a')
+			.then(async () => {
+				do {
+					link = await page.$eval('div.result > a', el => el.href);
+					await new Promise(resolve => setTimeout(resolve, 1500));
+				} while (link == 'javascript:;');
+				
+			})
+			.catch(err => console.log(err));
 
-	await browser.close();
+		await page.close();
 
-	return link;
+		return link;
+	} catch (e) {
+		if (e instanceof puppeteer.errors.TimeoutError) {
+			return false;
+		}
+	}
 }
 
 // (async () => {
