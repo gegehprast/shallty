@@ -45,8 +45,12 @@ const getLink = async njirr => {
 		return link;
 	} catch (e) {
 		if (e instanceof puppeteer.errors.TimeoutError) {
+			await page.close();
+
 			return false;
 		}
+
+		return false;
 	}
 }
 
