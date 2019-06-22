@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer')
+const { app_env } = require('../config.json')
 
 class Browser {
     constructor() {
@@ -8,7 +9,7 @@ class Browser {
     async init() {
         if (!this.browser) {
             this.browser = await puppeteer.launch({
-                headless: false,
+                headless: app_env == 'local' ? false : true,
                 args: ['--no-sandbox']
             })
         }
