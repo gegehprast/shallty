@@ -1,8 +1,13 @@
 const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const { meownime_url } = require('../config.json')
 
 class Meownime {
+    /**
+     * Parse episodes from completed anime.
+     * @param link anime page.
+     */
     async getEpisodes(link) {
         const page = await Browser.browser.newPage()
         const episodes = new Map
@@ -13,7 +18,7 @@ class Meownime {
                 timeout: 300000
             })
 
-            const dlLinks = await page.$$('article > div > div > div.meow-dl-link', divs => divs)
+            const dlLinks = await page.$$('article > div > div > div.meow-dl-link')
 
             await Util.asyncForEach(dlLinks, async (dlLink) => {
                 const quality = await dlLink.$eval('.tombol', node => node.innerText)
@@ -67,6 +72,10 @@ class Meownime {
         }
     }
 
+    /**
+     * Parse davinsurance and get the final url such as zippy, meowfiles, meowbox, meowcloud, meowdrive, etc.
+     * @param link davinsurance page.
+     */
     async davinsurance(link) {
         const page = await Browser.browser.newPage()
 
@@ -92,7 +101,7 @@ class Meownime {
             splitted = splitted[1].split(';window.open')
             splitted = splitted[0].replace(/(['"])+/g, '')
 
-            return {link: splitted}
+            return {url: splitted}
         } catch (e) {
             console.log(e)
             if (e instanceof puppeteer.errors.TimeoutError) {
@@ -105,6 +114,11 @@ class Meownime {
         }
     }
 
+    /**
+     * Parse meowbox and get the final url such as google drive.
+     * Sometimes will return meowbox url if something wrong happens.
+     * @param link meowbox page.
+     */
     async meowbox(link) {
         const page = await Browser.browser.newPage()
 
@@ -116,7 +130,7 @@ class Meownime {
             
             try {
                 await page.waitForNavigation({
-                    timeout: 30000,
+                    timeout: 10000,
                     waitUntil: 'domcontentloaded'
                 })
             } catch (error) {
@@ -142,6 +156,10 @@ class Meownime {
                         waitUntil: 'networkidle2'
                     }),
                     page.click('#Login > button'),
+                    page.waitForNavigation({
+                        timeout: 0,
+                        waitUntil: 'networkidle2'
+                    }),
                 ])
             }
 
@@ -154,10 +172,175 @@ class Meownime {
                 page.click('#page-top > header > div > form > button.download'),
             ])
 
+            await Util.sleep(5000)
+
             const finalUrl = page.url()
             await page.close()
 
             return {url: finalUrl}
+        } catch (e) {
+            console.log(e)
+            if (e instanceof puppeteer.errors.TimeoutError) {
+                await page.close()
+
+                return false
+            }
+
+            return false
+        }
+    }
+
+    /**
+     * Parse meowdrive or meowcloud and get the final url such as google drive.
+     * Sometimes will return meowbox url if something wrong happens.
+     * @param link meowdrive or meowcloud page.
+     */
+    async meowdrive(link) {
+        let finalUrl
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+            
+            await page.waitForSelector('#ddl > ul > li:nth-child(2) > a')
+            await Promise.all([
+                page.waitForNavigation({
+                    timeout: 0,
+                    waitUntil: 'networkidle2'
+                }),
+                page.click('#ddl > ul > li:nth-child(2) > a')
+            ])
+
+            const currentUrl = page.url()
+            if (currentUrl.includes('meowbox')) {
+                const meowboxLink = encodeURI(currentUrl)
+                const { url } = await this.meowbox(meowboxLink)
+                finalUrl = url
+            } else {
+                finalUrl = currentUrl
+            }
+
+            await page.close()
+
+            return {url: finalUrl}
+        } catch (e) {
+            console.log(e)
+            if (e instanceof puppeteer.errors.TimeoutError) {
+                await page.close()
+
+                return false
+            }
+
+            return false
+        }
+    }
+
+    /**
+     * Get all title from on going page.
+     */
+    async checkOnGoingPage() {
+        const anime = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            await page.goto(meownime_url + '/tag/ongoing/', {
+                timeout: 300000
+            })
+            
+            await page.waitForSelector('article')
+            const articles = await page.$$('article')
+            await Util.asyncForEach(articles, async (article, index) => {
+                const episode = await article.$eval('div > div.postedon', node => node.innerText)
+                const info = await article.$eval('div > div.out-thumb > h1 > a', node => {
+                    return {title: node.innerText, link: node.href}
+                })
+                let link = info.link.replace(meownime_url, '').replace(/\/+$/, '')
+                anime[index] = {
+                    episode: episode.split(' ')[1],
+                    title: info.title,
+                    link: link
+                }
+            })
+
+            await page.close()
+
+            return anime
+        } catch (e) {
+            console.log(e)
+            if (e instanceof puppeteer.errors.TimeoutError) {
+                await page.close()
+
+                return false
+            }
+
+            return false
+        }
+    }
+
+    /**
+     * Parse episodes from on going anime.
+     * @param link anime page.
+     */
+    async onGoingAnime(link) {
+        const episodes = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+            
+            await page.waitForSelector('tr[bgcolor="#eee"]')
+            const tRowsHandle = await page.$$('tr[bgcolor="#eee"]')
+            await Util.asyncForEach(tRowsHandle, async tRowHandle => {
+                // search for previous sibling table element
+                let tableHandle = await page.evaluateHandle(tRow => {
+                    return tRow.parentElement.previousElementSibling
+                }, tRowHandle)
+                // search again if table element is null
+                if (tableHandle.asElement() == null) {
+                    tableHandle = await page.evaluateHandle(tRow => {
+                        return tRow.parentElement.parentElement.previousElementSibling
+                    }, tRowHandle)
+                }
+                
+                try {
+                    let episode = await tableHandle.$eval('center', node => node.innerText)
+                    const matches = episode.match(/Episode ([0-9])+/g)
+                    if (matches && matches != null) {
+                        const episodeAlpha = matches[0]
+                        const episodeNumeral = episodeAlpha.split(' ')[1].length == 1 ? 
+                            '0' + episodeAlpha.split(' ')[1] : 
+                            episodeAlpha.split(' ')[1]
+                        const qualityHandle = await page.evaluateHandle(tRow => tRow.previousElementSibling, tRowHandle)
+                        const quality = await (await qualityHandle.getProperty('innerText')).jsonValue()
+
+                        const anchorsHandle = await tRowHandle.$$('a')
+                        await Util.asyncForEach(anchorsHandle, async anchorHandle => {
+                            const host = await (await anchorHandle.getProperty('innerText')).jsonValue()
+                            const link = await (await anchorHandle.getProperty('href')).jsonValue()
+                            
+                            episodes.push({
+                                episodeAlpha: episodeAlpha,
+                                episodeNumeral: episodeNumeral,
+                                quality: quality,
+                                host: host,
+                                link: link
+                            })
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+
+            await page.close()
+
+            return episodes
         } catch (e) {
             console.log(e)
             if (e instanceof puppeteer.errors.TimeoutError) {
