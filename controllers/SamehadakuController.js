@@ -1,6 +1,22 @@
 const Samehadaku = require('../services/Samehadaku')
 
 // eslint-disable-next-line no-unused-vars
+const anime = async (req, res) => {
+    const episodes = await Samehadaku.getEpisodes(req.query.link)
+    if (!episodes) {
+        res.status(404).json({
+            status: 404,
+            message: 'Something went wrong'
+        })
+    } else {
+        res.json({
+            status: 200,
+            message: 'Success',
+            data: episodes
+        })
+    }
+}
+
 const checkOnGoingPage = async (req, res) => {
     const anime = await Samehadaku.checkOnGoingPage()
     if (!anime) {
@@ -66,6 +82,7 @@ const njiir = async (req, res) => {
 }
 
 module.exports = {
+    anime,
     checkOnGoingPage,
     getDownloadLinks,
     tetew,

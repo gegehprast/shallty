@@ -1,5 +1,5 @@
 {
-    "app_env": "heroku",
+    "app_env": "local",
     "meownime_url": "https://meownime.com",
     "samehadaku_url": "https://www.samehadaku.tv"
 }

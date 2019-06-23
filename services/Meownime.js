@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
 const { meownime_url } = require('../config.json')
@@ -62,11 +61,7 @@ class Meownime {
             return Array.from(episodes)
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -104,11 +99,7 @@ class Meownime {
             return {url: splitted}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -180,11 +171,7 @@ class Meownime {
             return {url: finalUrl}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -228,11 +215,7 @@ class Meownime {
             return {url: finalUrl}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -257,6 +240,7 @@ class Meownime {
                 const info = await article.$eval('div > div.out-thumb > h1 > a', node => {
                     return {title: node.innerText, link: node.href}
                 })
+                // remove meownime url and trailing slash
                 let link = info.link.replace(meownime_url, '').replace(/\/+$/, '')
                 anime[index] = {
                     episode: episode.split(' ')[1],
@@ -270,11 +254,7 @@ class Meownime {
             return anime
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -343,11 +323,51 @@ class Meownime {
             return episodes
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
+            await page.close()
 
-                return false
-            }
+            return false
+        }
+    }
+
+    /**
+     * Parse episodes from movie anime.
+     * @param link anime page.
+     */
+    async getMovieEpisodes(link) {
+        const page = await Browser.browser.newPage()
+        const episodes = []
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+
+            await page.waitForSelector('table[class=" table table-hover"]:not(style)')
+            const tables = await page.$$('table[class=" table table-hover"]:not(style)')
+            await Util.asyncForEach(tables, async table => {
+                const tRows = await table.$$('tr')
+                if (tRows.length > 1) {
+                    const quality = await table.$eval('tr', node => node.innerText)
+                    const downloadLinks = await tRows[1].$$eval('a', nodes => nodes.map(n => {
+                        return {
+                            host: n.innerText,
+                            link: n.href
+                        }
+                    }))
+                    episodes.push({
+                        quality: quality,
+                        downloadLinks: downloadLinks
+                    })
+                }
+            })
+
+            await page.close()
+
+            return episodes
+        } catch (e) {
+            console.log(e)
+            await page.close()
 
             return false
         }

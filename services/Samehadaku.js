@@ -5,6 +5,91 @@ const { samehadaku_url } = require('../config.json')
 
 class Samehadaku {
     /**
+     * Parse and get episode information from a post element handler.
+     * @param post post element handler.
+     */
+    async parsePostElement(post) {
+        const { title, postLink } = await post.$eval('a', node => ({
+            title: node.innerText, 
+            postLink: node.href
+        }))
+        if (postLink.match(/(subtitle-indonesia)/)) {
+            const matches = postLink.match(/(?<=episode-)(\d+)(?=-subtitle-indonesia)/)
+            if (matches && matches != null) {
+                const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
+
+                return {
+                    episode: numeral,
+                    title: title,
+                    link: postLink
+                }
+            }
+        }
+
+        return null
+    }
+
+    /**
+     * Parse and get episodes from a category/label page.
+     * @param link category/label page.
+     */
+    async getEpisodes(link) {
+        let totalPage
+        const pageLimit = 3
+        const episodes = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+            await page.waitForSelector('#content > div > div > div.pages-nav')
+            const pageNav = await page.$('#content > div > div > div.pages-nav')
+            let lastPage = await pageNav.$('li.last-page')
+            if (!lastPage) {
+                lastPage = await pageNav.$$('li:not([class="the-next-page"])')
+                lastPage = lastPage[lastPage.length - 1]
+            }
+            const lastPageLink = await lastPage.$eval('a', node => node.href)
+            totalPage = lastPageLink.replace(/\/+$/, '').split('/')
+            totalPage = parseInt(totalPage[totalPage.length - 1])
+            totalPage = totalPage > pageLimit ? pageLimit : totalPage
+            
+            const postContainer = await page.$('ul#posts-container')
+            const posts = await postContainer.$$('h3.post-title')
+            await Util.asyncForEach(posts, async post => {
+                const parsedEpisode = await this.parsePostElement(post)
+                if (parsedEpisode)
+                    episodes.push(parsedEpisode)
+            })
+
+            for (let i = 2; i <= totalPage; i++) {
+                await page.goto(link.replace(/\/+$/, '') + `/page/${i}`, {
+                    timeout: 300000
+                })
+                await page.waitForSelector('ul#posts-container')
+                const postContainer = await page.$('ul#posts-container')
+                const posts = await postContainer.$$('h3.post-title')
+                await Util.asyncForEach(posts, async post => {
+                    const parsedEpisode = await this.parsePostElement(post)
+                    if (parsedEpisode)
+                        episodes.push(parsedEpisode)
+                })
+            }
+
+            await page.close()
+
+            return episodes
+        } catch (e) {
+            console.log(e)
+            await page.close()
+
+            return false
+        }
+    }
+
+    /**
      * Get all title from on going page.
      */
     async checkOnGoingPage() {
@@ -132,6 +217,7 @@ class Samehadaku {
      * @param link tetew url.
      */
     async tetew(link) {
+        let final
         const page = await Browser.browser.newPage()
 
         try {
@@ -142,12 +228,26 @@ class Samehadaku {
 
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
-            const njiirLink = await div.$eval('a', node => node.href)
-            const unjiired = await this.njiir(encodeURI(njiirLink))
+            const untetewed = await div.$eval('a', node => node.href)
+            const unjiired = await this.njiir(encodeURI(untetewed))
+            if (unjiired != false) {
+                final = unjiired.url
+            } else {
+                await page.goto(untetewed, {
+                    timeout: 300000
+                })
+                await page.waitForSelector('div.download-link')
+                const div2 = await page.$('div.download-link')
+                const untetewed2 = await div2.$eval('a', node => node.href)
+                await page.goto(untetewed2, {
+                    timeout: 300000
+                })
+                final = page.url()
+            }
 
             await page.close()
 
-            return {url: unjiired.url}
+            return {url: final}
         } catch (e) {
             console.log(e)
             if (e instanceof puppeteer.errors.TimeoutError) {
@@ -184,7 +284,7 @@ class Samehadaku {
                 })
 
                 await Util.sleep(1500)
-            } while (driveLink == 'javascript:')
+            } while (driveLink == 'javascript:' || driveLink.includes('javascript') == true)
 
             await page.close()
 

@@ -16,6 +16,22 @@ const anime = async (req, res) => {
     }
 }
 
+const movie = async (req, res) => {
+    const episodes = await Meownime.getMovieEpisodes(req.query.link)
+    if (!episodes) {
+        res.status(404).json({
+            status: 404,
+            message: 'Something went wrong'
+        })
+    } else {
+        res.json({
+            status: 200,
+            message: 'Success',
+            data: episodes
+        })
+    }
+}
+
 const davinsurance = async (req, res) => {
     const link = await Meownime.davinsurance(req.query.link)
     if (!link) {
@@ -98,6 +114,7 @@ const onGoingAnime = async (req, res) => {
 
 module.exports = {
     anime,
+    movie,
     davinsurance,
     meowbox,
     meowdrive,
