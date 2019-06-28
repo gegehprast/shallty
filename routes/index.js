@@ -20,5 +20,6 @@ routes.get('/neonime/animeList', NeonimeController.animeList)
 routes.get('/neonime/tvShow', NeonimeController.tvShow)
 routes.get('/neonime/getEpisodes', NeonimeController.getEpisodes)
 routes.get('/neonime/hightech', NeonimeController.hightech)
+routes.get('/neonime/getBatchEpisodes', NeonimeController.getBatchEpisodes)
 
 module.exports = routes

@@ -30,7 +30,7 @@ class Neonime {
 
             await page.waitForSelector('#az-slider')
             const slider = await page.$('#az-slider')
-            const anchors = await slider.$$eval('a', nodes => nodes.map(x => {
+            const animeList = await slider.$$eval('a', nodes => nodes.map(x => {
                 const title = x.innerText
                 const link = x.href
 
@@ -38,8 +38,7 @@ class Neonime {
             }))
             await page.close()
 
-            return anchors
-
+            return animeList
         } catch (e) {
             console.log(e)
             if (e instanceof puppeteer.errors.TimeoutError) {
@@ -116,17 +115,63 @@ class Neonime {
                 const quality = await item.$eval('label.label-download', node => node.innerText)
                 const anchors = await item.$$('a')
                 await Util.asyncForEach(anchors, async anchor => {
-                    const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                    const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
                     const link = await anchor.getProperty('href').then(x => x.jsonValue())
 
                     episodes.push({
                         quality: quality,
-                        title: title,
+                        host: host,
                         link: link
                     })
                 })
             })
             
+            await page.close()
+
+            return episodes
+        } catch (e) {
+            console.log(e)
+            if (e instanceof puppeteer.errors.TimeoutError) {
+                await page.close()
+
+                return false
+            }
+
+            return false
+        }
+    }
+
+    /**
+     * Parse batch episode page and get download links.
+     * @param link episode page.
+     */
+    async getBatchEpisodes(link) {
+        const episodes = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+
+            await page.waitForSelector('div.smokeddl')
+            const smokeddl = await page.$('div.smokeddl')
+            const smokeurls = await smokeddl.$$('p.smokeurl')
+            await Util.asyncForEach(smokeurls, async smokeurl => {
+                const anchors = await smokeurl.$$('a')
+                await Util.asyncForEach(anchors, async anchor => {
+                    const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                    const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                    episodes.push({
+                        host: host,
+                        link: link
+                    })
+                })
+            })
+            
+
             await page.close()
 
             return episodes

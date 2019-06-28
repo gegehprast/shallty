@@ -33,6 +33,22 @@ const tvShow = async (req, res) => {
     }
 }
 
+const getBatchEpisodes = async (req, res) => {
+    const episodes = await Neonime.getBatchEpisodes(req.query.link)
+    if (!episodes) {
+        res.status(404).json({
+            status: 404,
+            message: 'Something went wrong'
+        })
+    } else {
+        res.json({
+            status: 200,
+            message: 'Success',
+            data: episodes
+        })
+    }
+}
+
 const getEpisodes = async (req, res) => {
     const episodes = await Neonime.getEpisodes(req.query.link)
     if (!episodes) {
@@ -68,6 +84,7 @@ const hightech = async (req, res) => {
 module.exports = {
     animeList,
     tvShow,
+    getBatchEpisodes,
     getEpisodes,
     hightech
 }
