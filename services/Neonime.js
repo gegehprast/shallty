@@ -147,6 +147,7 @@ class Neonime {
      */
     async getBatchEpisodes(link) {
         const episodes = []
+        let info1 = false
         const page = await Browser.browser.newPage()
 
         try {
@@ -155,21 +156,55 @@ class Neonime {
                 timeout: 60000
             })
 
-            await page.waitForSelector('div.smokeddl')
-            const smokeddl = await page.$('div.smokeddl')
-            const smokeurls = await smokeddl.$$('p.smokeurl')
-            await Util.asyncForEach(smokeurls, async smokeurl => {
-                const anchors = await smokeurl.$$('a')
-                await Util.asyncForEach(anchors, async anchor => {
-                    const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                    const link = await anchor.getProperty('href').then(x => x.jsonValue())
+            
+            await page.waitForSelector('.smokeurl').catch(e => {
+                console.log(e)
+                info1 = true
+            })
 
-                    episodes.push({
-                        host: host,
-                        link: link
+            if (!info1) {
+                const smokeurls = await page.$$('.smokeurl')
+                await Util.asyncForEach(smokeurls, async smokeurl => {
+                    const quality = await smokeurl.$eval('strong', node => node.innerText)
+                    const anchors = await smokeurl.$$('a')
+                    await Util.asyncForEach(anchors, async anchor => {
+                        const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                        const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                        episodes.push({
+                            quality: quality,
+                            host: host,
+                            link: link
+                        })
                     })
                 })
-            })
+            } else {
+                await page.waitForSelector('p[data-id="info1"]').catch(async e => {
+                    console.log(e)
+                    await page.close()
+                    
+                    return false
+                })
+                const smokeurls = await page.$$('p[data-id="info1"]')
+                await Util.asyncForEach(smokeurls, async smokeurl => {
+                    const strong = await smokeurl.$('strong')
+                    if (strong && strong != null) {
+                        const quality = await smokeurl.$eval('strong', node => node.innerText)
+                        const anchors = await smokeurl.$$('a')
+                        await Util.asyncForEach(anchors, async anchor => {
+                            const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                            const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                            episodes.push({
+                                quality: quality,
+                                host: host,
+                                link: link
+                            })
+                        })
+                    }
+                })
+            }
+            
             
 
             await page.close()
