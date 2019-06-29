@@ -216,11 +216,7 @@ class Neonime {
             return {url: url}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
