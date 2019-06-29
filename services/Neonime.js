@@ -25,7 +25,7 @@ class Neonime {
 
         try {
             await page.goto(neonime_url + '/list-anime/', {
-                timeout: 300000
+                timeout: 60000
             })
 
             await page.waitForSelector('#az-slider')
@@ -62,7 +62,7 @@ class Neonime {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 60000
             })
 
             await page.waitForSelector('div.episodiotitle')
@@ -106,7 +106,7 @@ class Neonime {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 60000
             })
 
             await page.waitForSelector('div.list-link-download')
@@ -152,7 +152,7 @@ class Neonime {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 60000
             })
 
             await page.waitForSelector('div.smokeddl')
@@ -197,7 +197,7 @@ class Neonime {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 60000
             })
 
             await Util.sleep(6000)
