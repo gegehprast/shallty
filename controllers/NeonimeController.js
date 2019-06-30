@@ -1,6 +1,22 @@
 const Neonime = require('../services/Neonime')
 
 // eslint-disable-next-line no-unused-vars
+const checkOnGoingPage = async (req, res) => {
+    const anime = await Neonime.checkOnGoingPage()
+    if (!anime) {
+        res.status(404).json({
+            status: 404,
+            message: 'Something went wrong'
+        })
+    } else {
+        res.json({
+            status: 200,
+            message: 'Success',
+            data: anime
+        })
+    }
+}
+
 const animeList = async (req, res) => {
     const anime = await Neonime.animeList(req.query.link)
     if (!anime) {
@@ -82,6 +98,7 @@ const hightech = async (req, res) => {
 }
 
 module.exports = {
+    checkOnGoingPage,
     animeList,
     tvShow,
     getBatchEpisodes,

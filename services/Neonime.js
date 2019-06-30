@@ -20,6 +20,53 @@ class Neonime {
     /**
      * Parse and get anime list.
      */
+    async checkOnGoingPage() {
+        const anime = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            await page.goto(neonime_url + '/episode/', {
+                timeout: 60000
+            })
+
+            await page.waitForSelector('table.list')
+            const table = await page.$('table.list')
+            const tRows = await table.$$('tbody > tr')
+            await Util.asyncForEach(tRows, async trow => {
+                const anchor = await trow.$('td.bb > a')
+                const text = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const episodeSplit = text.split(' Episode ')
+                const titleSplit = text.split(' Subtitle')
+                const episode = episodeSplit[episodeSplit.length - 1]
+                const title = titleSplit[0]
+                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                anime.push({
+                    episode: episode,
+                    title: title,
+                    link: link
+                })
+            })
+
+            
+            await page.close()
+
+            return anime
+        } catch (e) {
+            console.log(e)
+            if (e instanceof puppeteer.errors.TimeoutError) {
+                await page.close()
+
+                return false
+            }
+
+            return false
+        }
+    }
+
+    /**
+     * Parse and get anime list.
+     */
     async animeList() {
         const page = await Browser.browser.newPage()
 

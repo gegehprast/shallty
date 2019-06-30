@@ -16,6 +16,7 @@ routes.get('/samehadaku/checkOnGoingPage', SamehadakuController.checkOnGoingPage
 routes.get('/samehadaku/getDownloadLinks', SamehadakuController.getDownloadLinks)
 routes.get('/samehadaku/tetew', SamehadakuController.tetew)
 routes.get('/samehadaku/njiir', SamehadakuController.njiir)
+routes.get('/neonime/checkOnGoingPage', NeonimeController.checkOnGoingPage)
 routes.get('/neonime/animeList', NeonimeController.animeList)
 routes.get('/neonime/tvShow', NeonimeController.tvShow)
 routes.get('/neonime/getEpisodes', NeonimeController.getEpisodes)
