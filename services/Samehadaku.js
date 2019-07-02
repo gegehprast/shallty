@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
@@ -130,11 +131,7 @@ class Samehadaku {
             return anime
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -202,11 +199,7 @@ class Samehadaku {
             return downloadLinks
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -250,11 +243,7 @@ class Samehadaku {
             return {url: final}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -291,11 +280,7 @@ class Samehadaku {
             return {url: driveLink}
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
