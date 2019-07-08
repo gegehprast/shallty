@@ -45,17 +45,24 @@ class Samehadaku {
             await page.goto(link, {
                 timeout: 300000
             })
-            await page.waitForSelector('#content > div > div > div.pages-nav')
-            const pageNav = await page.$('#content > div > div > div.pages-nav')
-            let lastPage = await pageNav.$('li.last-page')
-            if (!lastPage) {
-                lastPage = await pageNav.$$('li:not([class="the-next-page"])')
-                lastPage = lastPage[lastPage.length - 1]
+
+            try {
+                await page.waitForSelector('#content > div > div > div.pages-nav')
+                const pageNav = await page.$('#content > div > div > div.pages-nav')
+                let lastPage = await pageNav.$('li.last-page')
+                if (!lastPage) {
+                    lastPage = await pageNav.$$('li:not([class="the-next-page"])')
+                    lastPage = lastPage[lastPage.length - 1]
+                }
+                const lastPageLink = await lastPage.$eval('a', node => node.href)
+                totalPage = lastPageLink.replace(/\/+$/, '').split('/')
+                totalPage = parseInt(totalPage[totalPage.length - 1])
+                totalPage = totalPage > pageLimit ? pageLimit : totalPage
+            } catch (error) {
+                console.log(error)
+                totalPage = 0
             }
-            const lastPageLink = await lastPage.$eval('a', node => node.href)
-            totalPage = lastPageLink.replace(/\/+$/, '').split('/')
-            totalPage = parseInt(totalPage[totalPage.length - 1])
-            totalPage = totalPage > pageLimit ? pageLimit : totalPage
+            
             
             const postContainer = await page.$('ul#posts-container')
             const posts = await postContainer.$$('h3.post-title')
