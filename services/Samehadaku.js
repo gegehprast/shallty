@@ -104,7 +104,7 @@ class Samehadaku {
             
             await page.waitForSelector('.mag-box-container')
             const magBoxContainer = await page.$$('.mag-box-container')
-            const container = magBoxContainer[1]
+            const container = magBoxContainer[2]
             const posts = await container.$$('li[class="post-item  tie-standard"]')
 
             await Util.asyncForEach(posts, async (post, index) => {
