@@ -125,11 +125,11 @@ class Samehadaku {
                 if (matches && matches != null) {
                     const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 
-                    anime[index] = {
+                    anime.push({
                         episode: numeral,
                         title: parsedTitle,
                         link: link
-                    }
+                    })
                 }
             })
 
