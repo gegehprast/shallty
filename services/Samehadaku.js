@@ -2,7 +2,10 @@
 const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
-const { samehadaku_url } = require('../config.json')
+const {
+    samehadaku_url,
+    samehadaku_magBoxContainer
+} = require('../config.json')
 
 class Samehadaku {
     /**
@@ -111,7 +114,7 @@ class Samehadaku {
             
             await page.waitForSelector('.mag-box-container')
             const magBoxContainer = await page.$$('.mag-box-container')
-            const container = magBoxContainer[2]
+            const container = magBoxContainer[samehadaku_magBoxContainer]
             const posts = await container.$$('li[class="post-item  tie-standard"]')
 
             await Util.asyncForEach(posts, async (post, index) => {
