@@ -232,22 +232,31 @@ class Samehadaku {
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
             const untetewed = await div.$eval('a', node => node.href)
-            const unjiired = await this.njiir(encodeURI(untetewed))
-            if (unjiired != false) {
-                final = unjiired.url
-            } else {
-                await page.goto(untetewed, {
-                    timeout: 300000
-                })
-                await page.waitForSelector('div.download-link')
-                const div2 = await page.$('div.download-link')
-                const untetewed2 = await div2.$eval('a', node => node.href)
-                await page.goto(untetewed2, {
-                    timeout: 300000
-                })
-                final = page.url()
+            
+            const uneue = await this.eueSiherp(encodeURI(untetewed))
+            if (uneue != false) {
+                await page.close()
+
+                return {url: uneue.url}
             }
 
+            const unjiired = await this.njiir(encodeURI(untetewed))
+            if (unjiired != false) {
+                await page.close()
+
+                return {url: unjiired.url}
+            }
+
+            await page.goto(untetewed, {
+                timeout: 300000
+            })
+            await page.waitForSelector('div.download-link')
+            const div2 = await page.$('div.download-link')
+            const untetewed2 = await div2.$eval('a', node => node.href)
+            await page.goto(untetewed2, {
+                timeout: 300000
+            })
+            final = page.url()
             await page.close()
 
             return {url: final}
@@ -264,7 +273,7 @@ class Samehadaku {
      * @param link njiir url.
      */
     async njiir(link) {
-        let driveLink
+        let downloadLink
         const page = await Browser.browser.newPage()
 
         try {
@@ -276,18 +285,49 @@ class Samehadaku {
             await page.waitForSelector('div.result > a')
             
             do {
-                driveLink = await page.$eval('div.result > a', el => {
+                downloadLink = await page.$eval('div.result > a', el => {
                     return el.href
                 }).catch(e => {
                     console.log(e)
                 })
 
                 await Util.sleep(1500)
-            } while (driveLink == 'javascript:' || driveLink.includes('javascript') == true)
+            } while (downloadLink == 'javascript:' || downloadLink.includes('javascript') == true)
 
             await page.close()
 
-            return {url: driveLink}
+            return {url: downloadLink}
+        } catch (e) {
+            console.log(e)
+            await page.close()
+
+            return false
+        }
+    }
+
+    async eueSiherp(link) {
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 300000
+            })
+
+            await page.waitForSelector('button#download2')
+            await page.click('button#download2')
+            await Util.sleep(7000)
+            await page.waitForSelector('button#download')
+            await Promise.all([
+                page.waitForNavigation({
+                    timeout: 0,
+                    waitUntil: 'networkidle2'
+                }),
+                page.click('button#download')
+            ])
+            const final = page.url()
+
+            return {url: final}
         } catch (e) {
             console.log(e)
             await page.close()
