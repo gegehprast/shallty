@@ -17,8 +17,9 @@ class Samehadaku {
             title: node.innerText, 
             postLink: node.href
         }))
-        if (postLink.match(/(subtitle-indonesia)/)) {
-            const matches = postLink.match(/(?<=episode-)(\d+)(?=-subtitle-indonesia)/)
+        if (!postLink.match(/(opening)/) && !postLink.match(/(ending)/)) {
+            // const matches = postLink.match(/(?<=episode-)(\d+)(?=-subtitle-indonesia)/)
+            const matches = postLink.match(/(?<=episode-)(\d+)/)
             if (matches && matches != null) {
                 const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 
@@ -63,7 +64,7 @@ class Samehadaku {
                 totalPage = totalPage > pageLimit ? pageLimit : totalPage
             } catch (error) {
                 console.log(error)
-                totalPage = 0
+                totalPage = 1
             }
             
             
@@ -232,7 +233,7 @@ class Samehadaku {
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
             const untetewed = await div.$eval('a', node => node.href)
-            
+
             const uneue = await this.eueSiherp(encodeURI(untetewed))
             if (uneue != false) {
                 await page.close()
