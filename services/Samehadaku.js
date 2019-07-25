@@ -125,7 +125,8 @@ class Samehadaku {
                     link: node.href
                 }))
                 const parsedTitle = title.split(' Episode')[0]
-                const matches = link.match(/(?<=episode-)(\d+)(?=-subtitle-indonesia)/)
+                // const matches = link.match(/(?<=episode-)(\d+)(?=-subtitle-indonesia)/)
+                const matches = link.match(/(?<=episode-)(\d+)/)
                 if (matches && matches != null) {
                     const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 
