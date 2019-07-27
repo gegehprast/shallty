@@ -252,14 +252,21 @@ class Samehadaku {
             await page.goto(untetewed, {
                 timeout: 300000
             })
-            await page.waitForSelector('div.download-link')
-            const div2 = await page.$('div.download-link')
-            const untetewed2 = await div2.$eval('a', node => node.href)
-            await page.goto(untetewed2, {
-                timeout: 300000
-            })
-            final = page.url()
-            await page.close()
+            try {
+                await page.waitForSelector('div.download-link')
+                const div2 = await page.$('div.download-link')
+                const untetewed2 = await div2.$eval('a', node => node.href)
+                await page.goto(untetewed2, {
+                    timeout: 300000
+                })
+                final = page.url()
+                await page.close()
+            } catch (e) {
+                console.log(e)
+                await page.close()
+
+                return {url: untetewed}
+            }
 
             return {url: final}
         } catch (e) {
@@ -328,6 +335,7 @@ class Samehadaku {
                 page.click('button#download')
             ])
             const final = page.url()
+            await page.close()
 
             return {url: final}
         } catch (e) {
