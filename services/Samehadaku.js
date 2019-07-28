@@ -235,19 +235,19 @@ class Samehadaku {
             const div = await page.$('div.download-link')
             const untetewed = await div.$eval('a', node => node.href)
 
-            // const uneue = await this.eueSiherp(encodeURI(untetewed))
-            // if (uneue != false) {
-            //     await page.close()
+            const uneue = await this.eueSiherp(encodeURI(untetewed))
+            if (uneue != false) {
+                await page.close()
 
-            //     return {url: uneue.url}
-            // }
+                return {url: uneue.url}
+            }
 
-            // const unjiired = await this.njiir(encodeURI(untetewed))
-            // if (unjiired != false) {
-            //     await page.close()
+            const unjiired = await this.njiir(encodeURI(untetewed))
+            if (unjiired != false) {
+                await page.close()
 
-            //     return {url: unjiired.url}
-            // }
+                return {url: unjiired.url}
+            }
 
             await page.goto(untetewed, {
                 timeout: 30000
