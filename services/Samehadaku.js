@@ -47,7 +47,7 @@ class Samehadaku {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 30000
             })
 
             try {
@@ -78,7 +78,7 @@ class Samehadaku {
 
             for (let i = 2; i <= totalPage; i++) {
                 await page.goto(link.replace(/\/+$/, '') + `/page/${i}`, {
-                    timeout: 300000
+                    timeout: 30000
                 })
                 await page.waitForSelector('ul#posts-container')
                 const postContainer = await page.$('ul#posts-container')
@@ -110,7 +110,7 @@ class Samehadaku {
 
         try {
             await page.goto(samehadaku_url, {
-                timeout: 300000
+                timeout: 30000
             })
             
             await page.waitForSelector('.mag-box-container')
@@ -160,7 +160,7 @@ class Samehadaku {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 30000
             })
             
             await page.waitForSelector('div.download-eps')
@@ -228,7 +228,7 @@ class Samehadaku {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 30000
             })
 
             await page.waitForSelector('div.download-link')
@@ -250,14 +250,14 @@ class Samehadaku {
             // }
 
             await page.goto(untetewed, {
-                timeout: 300000
+                timeout: 30000
             })
             try {
                 await page.waitForSelector('div.download-link')
                 const div2 = await page.$('div.download-link')
                 const untetewed2 = await div2.$eval('a', node => node.href)
                 await page.goto(untetewed2, {
-                    timeout: 300000
+                    timeout: 30000
                 })
                 final = page.url()
                 await page.close()
@@ -291,7 +291,7 @@ class Samehadaku {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 30000
             })
 
             await page.waitForSelector('div.result > a')
@@ -323,7 +323,7 @@ class Samehadaku {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 300000
+                timeout: 30000
             })
 
             await page.waitForSelector('button#download2')
