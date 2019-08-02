@@ -12,8 +12,10 @@ class Oploverz {
         const page = await Browser.browser.newPage()
 
         try {
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1')
             await page.goto(oploverz_url, {
-                timeout: 300000
+                timeout: 300000,
+                waitUntil: 'domcontentloaded'
             })
             
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
