@@ -13,7 +13,7 @@ class Oploverz {
 
         try {
             await page.goto(oploverz_url, {
-                timeout: 30000
+                timeout: 300000
             })
             
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
@@ -62,7 +62,7 @@ class Oploverz {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 60000
+                timeout: 300000
             })
             
             const list = await page.$$('#content > div.postbody > div > div.episodelist > ul > li')
@@ -108,7 +108,7 @@ class Oploverz {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 30000
+                timeout: 300000
             })
             
             const soraddls = await page.$$('#op-single-post > div.epsc > div[class="soraddl op-download"]')
@@ -148,7 +148,7 @@ class Oploverz {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 30000
+                timeout: 300000
             })
 
             await Util.sleep(7000)
