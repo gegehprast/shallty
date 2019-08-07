@@ -235,18 +235,22 @@ class Samehadaku {
             const div = await page.$('div.download-link')
             const untetewed = await div.$eval('a', node => node.href)
 
+            // njiir
+            const unjiired = await this.njiir(encodeURI(untetewed))
+            if (unjiired != false) {
+                await page.close()
+
+                return {
+                    url: unjiired.url
+                }
+            }
+
+            // eue
             const uneue = await this.eueSiherp(encodeURI(untetewed))
             if (uneue != false) {
                 await page.close()
 
                 return {url: uneue.url}
-            }
-
-            const unjiired = await this.njiir(encodeURI(untetewed))
-            if (unjiired != false) {
-                await page.close()
-
-                return {url: unjiired.url}
             }
 
             await page.goto(untetewed, {
@@ -285,7 +289,7 @@ class Samehadaku {
      * @param link njiir url.
      */
     async njiir(link) {
-        let downloadLink
+        let downloadLink, anchor
         const page = await Browser.browser.newPage()
 
         try {
@@ -295,17 +299,15 @@ class Samehadaku {
             })
 
             await page.waitForSelector('div.result > a')
-            
-            do {
-                downloadLink = await page.$eval('div.result > a', el => {
-                    return el.href
-                }).catch(e => {
-                    console.log(e)
-                })
-
-                await Util.sleep(1500)
-            } while (downloadLink == 'javascript:' || downloadLink.includes('javascript') == true)
-
+            await Util.sleep(8000)
+            anchor = await page.$('div.result > a')
+            downloadLink = await anchor.getProperty('href').then(x => x.jsonValue())
+            if (downloadLink == 'javascript:' || downloadLink.includes('javascript') == true) {
+                await anchor.click()
+            }
+            await Util.sleep(5000)
+            anchor = await page.$('div.result > a')
+            downloadLink = await anchor.getProperty('href').then(x => x.jsonValue())
             await page.close()
 
             return {url: downloadLink}
