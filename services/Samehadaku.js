@@ -197,7 +197,7 @@ class Samehadaku {
                             const link = await anchor.getProperty('href').then(async property => await property.jsonValue())
 
                             downloadLinks.push({
-                                quality: quality,
+                                quality: `${quality}${format}`,
                                 host: host,
                                 link: link
                             })
