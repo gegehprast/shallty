@@ -1,4 +1,5 @@
 const Samehadaku = require('../services/Samehadaku')
+const SamehadakuEas = require('../services/SamehadakuEas')
 
 // eslint-disable-next-line no-unused-vars
 const anime = async (req, res) => {
@@ -18,7 +19,7 @@ const anime = async (req, res) => {
 }
 
 const checkOnGoingPage = async (req, res) => {
-    const anime = await Samehadaku.checkOnGoingPage()
+    const anime = await SamehadakuEas.checkOnGoingPage()
     if (!anime) {
         res.status(404).json({
             status: 404,
