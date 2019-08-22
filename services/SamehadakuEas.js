@@ -53,7 +53,7 @@ class Samehadaku {
 
         try {
             link = decodeURI(link)
-            link = link.replace('category', 'anime')
+            link = link.replace('/category/', '/anime/')
             await page.goto(link, {
                 timeout: 30000
             })
