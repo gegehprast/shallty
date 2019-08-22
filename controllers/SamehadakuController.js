@@ -3,7 +3,7 @@ const SamehadakuEas = require('../services/SamehadakuEas')
 
 // eslint-disable-next-line no-unused-vars
 const anime = async (req, res) => {
-    const episodes = await Samehadaku.getEpisodes(req.query.link)
+    const episodes = await SamehadakuEas.getEpisodes(req.query.link)
     if (!episodes) {
         res.status(404).json({
             status: 404,

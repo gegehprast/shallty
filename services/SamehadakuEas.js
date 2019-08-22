@@ -46,6 +46,47 @@ class Samehadaku {
             return false
         }
     }
+
+    async getEpisodes(link) {
+        const episodes = []
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            link = link.replace('category', 'anime')
+            await page.goto(link, {
+                timeout: 30000
+            })
+            await page.waitForSelector('div.episodelist')
+            const episodeList = await page.$$('div.episodelist > ul > li')
+            await Util.asyncForEach(episodeList, async (item, index) => {
+                const anchor = await item.$('span.lefttitle > a')
+                const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                if (!link.match(/(opening)/) && !link.match(/(ending)/)) {
+                    const matches = link.match(/(?<=episode-)(\d+)/)
+                    if (matches && matches != null) {
+                        const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
+
+                        episodes.push({
+                            episode: numeral,
+                            title: title,
+                            link: link
+                        })
+                    }
+                }
+            })
+            await page.close()
+
+            return episodes
+        } catch (e) {
+            console.log(e)
+            await page.close()
+
+            return false
+        }
+    }
 }
 
 module.exports = new Samehadaku
