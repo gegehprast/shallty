@@ -51,7 +51,7 @@ const getDownloadLinks = async (req, res) => {
 }
 
 const tetew = async (req, res) => {
-    const tetew = await Samehadaku.tetew(req.query.link)
+    const tetew = await Samehadaku.anjay(req.query.link)
     if (!tetew) {
         res.status(404).json({
             status: 404,

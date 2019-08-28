@@ -217,11 +217,23 @@ class Samehadaku {
         }
     }
 
+    async parseTetewBase64UrlParam(untetewed) {
+        const queries = Util.getAllUrlParams(untetewed)
+        if (queries.r) {
+            return {
+                url: Util.base64Decode(queries.r)
+            }
+        }
+        return {
+            url: untetewed
+        }
+    }
+
     /**
      * Parse tetew and get the final url.
      * @param link tetew url.
      */
-    async tetew(link) {
+    async tetew(link, skip = false) {
         let final
         const page = await Browser.browser.newPage()
 
@@ -234,6 +246,11 @@ class Samehadaku {
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
             const untetewed = await div.$eval('a', node => node.href)
+
+            if (skip) {
+                await page.close()
+                return this.parseTetewBase64UrlParam(untetewed)
+            }
 
             // njiir
             const unjiired = await this.njiir(encodeURI(untetewed))
@@ -250,7 +267,9 @@ class Samehadaku {
             if (uneue != false) {
                 await page.close()
 
-                return {url: uneue.url}
+                return {
+                    url: uneue.url
+                }
             }
 
             await page.goto(untetewed, {
@@ -268,11 +287,7 @@ class Samehadaku {
             } catch (e) {
                 console.log(e)
                 await page.close()
-                const queries = Util.getAllUrlParams(untetewed)
-                if (queries.r) {
-                    return {url: Util.base64Decode(queries.r)}
-                }
-                return {url: untetewed}
+                return this.parseTetewBase64UrlParam(untetewed)
             }
 
             return {url: final}
@@ -343,6 +358,51 @@ class Samehadaku {
             await page.close()
 
             return {url: final}
+        } catch (e) {
+            console.log(e)
+            await page.close()
+
+            return false
+        }
+    }
+
+    /**
+     * Get new tab page instance.
+     * @param page current page.
+     * @param browser current browser.
+     */
+    async newPagePromise(page, browser) {
+        const pageTarget = page.target()
+        const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget)
+        const newPage = await newTarget.page()
+
+        return newPage
+    }
+
+    async anjay(link) {
+        const page = await Browser.browser.newPage()
+
+        try {
+            link = decodeURI(link)
+            await page.goto(link, {
+                timeout: 30000
+            })
+
+            await Util.sleep(10000)
+            await page.waitForSelector('div.to > a')
+            await page.click('div.to > a')
+            await page.waitForSelector('#showlink')
+            await page.click('#showlink')
+            
+            const newPage = await this.newPagePromise(page, Browser.browser)
+            const url = newPage.url()
+
+            await page.close()
+            await newPage.close()
+
+            const final = this.tetew(url, true)
+
+            return final
         } catch (e) {
             console.log(e)
             await page.close()
