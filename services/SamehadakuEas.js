@@ -4,12 +4,12 @@ const Util = require('../utils/utils')
 const { samehadaku_url } = require('../config.json')
 
 class Samehadaku {
-    async checkOnGoingPage() {
+    async checkOnGoingPage(navPage = 1) {
         const anime = []
         const page = await Browser.browser.newPage()
 
         try {
-            await page.goto(samehadaku_url, {
+            await page.goto(`${samehadaku_url}/page/${navPage}/`, {
                 timeout: 30000
             })
 
