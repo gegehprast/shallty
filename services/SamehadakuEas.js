@@ -10,7 +10,7 @@ class Samehadaku {
 
         try {
             await page.goto(`${samehadaku_url}/page/${navPage}/`, {
-                timeout: 30000
+                timeout: 300000
             })
 
             await page.waitForSelector('div.white.updateanime')
@@ -55,7 +55,7 @@ class Samehadaku {
             link = decodeURI(link)
             link = link.replace('/category/', '/anime/')
             await page.goto(link, {
-                timeout: 30000
+                timeout: 300000
             })
             await page.waitForSelector('div.episodelist')
             const episodeList = await page.$$('div.episodelist > ul > li')
