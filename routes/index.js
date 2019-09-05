@@ -4,6 +4,7 @@ const SamehadakuController = require('../controllers/SamehadakuController')
 const MeownimeController = require('../controllers/MeownimeController')
 const NeonimeController = require('../controllers/NeonimeController')
 const OploverzController = require('../controllers/OploverzController')
+const KusonimeController = require('../controllers/KusonimeController')
 
 routes.get('/meownime/anime', MeownimeController.anime)
 routes.get('/meownime/movie', MeownimeController.movie)
@@ -31,5 +32,8 @@ routes.get('/oploverz/series', OploverzController.series)
 routes.get('/oploverz/getDownloadLinks', OploverzController.getDownloadLinks)
 routes.get('/oploverz/hexa', OploverzController.hexa)
 
+routes.get('/kusonime/animeList', KusonimeController.animeList)
+routes.get('/kusonime/getDownloadLinks', KusonimeController.getDownloadLinks)
+routes.get('/kusonime/semrawut', KusonimeController.semrawut)
 
 module.exports = routes
