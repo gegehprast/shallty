@@ -12,7 +12,7 @@ class Kusonime {
 
         try {
             await page.goto(kusonime_url + '/anime-list-batch/', {
-                timeout: 60000
+                timeout: 300000
             })
 
             await page.waitForSelector('a.kmz')
@@ -27,7 +27,7 @@ class Kusonime {
             }))
 
             await page.goto(kusonime_url + '/anime-list-batch/page/2/', {
-                timeout: 60000,
+                timeout: 300000,
                 waitUntil: 'networkidle2'
             })
             await page.waitForSelector('a.kmz')
@@ -65,7 +65,7 @@ class Kusonime {
         try {
             link = decodeURI(link)
             await page.goto(link, {
-                timeout: 30000
+                timeout: 300000
             })
             
             await page.waitForSelector('div.dlbod')
