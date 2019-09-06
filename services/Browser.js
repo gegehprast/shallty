@@ -15,12 +15,12 @@ class Browser {
             })
         }
 
-        if (!this.browser2) {
-            this.browser2 = await puppeteer.launch({
-                headless: app_env == 'local' ? false : true,
-                args: ['--no-sandbox']
-            })
-        }
+        // if (!this.browser2) {
+        //     this.browser2 = await puppeteer.launch({
+        //         headless: app_env == 'local' ? false : true,
+        //         args: ['--no-sandbox']
+        //     })
+        // }
 
         return [this.browser, this.browser2]
     }

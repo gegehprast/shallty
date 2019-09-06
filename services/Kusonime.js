@@ -8,7 +8,7 @@ class Kusonime {
      * Parse and get anime list.
      */
     async animeList() {
-        const page = await Browser.browser2.newPage()
+        const page = await Browser.browser.newPage()
 
         try {
             await page.goto(kusonime_url + '/anime-list-batch/', {
@@ -59,7 +59,7 @@ class Kusonime {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await Browser.browser2.newPage()
+        const page = await Browser.browser.newPage()
         const downloadLinks = []
 
         try {
@@ -116,7 +116,7 @@ class Kusonime {
     }
 
     async semrawut(link) {
-        const page = await Browser.browser2.newPage()
+        const page = await Util.newPageWithNewContext(Browser.browser)
 
         try {
             link = decodeURI(link)
@@ -147,7 +147,7 @@ class Kusonime {
 
             const downloadLinks = await downloadButton.getProperty('href').then(x => x.jsonValue())
 
-            await page.close()
+            await Util.closePage(Browser.browser, page)
 
             return {
                 url: downloadLinks

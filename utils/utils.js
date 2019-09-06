@@ -1,4 +1,24 @@
 class Util {
+    async newPageWithNewContext(browser) {
+        const {
+            browserContextId
+        } = await browser._connection.send('Target.createBrowserContext')
+        const page = await browser._createPageInContext(browserContextId)
+        page.browserContextId = browserContextId
+
+        return page
+    }
+
+    async closePage(browser, page) {
+        if (page.browserContextId != undefined) {
+            await browser._connection.send('Target.disposeBrowserContext', {
+                browserContextId: page.browserContextId
+            })
+        } else {
+            await page.close()
+        }
+    }
+
     /**
      * Array.forEach but blocking.
      * @param array array to iterate.
