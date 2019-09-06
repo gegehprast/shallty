@@ -14,7 +14,7 @@ class Kusonime {
             await page.goto(kusonime_url + '/anime-list-batch/', {
                 timeout: 300000
             })
-
+            console.log('I\'m here 1')
             await page.waitForSelector('a.kmz')
             const animeList = await page.$$eval('a.kmz', nodes => nodes.map(x => {
                 const title = x.innerText
@@ -25,7 +25,7 @@ class Kusonime {
                     title: title
                 }
             }))
-
+            console.log('I\'m here 2')
             await page.goto(kusonime_url + '/anime-list-batch/page/2/', {
                 timeout: 300000,
                 waitUntil: 'networkidle2'
@@ -40,7 +40,7 @@ class Kusonime {
                     title: title
                 }
             }))
-
+            console.log('I\'m here 3')
             const animeList3 = animeList.concat(animeList2)
 
             await page.close()
@@ -61,12 +61,13 @@ class Kusonime {
     async getDownloadLinks(link) {
         const page = await Browser.browser.newPage()
         const downloadLinks = []
-
+        console.log('I\'m here 1')
         try {
             link = decodeURI(link)
             await page.goto(link, {
                 timeout: 300000
             })
+            console.log('I\'m here 2')
             
             await page.waitForSelector('div.dlbod')
             const dlbod = await page.$('div.dlbod')
@@ -74,7 +75,7 @@ class Kusonime {
             const info = await page.$('div.info > p:nth-child(6)')
             const status = await info.getProperty('innerText').then(x => x.jsonValue())
             const statusAnime = (status && status == 'Status: Completed') ? 'completed' : 'airing'
-            
+            console.log('I\'m here 3')
             await Util.asyncForEach(smokeddls, async (smokeddl) => {
                 const smokettl = await smokeddl.$('div.smokettl')
                 const episodeTitle = await smokettl.getProperty('innerText').then(x => x.jsonValue())
@@ -100,7 +101,7 @@ class Kusonime {
                     })
                 })
             })
-
+            console.log('I\'m here 3')
             await page.close()
 
             return {
