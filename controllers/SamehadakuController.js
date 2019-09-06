@@ -39,8 +39,6 @@ const checkOnGoingPage = async (req, res) => {
         anime7 = values[5]
     })
     
-
-    console.log(anime, anime2)
     if (!anime) {
         res.status(404).json({
             status: 404,
