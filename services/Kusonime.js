@@ -116,10 +116,19 @@ class Kusonime {
     }
 
     async semrawut(link) {
+        link = decodeURI(link)
+        const params = Util.getAllUrlParams(link)
+        if (Object.entries(params).length > 0 && params.url) {
+            const url = decodeURIComponent(params.url).replace(/\++/g, ' ')
+            
+            return {
+                url: url
+            }
+        }
+        
         const page = await Util.newPageWithNewContext(Browser.browser)
 
         try {
-            link = decodeURI(link)
             await page.goto(link, {
                 timeout: 300000
             })

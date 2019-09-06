@@ -45,7 +45,8 @@ class Util {
 
     /**
      * Get all query parameter from a url
-     * @param url url 
+     * @param url url
+     * @param toLowerCase bool
      */
     getAllUrlParams(url, toLowerCase = false) {
         let queryString = url.split('?')[1]
