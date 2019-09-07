@@ -84,6 +84,10 @@ class Kusonime {
                 await Util.asyncForEach(smokeurls, async (smokeurl) => {
                     const anchors = await smokeurl.$$('a')
                     const strong = await smokeurl.$('strong')
+                    if (typeof myVar !== 'undefined' || !strong) {
+                        return false
+                    }
+                    
                     const quality = await strong.getProperty('innerText').then(x => x.jsonValue())
 
                     await Util.asyncForEach(anchors, async (anchor) => {
