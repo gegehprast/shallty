@@ -54,6 +54,45 @@ class Kusonime {
         }
     }
 
+    async zeroSmodeddl(dlbod, statusAnime) {
+        const downloadLinks = []
+        let smokettl = await dlbod.$('div.smokettl')
+        if (typeof smokettl == 'undefined' || !smokettl) {
+            smokettl = await dlbod.$('.smokeurl:nth-child(1)')
+        }
+        const episodeTitle = await smokettl.getProperty('innerText').then(x => x.jsonValue())
+        const smokeurls = await dlbod.$$('div.smokeurl')
+
+        await Util.asyncForEach(smokeurls, async (smokeurl) => {
+            const anchors = await smokeurl.$$('a')
+            const strong = await smokeurl.$('strong')
+            if (typeof strong == 'undefined' || !strong) {
+                return false
+            }
+
+            const quality = await strong.getProperty('innerText').then(x => x.jsonValue())
+
+            await Util.asyncForEach(anchors, async (anchor) => {
+                const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                const episode = {
+                    'episode': episodeTitle,
+                    'quality': quality,
+                    'host': host,
+                    'link': link
+                }
+
+                downloadLinks.push(episode)
+            })
+        })
+
+        return {
+            status: statusAnime,
+            links: downloadLinks
+        }
+    }
+
     /**
      * Parse download links from episode page of a title.
      * @param link episode page.
@@ -76,15 +115,22 @@ class Kusonime {
             const status = await info.getProperty('innerText').then(x => x.jsonValue())
             const statusAnime = (status && status == 'Status: Completed') ? 'completed' : 'airing'
             
+            if (smokeddls.length < 1) {
+                return this.zeroSmodeddl(dlbod, statusAnime)
+            }
+
             await Util.asyncForEach(smokeddls, async (smokeddl) => {
-                const smokettl = await smokeddl.$('div.smokettl')
+                let smokettl = await smokeddl.$('div.smokettl')
+                if (typeof smokettl == 'undefined' || !smokettl) {
+                    smokettl = await smokeddl.$('.smokeurl:nth-child(1)')
+                }
                 const episodeTitle = await smokettl.getProperty('innerText').then(x => x.jsonValue())
                 const smokeurls = await smokeddl.$$('div.smokeurl')
 
                 await Util.asyncForEach(smokeurls, async (smokeurl) => {
                     const anchors = await smokeurl.$$('a')
                     const strong = await smokeurl.$('strong')
-                    if (typeof myVar !== 'undefined' || !strong) {
+                    if (typeof strong == 'undefined' || !strong) {
                         return false
                     }
                     
@@ -120,9 +166,20 @@ class Kusonime {
         }
     }
 
+    async kepoow(link) {
+        const params = Util.getAllUrlParams(link)
+
+        return {url: Util.base64Decode(params.r)}
+    }
+
     async semrawut(link) {
         link = decodeURI(link)
         const params = Util.getAllUrlParams(link)
+
+        if (link.includes('kepoow.me')) {
+            return this.kepoow(link)
+        }
+
         if (Object.entries(params).length > 0 && params.url) {
             const url = decodeURIComponent(params.url).replace(/\++/g, ' ')
             
