@@ -65,12 +65,21 @@ class Samehadaku {
                 const link = await anchor.getProperty('href').then(x => x.jsonValue())
 
                 if (!link.match(/(opening)/) && !link.match(/(ending)/)) {
-                    const matches = link.match(/(?<=episode-)(\d+)/)
-                    if (matches && matches != null) {
-                        const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
+                    const episodeMatches = link.match(/(?<=episode-)(\d+)/)
+                    const ovaMatches = link.match(/-ova/)
+                    const ovaMatches2 = link.match(/ova-/)
+
+                    if (episodeMatches && episodeMatches != null) {
+                        const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
 
                         episodes.push({
                             episode: numeral,
+                            title: title,
+                            link: link
+                        })
+                    } else if ((ovaMatches && ovaMatches != null) || (ovaMatches2 && ovaMatches2 != null)) {
+                        episodes.push({
+                            episode: `${title}`,
                             title: title,
                             link: link
                         })
