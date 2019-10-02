@@ -172,13 +172,27 @@ class Kusonime {
         return {url: Util.base64Decode(params.r)}
     }
 
+    async sukakesehattan(link) {
+        const params = Util.getAllUrlParams(decodeURIComponent(link))
+        let url = params.url
+
+        return {
+            url: url
+        }
+    }
+
     async semrawut(link) {
         link = decodeURI(link)
-        const params = Util.getAllUrlParams(link)
 
         if (link.includes('kepoow.me')) {
             return this.kepoow(link)
         }
+
+        if (link.includes('sukakesehattan.')) {
+            return this.sukakesehattan(link)
+        }
+
+        const params = Util.getAllUrlParams(link)
 
         if (Object.entries(params).length > 0 && params.url) {
             const url = decodeURIComponent(params.url).replace(/\++/g, ' ')
