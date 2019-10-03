@@ -379,11 +379,16 @@ class Samehadaku {
         return newPage
     }
 
+    //anjay.info
     async anjay(link) {
         const page = await Browser.browser.newPage()
 
         try {
             link = decodeURI(link)
+            if (link.includes('ahexa.')) {
+                return this.tetew(link, true)
+            }
+
             await page.goto(link, {
                 timeout: 30000
             })
