@@ -144,10 +144,21 @@ class Oploverz {
         }
     }
 
+    parseTravelling(link) {
+        const params = Util.getAllUrlParams(link)
+
+        return Util.base64Decode(params.r)
+    }
+
     async hexa(link) {
         const page = await Browser.browser.newPage()
         try {
             link = decodeURI(link)
+
+            if (link.includes('travellinginfos.com')) {
+                link = this.parseTravelling(link)
+            }
+
             await page.goto(link, {
                 timeout: 300000
             })
