@@ -10,6 +10,7 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "express": "^4.17.1",
+    "lodash": "^4.17.13",
     "puppeteer": "^1.19.0"
   },
   "devDependencies": {
