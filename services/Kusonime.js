@@ -181,6 +181,15 @@ class Kusonime {
         }
     }
 
+    async jelajahinternet(link) {
+        const params = Util.getAllUrlParams(decodeURIComponent(link))
+        let url = params.url
+
+        return {
+            url: url
+        }
+    }
+
     async semrawut(link) {
         link = decodeURI(link)
 
@@ -190,6 +199,10 @@ class Kusonime {
 
         if (link.includes('sukakesehattan.')) {
             return this.sukakesehattan(link)
+        }
+
+        if (link.includes('jelajahinternet.')) {
+            return this.jelajahinternet(link)
         }
 
         const params = Util.getAllUrlParams(link)
