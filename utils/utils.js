@@ -1,4 +1,10 @@
 class Util {
+    /**
+     * Create new page with different browser context
+     * to support multiple sessions
+     * https://github.com/GoogleChrome/puppeteer/issues/85
+     * @param browser
+     */
     async newPageWithNewContext(browser) {
         const {
             browserContextId
@@ -9,14 +15,18 @@ class Util {
         return page
     }
 
+    /**
+     * Close a page, use this function to close a page that has context
+     * @param browser 
+     * @param page 
+     */
     async closePage(browser, page) {
         if (page.browserContextId != undefined) {
             await browser._connection.send('Target.disposeBrowserContext', {
                 browserContextId: page.browserContextId
             })
-        } else {
-            await page.close()
         }
+        await page.close()
     }
 
     /**
@@ -38,6 +48,10 @@ class Util {
         return new Promise(resolve => setTimeout(resolve, ms))
     }
 
+    /**
+     * Decode base64 encoded string
+     * @param string 
+     */
     base64Decode(string) {
         const buff = Buffer.from(string, 'base64')
         return buff.toString('ascii')

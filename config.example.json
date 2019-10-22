@@ -1,5 +1,6 @@
 {
     "app_env": "local",
+    "app_port": 8080,
     "meownime_url": "https://meownime.com",
     "samehadaku_url": "https://www.samehadaku.tv",
     "neonime_url": "https://neonime.net",

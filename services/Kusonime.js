@@ -6,6 +6,7 @@ const { kusonime_url } = require('../config.json')
 class Kusonime {
     /**
      * Parse and get anime list.
+     * Currently support only up to page 2.
      */
     async animeList() {
         const page = await Browser.browser.newPage()
@@ -16,7 +17,7 @@ class Kusonime {
             })
             
             await page.waitForSelector('a.kmz')
-            const animeList = await page.$$eval('a.kmz', nodes => nodes.map(x => {
+            const page1 = await page.$$eval('a.kmz', nodes => nodes.map(x => {
                 const title = x.innerText
                 const link = x.href
 
@@ -31,7 +32,7 @@ class Kusonime {
                 waitUntil: 'networkidle2'
             })
             await page.waitForSelector('a.kmz')
-            const animeList2 = await page.$$eval('a.kmz', nodes => nodes.map(x => {
+            const page2 = await page.$$eval('a.kmz', nodes => nodes.map(x => {
                 const title = x.innerText
                 const link = x.href
 
@@ -41,11 +42,11 @@ class Kusonime {
                 }
             }))
             
-            const animeList3 = animeList.concat(animeList2)
+            const animeList = page1.concat(page2)
 
             await page.close()
 
-            return animeList3
+            return animeList
         } catch (e) {
             console.log(e)
             await page.close()

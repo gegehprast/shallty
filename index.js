@@ -2,6 +2,7 @@ const express = require('express')
 const routes = require('./routes')
 const app = express()
 const Browser = require('./services/Browser')
+const { app_port } = require('./config.json')
 
 app.get(express.json())
 
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
 
 app.use('/api', routes)
 
-app.listen(process.env.PORT || 8080, async () => {
+app.listen(process.env.PORT || app_port, async () => {
     await Browser.init()
 })
 
