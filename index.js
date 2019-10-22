@@ -9,6 +9,13 @@ app.get('/', async function (req, res) {
     res.send('hello world')
 })
 
+app.use((req, res, next) => {
+    res.set('X-Powered-By', 'Shallty\'s Love')
+    res.append('Access-Control-Allow-Origin', ['*'])
+    res.append('Access-Control-Allow-Methods', 'GET')
+    next()
+})
+
 app.use('/api', routes)
 
 app.listen(process.env.PORT || 8080, async () => {
