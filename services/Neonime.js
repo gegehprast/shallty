@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
 const { neonime_url } = require('../config.json')
@@ -54,11 +53,7 @@ class Neonime {
             return anime
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -88,11 +83,7 @@ class Neonime {
             return animeList
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -132,11 +123,7 @@ class Neonime {
             return episodes
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -178,11 +165,7 @@ class Neonime {
             return episodes
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -259,11 +242,7 @@ class Neonime {
             return episodes
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }

@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
 const {

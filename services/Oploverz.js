@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer')
 const Browser = require('./Browser')
 const Util = require('../utils/utils')
 const { oploverz_url } = require('../config.json')
@@ -17,6 +16,8 @@ class Oploverz {
                 timeout: 300000
             })
             
+            await Util.sleep(15000)
+
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
             await Util.asyncForEach(list, async item => {
                 const anchor = await item.$('div.dtl > h2 > a')
@@ -42,11 +43,7 @@ class Oploverz {
             return anime
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -66,6 +63,8 @@ class Oploverz {
                 timeout: 300000
             })
             
+            await Util.sleep(15000)
+
             const list = await page.$$('#content > div.postbody > div > div.episodelist > ul > li')
             await Util.asyncForEach(list, async (item, index) => {
                 if (index >= 30) {
@@ -88,11 +87,7 @@ class Oploverz {
             return episodes
         } catch (e) {
             console.log(e)
-            if (e instanceof puppeteer.errors.TimeoutError) {
-                await page.close()
-
-                return false
-            }
+            await page.close()
 
             return false
         }
@@ -111,6 +106,8 @@ class Oploverz {
             await page.goto(link, {
                 timeout: 300000
             })
+
+            await Util.sleep(15000)
             
             const soraddls = await page.$$('#op-single-post > div.epsc > div[class="soraddl op-download"]')
             await Util.asyncForEach(soraddls, async soraddl => {
