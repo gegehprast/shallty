@@ -98,7 +98,7 @@ class Neonime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 60000
             })
@@ -138,7 +138,7 @@ class Neonime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 60000
             })
@@ -181,7 +181,7 @@ class Neonime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 60000
             })
@@ -253,7 +253,7 @@ class Neonime {
      * @param link anime page.
      */
     async hightech(link) {
-        link = decodeURI(link)
+        link = decodeURIComponent(link)
         const params = Util.getAllUrlParams(link)
         if (params.sitex) {
             return {

@@ -52,7 +52,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             link = link.replace('/category/', '/anime/')
             await page.goto(link, {
                 timeout: 300000

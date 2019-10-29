@@ -4,8 +4,8 @@ const Neonime = require('../services/Neonime')
 const checkOnGoingPage = async (req, res) => {
     const anime = await Neonime.checkOnGoingPage()
     if (!anime) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -20,8 +20,8 @@ const checkOnGoingPage = async (req, res) => {
 const animeList = async (req, res) => {
     const anime = await Neonime.animeList(req.query.link)
     if (!anime) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -36,8 +36,8 @@ const animeList = async (req, res) => {
 const tvShow = async (req, res) => {
     const episodes = await Neonime.tvShow(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -52,8 +52,8 @@ const tvShow = async (req, res) => {
 const getBatchEpisodes = async (req, res) => {
     const episodes = await Neonime.getBatchEpisodes(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -68,8 +68,8 @@ const getBatchEpisodes = async (req, res) => {
 const getEpisodes = async (req, res) => {
     const episodes = await Neonime.getEpisodes(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -84,8 +84,8 @@ const getEpisodes = async (req, res) => {
 const hightech = async (req, res) => {
     const url = await Neonime.hightech(req.query.link)
     if (!url) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {

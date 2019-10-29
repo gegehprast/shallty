@@ -3,8 +3,8 @@ const Meownime = require('../services/Meownime')
 const anime = async (req, res) => {
     const episodes = await Meownime.getEpisodes(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -19,8 +19,8 @@ const anime = async (req, res) => {
 const movie = async (req, res) => {
     const episodes = await Meownime.getMovieEpisodes(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -35,8 +35,8 @@ const movie = async (req, res) => {
 const davinsurance = async (req, res) => {
     const link = await Meownime.davinsurance(req.query.link)
     if (!link) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -51,8 +51,8 @@ const davinsurance = async (req, res) => {
 const meowbox = async (req, res) => {
     const link = await Meownime.meowbox(req.query.link)
     if (!link) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -67,8 +67,8 @@ const meowbox = async (req, res) => {
 const meowdrive = async (req, res) => {
     const link = await Meownime.meowdrive(req.query.link)
     if (!link) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -83,8 +83,8 @@ const meowdrive = async (req, res) => {
 const checkOnGoingPage = async (req, res) => {
     const anime = await Meownime.checkOnGoingPage()
     if (!anime) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -99,8 +99,8 @@ const checkOnGoingPage = async (req, res) => {
 const onGoingAnime = async (req, res) => {
     const anime = await Meownime.onGoingAnime(req.query.link)
     if (!anime) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {

@@ -6,8 +6,8 @@ const Util = require('../utils/utils')
 const anime = async (req, res) => {
     const episodes = await SamehadakuEas.getEpisodes(req.query.link)
     if (!episodes) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -40,8 +40,8 @@ const checkOnGoingPage = async (req, res) => {
     })
     
     if (!anime) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -92,8 +92,8 @@ const checkOnGoingPage = async (req, res) => {
 const getDownloadLinks = async (req, res) => {
     const links = await Samehadaku.getDownloadLinks(req.query.link)
     if (!links) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -108,8 +108,8 @@ const getDownloadLinks = async (req, res) => {
 const tetew = async (req, res) => {
     const tetew = await Samehadaku.anjay(req.query.link)
     if (!tetew) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {
@@ -124,8 +124,8 @@ const tetew = async (req, res) => {
 const njiir = async (req, res) => {
     const njiir = await Samehadaku.njiir(req.query.link)
     if (!njiir) {
-        res.status(404).json({
-            status: 404,
+        res.status(500).json({
+            status: 500,
             message: 'Something went wrong'
         })
     } else {

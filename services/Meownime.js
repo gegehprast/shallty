@@ -12,7 +12,7 @@ class Meownime {
         const episodes = new Map
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -75,7 +75,7 @@ class Meownime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -114,7 +114,7 @@ class Meownime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -187,7 +187,7 @@ class Meownime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -269,7 +269,7 @@ class Meownime {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -338,7 +338,7 @@ class Meownime {
         const episodes = []
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })

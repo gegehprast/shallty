@@ -58,7 +58,7 @@ class Oploverz {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -102,7 +102,7 @@ class Oploverz {
         const downloadLinks = []
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -150,7 +150,7 @@ class Oploverz {
     async hexa(link) {
         const page = await Browser.browser.newPage()
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
 
             if (link.includes('travellinginfos.com')) {
                 link = this.parseTravelling(link)

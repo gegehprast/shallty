@@ -148,7 +148,7 @@ class Kusonime {
         const downloadLinks = []
         
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 300000
             })
@@ -258,7 +258,7 @@ class Kusonime {
      * @param {String} link URL decoded semawur url.
      */
     async semrawut(link) {
-        link = decodeURI(link)
+        link = decodeURIComponent(link)
 
         if (link.includes('kepoow.me')) {
             return this.kepoow(link)

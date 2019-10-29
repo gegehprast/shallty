@@ -44,7 +44,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
             })
@@ -157,7 +157,7 @@ class Samehadaku {
         const downloadLinks = []
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
             })
@@ -237,7 +237,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
             })
@@ -307,7 +307,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
             })
@@ -337,7 +337,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
             })
@@ -383,7 +383,7 @@ class Samehadaku {
         const page = await Browser.browser.newPage()
 
         try {
-            link = decodeURI(link)
+            link = decodeURIComponent(link)
             if (link.includes('ahexa.')) {
                 return this.tetew(link, true)
             }
