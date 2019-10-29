@@ -16,7 +16,7 @@ class Samehadaku {
             await page.waitForSelector('div.white.updateanime')
 
             const posts = await page.$$('div.white.updateanime > ul > li')
-            await Util.asyncForEach(posts, async (post, index) => {
+            await Util.asyncForEach(posts, async (post) => {
                 const titleHeader = await post.$('h2.entry-title')
                 const { title, link } = await titleHeader.$eval('a', node => ({
                     title: node.innerText,
@@ -59,7 +59,7 @@ class Samehadaku {
             })
             await page.waitForSelector('div.episodelist')
             const episodeList = await page.$$('div.episodelist > ul > li')
-            await Util.asyncForEach(episodeList, async (item, index) => {
+            await Util.asyncForEach(episodeList, async (item) => {
                 const anchor = await item.$('span.lefttitle > a')
                 const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
                 const link = await anchor.getProperty('href').then(x => x.jsonValue())
