@@ -45,19 +45,15 @@ Parameter:
 
 -  `url` - url halaman kategori (Contoh: https://www.samehadaku.tv/anime/dragon-ball-heroes/)
 
-  
+Contoh: `/samehadaku/anime?link=https%3A%2F%2Fwww.samehadaku.tv%2Fanime%2Fdragon-ball-heroes%2F`
 
-Contoh: /samehadaku/anime?link=https%3A%2F%2Fwww.samehadaku.tv%2Fanime%2Fdragon-ball-heroes%2F
-
-  
 
 **/samehadaku/checkOnGoingPage**
 
 Keterangan: Mengambil daftar rilisan terbaru.
 
-  
+Contoh: `/samehadaku/checkOnGoingPage`
 
-Contoh: /samehadaku/checkOnGoingPage
 
 **/samehadaku/getDownloadLinks?link={url}**
 
@@ -67,9 +63,8 @@ Parameter:
 
 -  `url` - url halaman episode (Contoh: https://www.samehadaku.tv/dragon-ball-heroes-episode-15/)
 
-  
+Contoh: `/samehadaku/getDownloadLinks?link=https%3A%2F%2Fwww.samehadaku.tv%2Fdragon-ball-heroes-episode-15%2F`
 
-Contoh: /samehadaku/getDownloadLinks?link=https%3A%2F%2Fwww.samehadaku.tv%2Fdragon-ball-heroes-episode-15%2F
 
 **/samehadaku/tetew?link={url}**
 
@@ -79,36 +74,26 @@ Parameter:
 
 -  `url` - url shortlink tetew / anjay (Contoh: https://anjay.info/?id=VWErNWlBZmpCUlMvT0pxVH...)
 
-  
+Contoh: `/samehadaku/tetew?link=https%3A%2F%2Fanjay.info%2F%3Fid%3DVWErNWlBZmpCUlMvT0pxVHE3YS84c2Q0dExOcGF2M1lSam5GdEdDZnpmSnR4dmxrLzMrYXFNaGxadnZDTHBMag%3D%3D`
 
-Contoh: /samehadaku/tetew?link=https%3A%2F%2Fanjay.info%2F%3Fid%3DVWErNWlBZmpCUlMvT0pxVHE3YS84c2Q0dExOcGF2M1lSam5GdEdDZnpmSnR4dmxrLzMrYXFNaGxadnZDTHBMag%3D%3D
-
-  
 
 **/samehadaku/njiir?link={url}**
 
 Keterangan: Lihat bagian `/samehadaku/tetew?link={url}` di atas.
 
-  
-  
 
 **/neonime/checkOnGoingPage**
 
 Keterangan: Mengambil daftar rilisan terbaru.
 
-  
+Contoh: `/neonime/checkOnGoingPage`
 
-Contoh: /neonime/checkOnGoingPage
-
-  
 
 **/neonime/animeList**
 
 Keterangan: Mengambil daftar anime di halaman anime list (https://neonime.org/episode/).
 
-  
-
-Contoh: /neonime/animeList
+Contoh: `/neonime/animeList`
 
   
 
@@ -120,11 +105,8 @@ Parameter:
 
 -  `url` - url halaman tv show (Contoh: https://neonime.org/tvshows/black-clover-subtitle-indonesia/)
 
-  
+Contoh: `/neonime/tvShow?link=https%3A%2F%2Fneonime.org%2Ftvshows%2Fblack-clover-subtitle-indonesia%2F`
 
-Contoh: /neonime/tvShow?link=https%3A%2F%2Fneonime.org%2Ftvshows%2Fblack-clover-subtitle-indonesia%2F
-
-  
 
 **/neonime/getEpisodes?link={url}**
 
@@ -134,11 +116,8 @@ Parameter:
 
 -  `url` - url halaman episode tv show (Contoh: https://neonime.org/episode/black-clover-1x107/)
 
-  
+Contoh: `/neonime/getEpisodes?link=https%3A%2F%2Fneonime.org%2Fepisode%2Fblack-clover-1x107%2F`
 
-Contoh: /neonime/getEpisodes?link=https%3A%2F%2Fneonime.org%2Fepisode%2Fblack-clover-1x107%2F
-
-  
 
 **/neonime/getBatchEpisodes?link={url}**
 
@@ -148,11 +127,8 @@ Parameter:
 
 -  `url` - url shortlink hightech (Contoh: https://neonime.org/batch/chihayafuru-season-2-bd-batch-subtitle-indonesia/)
 
-  
+Contoh: `/neonime/getBatchEpisodes?link=https%3A%2F%2Fneonime.org%2Fbatch%2Fchihayafuru-season-2-bd-batch-subtitle-indonesia%2F`
 
-Contoh: /neonime/getBatchEpisodes?link=https%3A%2F%2Fneonime.org%2Fbatch%2Fchihayafuru-season-2-bd-batch-subtitle-indonesia%2F
-
-  
 
 **/neonime/hightech?link={url}**
 
@@ -162,22 +138,15 @@ Parameter:
 
 -  `url` - url shortlink hightech (Contoh: https://xmaster.xyz/?sitex=aHR0cHM6Ly93d3c3OS56aXBwe...)
 
-  
+Contoh: `/neonime/hightech?link=https%3A%2F%2Fxmaster.xyz%2F%3Fsitex%3DaHR0cHM6Ly93d3c3OS56aXBweXNoYXJlLmNvbS92LzFkNDZ3eWk3L2ZpbGUuaHRtbA%3D%3D`
 
-Contoh: /neonime/hightech?link=https%3A%2F%2Fxmaster.xyz%2F%3Fsitex%3DaHR0cHM6Ly93d3c3OS56aXBweXNoYXJlLmNvbS92LzFkNDZ3eWk3L2ZpbGUuaHRtbA%3D%3D
-
-  
-  
 
 **/oploverz/checkOnGoingPage**
 
 Keterangan: Mengambil daftar rilisan terbaru.
 
-  
+Contoh: `/oploverz/checkOnGoingPage`
 
-Contoh: /oploverz/checkOnGoingPage
-
-  
 
 **/oploverz/series?link={url}**
 
@@ -187,11 +156,8 @@ Parameter:
 
 -  `url` - url series (Contoh: https://www.oploverz.in/series/diamond-no-ace-s3/)
 
-  
+Contoh: `/oploverz/series?link=https%3A%2F%2Fwww.oploverz.in%2Fseries%2Fdiamond-no-ace-s3%2F`
 
-Contoh: /oploverz/series?link=https%3A%2F%2Fwww.oploverz.in%2Fseries%2Fdiamond-no-ace-s3%2F
-
-  
 
 **/oploverz/getDownloadLinks?link={url}**
 
@@ -201,11 +167,8 @@ Parameter:
 
 -  `url` - url series (Contoh: https://www.oploverz.in/diamond-no-ace-s3-31-subtitle-indonesia/)
 
-  
+Contoh: `/oploverz/getDownloadLinks?link=https%3A%2F%2Fwww.oploverz.in%2Fdiamond-no-ace-s3-31-subtitle-indonesia%2F`
 
-Contoh: /oploverz/getDownloadLinks?link=https%3A%2F%2Fwww.oploverz.in%2Fdiamond-no-ace-s3-31-subtitle-indonesia%2F
-
-  
 
 **/oploverz/hexa?link={url}**
 
@@ -215,18 +178,15 @@ Parameter:
 
 -  `url` - url series (Contoh: https://www.oploverz.in/diamond-no-ace-s3-31-subtitle-indonesia/)
 
-  
+Contoh: `/oploverz/getDownloadLinks?link=https%3A%2F%2Fwww.oploverz.in%2Fdiamond-no-ace-s3-31-subtitle-indonesia%2F`
 
-Contoh: /oploverz/getDownloadLinks?link=https%3A%2F%2Fwww.oploverz.in%2Fdiamond-no-ace-s3-31-subtitle-indonesia%2F
-
-  
-  
 
 **/kusonime/animeList**
 
 Keterangan: Mengambil daftar anime dari halaman anime list.
 
-  
+Contoh: `/kusonime/animeList`
+
 
 **/kusonime/homePage?page={page}**
 
@@ -236,11 +196,8 @@ Parameter:
 
 - `page` - nomor halaman (optional)
 
-  
+Contoh: `/kusonime/homePage?page=20`
 
-Contoh: /kusonime/homePage?page=20
-
-  
 
 **/kusonime/getDownloadLinks?link={url}**
 
@@ -250,11 +207,8 @@ Parameter:
 
 -  `url` - url rilisan (Contoh: https://kusonime.com/sora-no-method-ova-batch-subtitle-indonesia/)
 
-  
+Contoh: `/kusonime/getDownloadLinks?link=https%3A%2F%2Fkusonime.com%2Fsora-no-method-ova-batch-subtitle-indonesia%2F`
 
-Contoh: /kusonime/getDownloadLinks?link=https%3A%2F%2Fkusonime.com%2Fsora-no-method-ova-batch-subtitle-indonesia%2F
-
-  
 
 **/kusonime/semrawut?link={url}**
 
@@ -264,9 +218,7 @@ Parameter:
 
 -  `url` - url shortlink (Contoh: https://kepoow.me/?r=aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2ZpbGUvZC8xQjNlY2h4dEYwMFNUbVRRWklEcW8xUVJ3a1RHTmFSaXkvdmlldw==)
 
-  
-
-Contoh: /kusonime/semrawut?link=https%3A%2F%2Fkepoow.me%2F%3Fr%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2ZpbGUvZC8xQjNlY2h4dEYwMFNUbVRRWklEcW8xUVJ3a1RHTmFSaXkvdmlldw%3D%3D
+Contoh: `/kusonime/semrawut?link=https%3A%2F%2Fkepoow.me%2F%3Fr%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2ZpbGUvZC8xQjNlY2h4dEYwMFNUbVRRWklEcW8xUVJ3a1RHTmFSaXkvdmlldw%3D%3D`
 
   
 
