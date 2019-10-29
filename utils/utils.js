@@ -31,8 +31,9 @@ class Util {
 
     /**
      * Array.forEach but blocking.
-     * @param array array to iterate.
-     * @param callback callback function to call for every iteration. 
+     * 
+     * @param {Array} array Array to iterate.
+     * @param {Function} callback Callback function to call for every iteration. 
      */
     async asyncForEach(array, callback) {
         for (let index = 0; index < array.length; index++) {

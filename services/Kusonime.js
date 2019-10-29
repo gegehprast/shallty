@@ -5,8 +5,7 @@ const { kusonime_url } = require('../config.json')
 
 class Kusonime {
     /**
-     * Parse and get anime list.
-     * Currently support only up to page 2.
+     * Parse and get anime list. Currently support only up to page 2.
      */
     async animeList() {
         const page = await Browser.browser.newPage()
@@ -55,6 +54,51 @@ class Kusonime {
         }
     }
 
+    /**
+     * Parse home page and get post list.
+     * 
+     * @param {Number} homePage Home page.
+     */
+    async homePage(homePage = 1) {
+        const page = await Browser.browser.newPage()
+        const posts = []
+
+        try {
+            await page.goto(`${kusonime_url}/page/${homePage}`, {
+                timeout: 300000
+            })
+
+            await page.waitForSelector('div.venz')
+            const kovers = await page.$$('div.venz > ul > div.kover')
+            
+            await Util.asyncForEach(kovers, async (kover) => {
+                const anchor = await kover.$('.episodeye > a')
+                const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+
+                posts.push({
+                    link: link,
+                    title: title
+                })
+            })
+
+            await page.close()
+
+            return posts
+        } catch (e) {
+            console.log(e)
+            await page.close()
+
+            return false
+        }
+    }
+
+    /**
+     * Parse download links from episode page of a title that does not have smokeddl div.
+     * 
+     * @param {Object} dlbod dlbod ElementHandle.
+     * @param {String} statusAnime Status anime from kusonime.
+     */
     async zeroSmodeddl(dlbod, statusAnime) {
         const downloadLinks = []
         let smokettl = await dlbod.$('div.smokettl')
@@ -96,7 +140,8 @@ class Kusonime {
 
     /**
      * Parse download links from episode page of a title.
-     * @param link episode page.
+     * 
+     * @param {String} link Episode page url.
      */
     async getDownloadLinks(link) {
         const page = await Browser.browser.newPage()
@@ -116,6 +161,7 @@ class Kusonime {
             const status = await info.getProperty('innerText').then(x => x.jsonValue())
             const statusAnime = (status && status == 'Status: Completed') ? 'completed' : 'airing'
             
+            // return zeroSmodeddl if there is no smokeddls
             if (smokeddls.length < 1) {
                 return this.zeroSmodeddl(dlbod, statusAnime)
             }
@@ -167,12 +213,22 @@ class Kusonime {
         }
     }
 
+    /**
+     * Parse kepoow and get original download link.
+     * 
+     * @param {String} link kepoow url. 
+     */
     async kepoow(link) {
         const params = Util.getAllUrlParams(link)
 
         return {url: Util.base64Decode(params.r)}
     }
 
+    /**
+     * Parse sukakesehattan and get original download link.
+     * 
+     * @param {String} link sukakesehattan url.
+     */
     async sukakesehattan(link) {
         const params = Util.getAllUrlParams(decodeURIComponent(link))
         let url = params.url
@@ -182,6 +238,11 @@ class Kusonime {
         }
     }
 
+    /**
+     * Parse jelajahinternet and get original download link.
+     * 
+     * @param {String} link jelajahinternet url. 
+     */
     async jelajahinternet(link) {
         const params = Util.getAllUrlParams(decodeURIComponent(link))
         let url = params.url
@@ -191,6 +252,11 @@ class Kusonime {
         }
     }
 
+    /**
+     * Proceed semawur to get original download link.
+     * 
+     * @param {String} link URL decoded semawur url.
+     */
     async semrawut(link) {
         link = decodeURI(link)
 

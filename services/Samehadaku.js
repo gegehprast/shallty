@@ -117,7 +117,7 @@ class Samehadaku {
             const container = magBoxContainer[samehadaku_magBoxContainer]
             const posts = await container.$$('li[class="post-item  tie-standard"]')
 
-            await Util.asyncForEach(posts, async (post, index) => {
+            await Util.asyncForEach(posts, async (post) => {
                 const titleHeader = await post.$('h3.post-title')
                 const { title, link } = await titleHeader.$eval('a', node => ({
                     title: node.innerText,

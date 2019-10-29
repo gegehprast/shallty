@@ -32,6 +32,7 @@ routes.get('/oploverz/series', OploverzController.series)
 routes.get('/oploverz/getDownloadLinks', OploverzController.getDownloadLinks)
 routes.get('/oploverz/hexa', OploverzController.hexa)
 
+routes.get('/kusonime/homePage', KusonimeController.homePage)
 routes.get('/kusonime/animeList', KusonimeController.animeList)
 routes.get('/kusonime/getDownloadLinks', KusonimeController.getDownloadLinks)
 routes.get('/kusonime/semrawut', KusonimeController.semrawut)
