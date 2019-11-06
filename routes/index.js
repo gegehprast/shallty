@@ -5,6 +5,8 @@ const MeownimeController = require('../controllers/MeownimeController')
 const NeonimeController = require('../controllers/NeonimeController')
 const OploverzController = require('../controllers/OploverzController')
 const KusonimeController = require('../controllers/KusonimeController')
+const MangakuController = require('../controllers/MangakuController')
+const KiryuuController = require('../controllers/KiryuuController')
 
 routes.get('/meownime/anime', MeownimeController.anime)
 routes.get('/meownime/movie', MeownimeController.movie)
@@ -36,5 +38,17 @@ routes.get('/kusonime/homePage', KusonimeController.homePage)
 routes.get('/kusonime/animeList', KusonimeController.animeList)
 routes.get('/kusonime/getDownloadLinks', KusonimeController.getDownloadLinks)
 routes.get('/kusonime/semrawut', KusonimeController.semrawut)
+
+routes.get('/mangaku/mangaList', MangakuController.mangaList)
+routes.get('/mangaku/mangaInfo', MangakuController.mangaInfo)
+routes.get('/mangaku/chapters', MangakuController.chapters)
+routes.get('/mangaku/images', MangakuController.images)
+routes.get('/mangaku/newReleases', MangakuController.newReleases)
+
+routes.get('/kiryuu/mangaList', KiryuuController.mangaList)
+routes.get('/kiryuu/mangaInfo', KiryuuController.mangaInfo)
+routes.get('/kiryuu/chapters', KiryuuController.chapters)
+routes.get('/kiryuu/images', KiryuuController.images)
+routes.get('/kiryuu/newReleases', KiryuuController.newReleases)
 
 module.exports = routes

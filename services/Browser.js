@@ -14,6 +14,8 @@ class Browser {
             })
         }
 
+        console.log('\x1b[32m', '[Crawler Ready] You can start crawling via "/api" endpoint.')
+
         return [this.browser, this.browser2]
     }
 }
