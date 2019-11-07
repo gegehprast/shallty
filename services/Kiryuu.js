@@ -34,7 +34,7 @@ class Kiryuu {
 
                 mangaList.push({
                     title: title,
-                    link: link
+                    link: link.replace(kiryuu_url, '')
                 })
             })
 
