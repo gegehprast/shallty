@@ -166,8 +166,8 @@ class Kiryuu {
 
                 if (chapter && chapter !== '') {
                     chapters.push({
-                        chapter: chapter,
-                        link: link
+                        chapter: chapter.replace(/Chapter /gi, ''),
+                        link: link.replace(kiryuu_url, '')
                     })
                 }
             })
@@ -213,11 +213,19 @@ class Kiryuu {
                 return h1.innerText
             })
             const readerarea = await page.$('div#readerarea')
-            const imgs = await readerarea.$$('img.aligncenter')
-            await Util.asyncForEach(imgs, async (img) => {
+            let imgs = await readerarea.$$('img.aligncenter')
+            if (imgs.length < 1) {
+                imgs = await readerarea.$$('img.alignnone')
+            }
+            if (imgs.length < 1) {
+                imgs = await readerarea.$$('img')
+            }
+
+            await Util.asyncForEach(imgs, async (img, index) => {
                 const src = await img.getProperty('src').then(x => x.jsonValue())
 
                 images.push({
+                    index: index,
                     link: src
                 })
             })
@@ -274,7 +282,7 @@ class Kiryuu {
                 releases.push({
                     title: title,
                     title_url: titleLink,
-                    chapter: chapter,
+                    chapter: chapter.replace(/Ch. |Ch./gi, ''),
                     chapter_url: chapterLink
                 })
             })
