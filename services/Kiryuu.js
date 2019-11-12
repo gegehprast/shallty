@@ -281,9 +281,9 @@ class Kiryuu {
 
                 releases.push({
                     title: title,
-                    title_url: titleLink,
+                    title_url: titleLink.replace(kiryuu_url, ''),
                     chapter: chapter.replace(/Ch. |Ch./gi, ''),
-                    chapter_url: chapterLink
+                    chapter_url: chapterLink.replace(kiryuu_url, '')
                 })
             })
 
