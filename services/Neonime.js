@@ -152,11 +152,13 @@ class Neonime {
                     const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
                     const link = await anchor.getProperty('href').then(x => x.jsonValue())
 
-                    episodes.push({
-                        quality: quality,
-                        host: host,
-                        link: link
-                    })
+                    if (link != neonime_url && !host.toLowerCase().includes('proses')) {
+                        episodes.push({
+                            quality: quality,
+                            host: host,
+                            link: link
+                        })
+                    }
                 })
             })
             
