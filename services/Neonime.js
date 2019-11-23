@@ -143,8 +143,8 @@ class Neonime {
                 timeout: 60000
             })
 
-            await page.waitForSelector('div.list-link-download')
-            const list = await page.$$('div.list-link-download > ul > ul')
+            await page.waitForSelector('div.central > div > ul > ul')
+            const list = await page.$$('div > ul > ul')
             await Util.asyncForEach(list, async item => {
                 const quality = await item.$eval('label.label-download', node => node.innerText)
                 const anchors = await item.$$('a')
