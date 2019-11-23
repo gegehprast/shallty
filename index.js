@@ -8,7 +8,10 @@ const runningPort = process.env.PORT || app_port
 app.get(express.json())
 
 app.get('/', async function (req, res) {
-    res.send('hello world')
+    res.send(`<p style="font-weight: 600; margin-top: 15px; font-size: 1.25em;">
+        You can start crawling via "/api" endpoint. 
+        See <a href="https://github.com/gegehprast98/shallty/blob/master/README.md" target="_blank">https://github.com/gegehprast98/shallty/blob/master/README.md</a> for more information.
+    </p>`)
 })
 
 app.use((req, res, next) => {
