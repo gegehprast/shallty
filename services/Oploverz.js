@@ -156,6 +156,10 @@ class Oploverz {
                 link = this.parseTravelling(link)
             }
 
+            if (link.includes('kontenajaib.xyz')) {
+                link = this.parseTravelling(link)
+            }
+
             await page.goto(link, {
                 timeout: 300000
             })

@@ -146,7 +146,7 @@ class Neonime {
             await page.waitForSelector('div.central > div > ul > ul')
             const list = await page.$$('div > ul > ul')
             await Util.asyncForEach(list, async item => {
-                const quality = await item.$eval('label.label-download', node => node.innerText)
+                const quality = await item.$eval('label', node => node.innerText)
                 const anchors = await item.$$('a')
                 await Util.asyncForEach(anchors, async anchor => {
                     const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
