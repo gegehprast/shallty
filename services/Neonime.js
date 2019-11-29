@@ -1,8 +1,12 @@
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { neonime_url } = require('../config.json')
 
 class Neonime {
+    constructor(browser) {
+        this.browser = browser
+    }
+    
     /**
      * Get new tab page instance.
      * @param page current page.
@@ -21,7 +25,7 @@ class Neonime {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(neonime_url + '/episode/', {
@@ -51,11 +55,10 @@ class Neonime {
             await page.close()
 
             return anime
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -63,7 +66,7 @@ class Neonime {
      * Parse and get anime list.
      */
     async animeList() {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(neonime_url + '/list-anime/', {
@@ -81,11 +84,10 @@ class Neonime {
             await page.close()
 
             return animeList
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -95,7 +97,7 @@ class Neonime {
      */
     async tvShow(link) {
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -121,11 +123,10 @@ class Neonime {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -135,7 +136,7 @@ class Neonime {
      */
     async getEpisodes(link) {
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -165,11 +166,10 @@ class Neonime {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -180,7 +180,7 @@ class Neonime {
     async getBatchEpisodes(link) {
         const episodes = []
         let info1 = false
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -242,11 +242,10 @@ class Neonime {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -263,7 +262,7 @@ class Neonime {
             }
         }
         
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(link, {
@@ -277,20 +276,19 @@ class Neonime {
             await Util.sleep(3000)
             await page.click('a#link-download')
             
-            const newPage = await this.newPagePromise(page, Browser.browser)
+            const newPage = await this.newPagePromise(page, this.browser)
             const url = newPage.url()
             
             await page.close()
             await newPage.close()
 
             return {url: url}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Neonime
+module.exports = Neonime

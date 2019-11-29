@@ -18,6 +18,33 @@ class Browser {
 
         return [this.browser, this.browser2]
     }
+
+    /**
+     * Create new page with different browser context
+     * to support multiple sessions
+     * https://github.com/GoogleChrome/puppeteer/issues/85
+     */
+    async newPageWithNewContext() {
+        const { browserContextId } = await this.browser._connection.send('Target.createBrowserContext')
+        const page = await this.browser._createPageInContext(browserContextId)
+        page.browserContextId = browserContextId
+
+        return page
+    }
+
+    /**
+     * Close a page, use this function to close a page that has context
+     * 
+     * @param {Object} page Puppeteer page
+     */
+    async closePage(page) {
+        if (page.browserContextId != undefined) {
+            await this.browser._connection.send('Target.disposeBrowserContext', {
+                browserContextId: page.browserContextId
+            })
+        }
+        await page.close()
+    }
 }
 
 module.exports = new Browser

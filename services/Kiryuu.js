@@ -1,9 +1,10 @@
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { kiryuu_url } = require('../config.json')
 
 class Kiryuu {
-    constructor() {
-        this.browser = null
+    constructor(browser) {
+        this.browser = browser
     }
     
     /**
@@ -11,13 +12,7 @@ class Kiryuu {
      *
      */
     async getMangaList() {
-        if (!this.browser)
-            return {
-                error: true,
-                message: 'Browser not ready.'
-            }
-
-        const page = await this.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(kiryuu_url + '/manga/?list', {
@@ -42,13 +37,9 @@ class Kiryuu {
 
             return mangaList
         } catch (error) {
-            console.error(error)
             await page.close()
 
-            return {
-                error: true,
-                message: 'Something went wrong. ' + error
-            }
+            return Handler.error(error)
         }
     }
 
@@ -58,7 +49,7 @@ class Kiryuu {
      * @param {String} link Manga page url.
      */
     async getMangaInfo(link) {
-        const page = await this.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -126,13 +117,9 @@ class Kiryuu {
                 released: released
             }
         } catch (error) {
-            console.error(error)
             await page.close()
 
-            return {
-                error: true,
-                message: 'Something went wrong. ' + error
-            }
+            return Handler.error(error)
         }
     }
 
@@ -148,7 +135,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -176,13 +163,9 @@ class Kiryuu {
 
             return chapters
         } catch (error) {
-            console.error(error)
             await page.close()
 
-            return {
-                error: true,
-                message: 'Something went wrong. ' + error
-            }
+            return Handler.error(error)
         }
     }
 
@@ -198,7 +181,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -237,13 +220,9 @@ class Kiryuu {
                 images: images
             }
         } catch (error) {
-            console.error(error)
             await page.close()
 
-            return {
-                error: true,
-                message: 'Something went wrong. ' + error
-            }
+            return Handler.error(error)
         }
     }
 
@@ -252,7 +231,7 @@ class Kiryuu {
      *
      */
     async getNewReleases() {
-        const page = await this.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(kiryuu_url, {
@@ -291,10 +270,9 @@ class Kiryuu {
 
             return releases
         } catch (error) {
-            console.error(error)
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }

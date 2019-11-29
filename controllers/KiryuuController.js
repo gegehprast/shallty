@@ -3,7 +3,6 @@ const Kiryuu = require('../services/Kiryuu')
 
 class KiryuuController {
     constructor() {
-        this.kiryuu = null
         this.mangaList = this.mangaList.bind(this)
         this.chapters = this.chapters.bind(this)
         this.images = this.images.bind(this)
@@ -11,14 +10,8 @@ class KiryuuController {
         this.newReleases = this.newReleases.bind(this)
     }
 
-    async initKiryuu() {
-        this.kiryuu = new Kiryuu
-        this.kiryuu.browser = Browser.browser
-    }
-
     async mangaList(req, res) {
-        this.initKiryuu()
-        const manga = await this.kiryuu.getMangaList()
+        const manga = await new Kiryuu(Browser.browser).getMangaList()
         if (manga.error) {
             res.status(500).json({
                 status: 500,
@@ -34,8 +27,7 @@ class KiryuuController {
     }
 
     async mangaInfo(req, res) {
-        this.initKiryuu()
-        const result = await this.kiryuu.getMangaInfo(req.query.link)
+        const result = await new Kiryuu(Browser.browser).getMangaInfo(req.query.link)
         if (result.error) {
             res.status(500).json({
                 status: 500,
@@ -51,8 +43,7 @@ class KiryuuController {
     }
 
     async chapters(req, res) {
-        this.initKiryuu()
-        const chapters = await this.kiryuu.getChapters(req.query.link)
+        const chapters = await new Kiryuu(Browser.browser).getChapters(req.query.link)
         if (chapters.error) {
             res.status(500).json({
                 status: 500,
@@ -68,8 +59,7 @@ class KiryuuController {
     }
 
     async images(req, res) {
-        this.initKiryuu()
-        const images = await this.kiryuu.getImages(req.query.link)
+        const images = await new Kiryuu(Browser.browser).getImages(req.query.link)
         if (images.error) {
             res.status(500).json({
                 status: 500,
@@ -85,8 +75,7 @@ class KiryuuController {
     }
 
     async newReleases(req, res) {
-        this.initKiryuu()
-        const releases = await this.kiryuu.getNewReleases(req.query.link)
+        const releases = await new Kiryuu(Browser.browser).getNewReleases(req.query.link)
         if (releases.error) {
             res.status(500).json({
                 status: 500,

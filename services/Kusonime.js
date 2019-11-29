@@ -1,14 +1,17 @@
-// eslint-disable-next-line no-unused-vars
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { kusonime_url } = require('../config.json')
 
 class Kusonime {
+    constructor(browser) {
+        this.browser = browser
+    }
+    
     /**
      * Parse and get anime list. Currently support only up to page 2.
      */
     async animeList() {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(kusonime_url + '/anime-list-batch/', {
@@ -46,11 +49,10 @@ class Kusonime {
             await page.close()
 
             return animeList
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -60,7 +62,7 @@ class Kusonime {
      * @param {Number} homePage Home page.
      */
     async homePage(homePage = 1) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const posts = []
 
         try {
@@ -85,11 +87,10 @@ class Kusonime {
             await page.close()
 
             return posts
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -144,7 +145,7 @@ class Kusonime {
      * @param {String} link Episode page url.
      */
     async getDownloadLinks(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const downloadLinks = []
         
         try {
@@ -205,11 +206,10 @@ class Kusonime {
                 status: statusAnime,
                 links: downloadLinks
             }
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -282,7 +282,7 @@ class Kusonime {
             }
         }
         
-        const page = await Util.newPageWithNewContext(Browser.browser)
+        const page = await this.browser.newPageWithNewContext()
 
         try {
             await page.goto(link, {
@@ -312,18 +312,17 @@ class Kusonime {
 
             const downloadLinks = await downloadButton.getProperty('href').then(x => x.jsonValue())
 
-            await Util.closePage(Browser.browser, page)
+            await this.browser.closePage(page)
 
             return {
                 url: downloadLinks
             }
         } catch (error) {
-            console.log(error)
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Kusonime
+module.exports = Kusonime

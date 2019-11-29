@@ -1,35 +1,5 @@
 class Util {
     /**
-     * Create new page with different browser context
-     * to support multiple sessions
-     * https://github.com/GoogleChrome/puppeteer/issues/85
-     * @param browser
-     */
-    async newPageWithNewContext(browser) {
-        const {
-            browserContextId
-        } = await browser._connection.send('Target.createBrowserContext')
-        const page = await browser._createPageInContext(browserContextId)
-        page.browserContextId = browserContextId
-
-        return page
-    }
-
-    /**
-     * Close a page, use this function to close a page that has context
-     * @param browser 
-     * @param page 
-     */
-    async closePage(browser, page) {
-        if (page.browserContextId != undefined) {
-            await browser._connection.send('Target.disposeBrowserContext', {
-                browserContextId: page.browserContextId
-            })
-        }
-        await page.close()
-    }
-
-    /**
      * Array.forEach but blocking.
      * 
      * @param {Array} array Array to iterate.
@@ -43,7 +13,7 @@ class Util {
 
     /**
      * Sleep.
-     * @param ms sleep time on milliseconds.
+     * @param {Number} ms sleep time on milliseconds.
      */
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -51,7 +21,7 @@ class Util {
 
     /**
      * Decode base64 encoded string
-     * @param string 
+     * @param {String} string 
      */
     base64Decode(string) {
         const buff = Buffer.from(string, 'base64')
@@ -60,8 +30,8 @@ class Util {
 
     /**
      * Get all query parameter from a url
-     * @param url url
-     * @param toLowerCase bool
+     * @param {String} url url
+     * @param {Boolean} toLowerCase bool
      */
     getAllUrlParams(url, toLowerCase = false) {
         let queryString = url.split('?')[1]
