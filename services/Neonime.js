@@ -190,7 +190,7 @@ class Neonime {
 
             
             await page.waitForSelector('.smokeurl').catch(e => {
-                console.log(e)
+                Handler.error(e)
                 info1 = true
             })
 
@@ -212,10 +212,9 @@ class Neonime {
                 })
             } else {
                 await page.waitForSelector('p[data-id="info1"]').catch(async e => {
-                    console.log(e)
                     await page.close()
                     
-                    return false
+                    return Handler.error(e)
                 })
                 const smokeurls = await page.$$('p[data-id="info1"]')
                 await Util.asyncForEach(smokeurls, async smokeurl => {
@@ -276,7 +275,7 @@ class Neonime {
             await Util.sleep(3000)
             await page.click('a#link-download')
             
-            const newPage = await this.newPagePromise(page, this.browser)
+            const newPage = await this.newPagePromise(page, this.browser.browser)
             const url = newPage.url()
             
             await page.close()

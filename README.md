@@ -1,14 +1,10 @@
-
-  
-
 # shallty
 
-Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk ~~Meownime~~, Samehadaku, Neonime, Kusonime dan Oploverz.
+Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk ~~Meownime~~, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
 
-  
+Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggunakan aplikasi ini.
 
 ## Instalasi
-
 1. Instal [node.js](https://nodejs.org/en/).
 
 2. Jalankan `npm install`.
@@ -17,26 +13,72 @@ Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adal
 
 4. Sesuaikan `config.json`.
 
-5. Jalankan `node index.js` untuk memulai aplikasi.
+5. Jalankan `node index.js` untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
 
-6. Kunjungi localhost:8080 (default port) di browser, kamu akan melihat `hello world` jika tidak ada masalah.
-
-  
 
 ## Penggunaan
-
 ### Dasar
 
 - API path: `localhost:8080/api` (default port)
 
-- Semua request melalui via GET method
+- Semua request melalui GET method
 
 - Semua parameter `url` harus di-encode terlebih dahulu
 
-  
-
 ### Endpoint
 
+**/kiryuu/mangaList**
+
+Keterangan: Mengambil daftar manga.
+
+Contoh: `/kiryuu/mangaList`
+<br/>
+<br/>
+<br/>
+**/kiryuu/mangaInfo?link={url}**
+
+Keterangan: Mengambil informasi manga.
+
+Parameter:
+
+-  `url` - url halaman manga tanpa domain (Contoh: /manga/iron-ladies/)
+
+Contoh: `/kiryuu/mangaInfo?link=%2Fmanga%2Firon-ladies%2F`
+<br/>
+<br/>
+<br/>
+**/kiryuu/chapters?link={url}**
+
+Keterangan: Mengambil daftar chapter manga.
+
+Parameter:
+
+-  `url` - url halaman manga tanpa domain (Contoh: /manga/iron-ladies/)
+
+Contoh: `/kiryuu/chapters?link=%2Fmanga%2Firon-ladies`
+<br/>
+<br/>
+<br/>
+**/kiryuu/images?link={url}**
+
+Keterangan: Mengambil daftar gambar dari satu chapter manga.
+
+Parameter:
+
+-  `url` - url halaman chapter manga tanpa domain (Contoh: /iron-ladies-chapter-99-bahasa-indonesia/)
+
+Contoh: `/kiryuu/images?link=%2Firon-ladies-chapter-99-bahasa-indonesia%2F`
+<br/>
+<br/>
+<br/>
+**/kiryuu/newReleases**
+
+Keterangan: Mengambil daftar rilisan terbaru dari Kiryuu.
+
+Contoh: `/kiryuu/newReleases`
+<br/>
+<br/>
+<br/>
 **/samehadaku/anime?link={url}**
 
 Keterangan: Mengambil daftar episode untuk 1 halaman kategori anime.
@@ -236,8 +278,6 @@ Parameter:
 
 Contoh: `/kusonime/semrawut?link=https%3A%2F%2Fkepoow.me%2F%3Fr%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2ZpbGUvZC8xQjNlY2h4dEYwMFNUbVRRWklEcW8xUVJ3a1RHTmFSaXkvdmlldw%3D%3D`
 
-  
+## Bantuan, Lapor Bug, dan Kritik dan Saran
 
-## Bantuan
-
-Discord server: http://discord.gg/Ur4xJ4t
+Server Discord: http://discord.gg/Ur4xJ4t

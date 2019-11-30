@@ -5,11 +5,22 @@ const Browser = require('./services/Browser')
 const { app_port } = require('./config.json')
 const runningPort = process.env.PORT || app_port
 
+const isBrowserReady = (req, res, next) => {
+    if (Browser.browser !== null) {
+        next()
+    } else {
+        res.status(500).json({
+            status: 500,
+            message: 'Browser is not ready, please try again later.'
+        })
+    }
+}
+
 app.get(express.json())
 
-app.get('/', async function (req, res) {
+app.get('/', async (req, res) => {
     res.send(`<p style="font-weight: 600; margin-top: 15px; font-size: 1.25em;">
-        You can start crawling via "/api" endpoint. 
+        Welcome! You can start crawling via "/api" endpoint. 
         See <a href="https://github.com/gegehprast98/shallty/blob/master/README.md" target="_blank">https://github.com/gegehprast98/shallty/blob/master/README.md</a> for more information.
     </p>`)
 })
@@ -20,6 +31,8 @@ app.use((req, res, next) => {
     res.append('Access-Control-Allow-Methods', 'GET')
     next()
 })
+
+app.use(isBrowserReady)
 
 app.use('/api', routes)
 

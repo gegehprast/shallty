@@ -50,6 +50,7 @@ class Kiryuu {
      */
     async getMangaInfo(link) {
         const page = await this.browser.browser.newPage()
+        let cover = null
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -63,7 +64,13 @@ class Kiryuu {
             const title = await infox.$eval('h1', h1 => {
                 return h1.innerText.replace(/ Bahasa Indonesia| Bahasa| Indonesia|/gi, '')
             })
-            const cover = await page.$eval('div.thumb > img', img => img.src)
+
+            if (await page.$('div.thumb > img') !== null) {
+                cover = await page.$eval('div.thumb > img', img => img.src)
+            } else {
+                cover = await page.$eval('div.ime > img', img => img.src)
+            }
+            
             if (await infox.$('span.alter') !== null) {
                 alternate_title = await infox.$eval('span.alter', span => {
                     return span.innerText

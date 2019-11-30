@@ -1,14 +1,18 @@
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { oploverz_url } = require('../config.json')
 
 class Oploverz {
+    constructor(browser) {
+        this.browser = browser
+    }
+
     /**
      * Check on going page and get latest released episodes.
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1')
@@ -41,11 +45,10 @@ class Oploverz {
             await page.close()
 
             return anime
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -55,7 +58,7 @@ class Oploverz {
      */
     async series(link) {
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -85,11 +88,10 @@ class Oploverz {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -98,7 +100,7 @@ class Oploverz {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const downloadLinks = []
 
         try {
@@ -133,11 +135,10 @@ class Oploverz {
             await page.close()
 
             return downloadLinks
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -148,7 +149,7 @@ class Oploverz {
     }
 
     async hexa(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         try {
             link = decodeURIComponent(link)
 
@@ -170,13 +171,12 @@ class Oploverz {
             await page.close()
             
             return {url: url}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Oploverz
+module.exports = Oploverz

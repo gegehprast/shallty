@@ -1,5 +1,5 @@
 const Browser = require('../services/Browser')
-const Neonime = require('../services/Neonime')
+const Neonime = new (require('../services/Neonime'))(Browser)
 
 class NeonimeController {
     constructor() {
@@ -12,7 +12,7 @@ class NeonimeController {
     }
 
     async checkOnGoingPage(req, res) {
-        const anime = await new Neonime(Browser).checkOnGoingPage()
+        const anime = await Neonime.checkOnGoingPage()
         if (!anime) {
             res.status(500).json({
                 status: 500,
@@ -28,7 +28,7 @@ class NeonimeController {
     }
 
     async animeList(req, res) {
-        const anime = await new Neonime(Browser).animeList(req.query.link)
+        const anime = await Neonime.animeList(req.query.link)
         if (!anime) {
             res.status(500).json({
                 status: 500,
@@ -44,7 +44,7 @@ class NeonimeController {
     }
 
     async tvShow(req, res) {
-        const episodes = await new Neonime(Browser).tvShow(req.query.link)
+        const episodes = await Neonime.tvShow(req.query.link)
         if (!episodes) {
             res.status(500).json({
                 status: 500,
@@ -60,7 +60,7 @@ class NeonimeController {
     }
 
     async getBatchEpisodes(req, res) {
-        const episodes = await new Neonime(Browser).getBatchEpisodes(req.query.link)
+        const episodes = await Neonime.getBatchEpisodes(req.query.link)
         if (!episodes) {
             res.status(500).json({
                 status: 500,
@@ -76,7 +76,7 @@ class NeonimeController {
     }
 
     async getEpisodes(req, res) {
-        const episodes = await new Neonime(Browser).getEpisodes(req.query.link)
+        const episodes = await Neonime.getEpisodes(req.query.link)
         if (!episodes) {
             res.status(500).json({
                 status: 500,
@@ -92,7 +92,7 @@ class NeonimeController {
     }
 
     async hightech(req, res) {
-        const url = await new Neonime(Browser).hightech(req.query.link)
+        const url = await Neonime.hightech(req.query.link)
         if (!url) {
             res.status(500).json({
                 status: 500,

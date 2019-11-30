@@ -1,12 +1,15 @@
-// eslint-disable-next-line no-unused-vars
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const {
     samehadaku_url,
     samehadaku_magBoxContainer
 } = require('../config.json')
 
 class Samehadaku {
+    constructor(browser) {
+        this.browser = browser
+    }
+
     /**
      * Parse and get episode information from a post element handler.
      * @param post post element handler.
@@ -41,7 +44,7 @@ class Samehadaku {
         let totalPage
         const pageLimit = 3
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -62,7 +65,7 @@ class Samehadaku {
                 totalPage = parseInt(totalPage[totalPage.length - 1])
                 totalPage = totalPage > pageLimit ? pageLimit : totalPage
             } catch (error) {
-                console.log(error)
+                Handler.error(error)
                 totalPage = 1
             }
             
@@ -92,11 +95,10 @@ class Samehadaku {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -105,7 +107,7 @@ class Samehadaku {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(samehadaku_url, {
@@ -140,11 +142,10 @@ class Samehadaku {
             await page.close()
 
             return anime
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -153,7 +154,7 @@ class Samehadaku {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const downloadLinks = []
 
         try {
@@ -208,11 +209,10 @@ class Samehadaku {
             await page.close()
 
             return downloadLinks
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -234,7 +234,7 @@ class Samehadaku {
      */
     async tetew(link, skip = false) {
         let final
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -290,11 +290,10 @@ class Samehadaku {
             }
 
             return {url: final}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -304,7 +303,7 @@ class Samehadaku {
      */
     async njiir(link) {
         let downloadLink, anchor
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -325,16 +324,15 @@ class Samehadaku {
             await page.close()
 
             return {url: downloadLink}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
     async eueSiherp(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -357,11 +355,10 @@ class Samehadaku {
             await page.close()
 
             return {url: final}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -380,7 +377,7 @@ class Samehadaku {
 
     //anjay.info
     async anjay(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -398,7 +395,7 @@ class Samehadaku {
             await page.waitForSelector('#showlink')
             await page.click('#showlink')
             
-            const newPage = await this.newPagePromise(page, Browser.browser)
+            const newPage = await this.newPagePromise(page, this.browser.browser)
             const url = newPage.url()
 
             await page.close()
@@ -407,13 +404,12 @@ class Samehadaku {
             const final = this.tetew(url, true)
 
             return final
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Samehadaku
+module.exports = Samehadaku

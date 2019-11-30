@@ -4,7 +4,7 @@ const { app_env } = require('../config.json')
 
 const transport = new(transports.DailyRotateFile)({
     filename: 'shallty-%DATE%.log',
-    datePattern: 'YYYY-MM-DD-HH',
+    datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '20m',
     maxFiles: '14d',

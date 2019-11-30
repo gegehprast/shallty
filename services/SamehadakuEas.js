@@ -1,12 +1,15 @@
-// eslint-disable-next-line no-unused-vars
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { samehadaku_url } = require('../config.json')
 
 class Samehadaku {
+    constructor(browser) {
+        this.browser = browser
+    }
+
     async checkOnGoingPage(navPage = 1) {
         const anime = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(`${samehadaku_url}/page/${navPage}/`, {
@@ -40,16 +43,15 @@ class Samehadaku {
 
             return anime
         } catch (error) {
-            console.log(error)
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
     async getEpisodes(link) {
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -89,13 +91,12 @@ class Samehadaku {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Samehadaku
+module.exports = Samehadaku

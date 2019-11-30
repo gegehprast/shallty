@@ -1,14 +1,18 @@
-const Browser = require('./Browser')
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 const { meownime_url } = require('../config.json')
 
 class Meownime {
+    constructor(browser) {
+        this.browser = browser
+    }
+
     /**
      * Parse episodes from completed anime.
      * @param link anime page.
      */
     async getEpisodes(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const episodes = new Map
 
         try {
@@ -59,11 +63,10 @@ class Meownime {
             await page.close()
             
             return Array.from(episodes)
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -72,7 +75,7 @@ class Meownime {
      * @param link davinsurance page.
      */
     async davinsurance(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -97,11 +100,10 @@ class Meownime {
             splitted = splitted[0].replace(/(['"])+/g, '')
 
             return {url: splitted}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -111,7 +113,7 @@ class Meownime {
      * @param link meowbox page.
      */
     async meowbox(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -169,11 +171,10 @@ class Meownime {
             await page.close()
 
             return {url: finalUrl}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -184,7 +185,7 @@ class Meownime {
      */
     async meowdrive(link) {
         let finalUrl
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -213,11 +214,10 @@ class Meownime {
             await page.close()
 
             return {url: finalUrl}
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -226,7 +226,7 @@ class Meownime {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             await page.goto(meownime_url + '/tag/ongoing/', {
@@ -252,11 +252,10 @@ class Meownime {
             await page.close()
 
             return anime
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -266,7 +265,7 @@ class Meownime {
      */
     async onGoingAnime(link) {
         const episodes = []
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
 
         try {
             link = decodeURIComponent(link)
@@ -321,11 +320,10 @@ class Meownime {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 
@@ -334,7 +332,7 @@ class Meownime {
      * @param link anime page.
      */
     async getMovieEpisodes(link) {
-        const page = await Browser.browser.newPage()
+        const page = await this.browser.browser.newPage()
         const episodes = []
 
         try {
@@ -365,13 +363,12 @@ class Meownime {
             await page.close()
 
             return episodes
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
             await page.close()
 
-            return false
+            return Handler.error(error)
         }
     }
 }
 
-module.exports = new Meownime
+module.exports = Meownime
