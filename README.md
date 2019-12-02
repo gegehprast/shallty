@@ -13,7 +13,9 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 4. Salin file `config.example.json` dan rename menjadi `config.json`.
 
-5. Jalankan `node index.js` untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
+5. Sesuaikan `config.json`, misalnya ganti `app_env` menjadi `local` atau `dev` untuk bisa melihat proses crawling.
+
+6. Jalankan `node index.js` untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
 
 
 ## Penggunaan
