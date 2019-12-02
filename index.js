@@ -41,6 +41,4 @@ app.listen(runningPort, async () => {
     await Browser.init()
 })
 
-module.exports = {
-    app
-}
+module.exports = app

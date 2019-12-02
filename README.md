@@ -7,11 +7,11 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 ## Instalasi
 1. Instal [node.js](https://nodejs.org/en/).
 
-2. Jalankan `npm install`.
+2. Download [rilisan terbaru Shallty](https://github.com/gegehprast98/shallty/releases).
 
-3. Salin file `config.example.json` dan rename menjadi `config.json`.
+3. Unzip dan masuk ke root direktori lalu jalankan `npm install`.
 
-4. Sesuaikan `config.json`.
+4. Salin file `config.example.json` dan rename menjadi `config.json`.
 
 5. Jalankan `node index.js` untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
 
