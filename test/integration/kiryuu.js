@@ -32,7 +32,7 @@ describe('kiryuu when the crawler is not ready', function () {
 describe('kiryuu when the crawler is ready', function () {
     before(function (done) {
         this.timeout(5000)
-        setTimeout(done, 3000)
+        setTimeout(done, 4000)
     })
 
     describe('manga list', function () {
