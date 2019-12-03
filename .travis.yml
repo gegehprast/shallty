@@ -1,21 +1,21 @@
 language: node_js
 node_js:
-  - node
+- node
 before_install:
-  - openssl aes-256-cbc -K $encrypted_ab32adfe2d2e_key -iv $encrypted_ab32adfe2d2e_iv
-  -in deploy-key.enc -out deploy-key -d
-  - rm deploy-key.enc
-  - chmod 600 deploy-key
-  - mv deploy-key ~/.ssh/id_rsa
-  - mv config.example.json config.json
+- openssl aes-256-cbc -K $encrypted_ab32adfe2d2e_key -iv $encrypted_ab32adfe2d2e_iv
+-in deploy-key.enc -out deploy-key -d
+- rm deploy-key.enc
+- chmod 600 deploy-key
+- mv deploy-key ~/.ssh/id_rsa
+- mv config.example.json config.json
 after_success:
-  - cd _site
-  - git init
-        
-  - git remote add deploy "deploy@$REMOTE_ADDRESS:/home/$REMOTE_USER_REPO/$REMOTE_REPO"
-  - git config user.name "Travis CI"
-  - git config user.email "travisCI@gmail.com"
-    
-  - git add .
-  - git commit -m "Deploy"
-  - git push --force deploy dev
+- cd _site
+- git init
+      
+- git remote add deploy "deploy@$REMOTE_ADDRESS:/home/$REMOTE_USER_REPO/$REMOTE_REPO"
+- git config user.name "Travis CI"
+- git config user.email "travisCI@gmail.com"
+  
+- git add .
+- git commit -m "Deploy"
+- git push --force deploy dev
