@@ -2,7 +2,8 @@ language: node_js
 node_js:
 - node
 before_install:
-- openssl aes-256-cbc -k "$super_secret_password" -in deploy-key.enc -out deploy-key -d
+- openssl aes-256-cbc -K $encrypted_49bd58a06f0b_key -iv $encrypted_49bd58a06f0b_iv
+  -in deploy-key.enc -out deploy-key -d
 - rm deploy-key.enc
 - chmod 600 deploy-key
 - mv deploy-key ~/.ssh/id_rsa
@@ -16,6 +17,3 @@ after_success:
 - git add .
 - git commit -m "Deploy"
 - git push --force deploy dev
-env:
-  global:
-    secure: rWzghdf9JCTBoR1au+YYgEzsvKnEmOURpC3MJRhOdsg5Ui/nTufeVUTYg2gvPGmNlY5M+QfHkw7jKds0XTCZ/+4e5lUJHfYbRrv5tNFsNHJBN9HzbwAP3JbON66wwE4WqxdX4+SZf6hac/+w/59cbLxhGWm4t+M5qhIooNU6V5x6fnWGZAKcq+8wMPAw/hv0q7lqz6piSqQ07szBnvCGaVp3OVofGqMxUXWvaduS9Be65k3Gfvnp6wnRUT3c65aQhelbpcnkXob4eM7q5UEEwbzyTbDHpMcrCEnd7Zurr+yFGG6+QUhffVH1kkPNntHNBosxp/+YCk7Czmx0d0xkRXTHzB7cXN4CQSba/uR8A+LwWwNiUxsGjuZfae1CINPW+523WDu29vTomNh/vwb0260/Zo6EDtZjKeWQ7rzyvmIyLJSmEtD8XmENG2iSu1sY6ROJbBNp38PGbmY2EEsYtlcQQlSGV1iKigbVrKJjcl36i9aiuHPngwksOswE1I19pkb95B4zwIAg61cIqfvq3BukAZZw4A+0EHWx2p6yRjVvZ8z7gKj6Fcd8iYRwIqDjDU6ZzSGb+/LPlB8u6fibccov5W5oBdpBAMPaeKgvtMWeBx7RJUwn/fSjBTMamKahLZ4sxv9GOoaE6sE0R5UO+t4+ams9D7BC4bqPwWqoAVA=
