@@ -11,7 +11,7 @@ after_success:
   - cd _site
   - git init
         
-  - git remote add deploy "deploy@$REMOTE_ADDRESS:/home/gegeh/shallty-test"
+  - git remote add deploy "deploy@$REMOTE_ADDRESS:/home/$REMOTE_USER_REPO/$REMOTE_REPO"
   - git config user.name "Travis CI"
   - git config user.email "travisCI@gmail.com"
     
