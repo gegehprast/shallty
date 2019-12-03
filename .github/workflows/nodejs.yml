@@ -1,6 +1,8 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches: master
 
 jobs:
   test:
@@ -8,19 +10,24 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 13.x]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Rename config example to config.json
-      run: mv "config.example.json" "config.json"
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm test
-      env:
-        CI: true
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Rename config example to config.json
+        run: mv "config.example.json" "config.json"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        uses: ianwalter/puppeteer@v2.0.0
+        with:
+          args: yarn
+      - name: npm install, build, and test
+        run: |
+          npm ci
+          npm test
+        env:
+          CI: true
