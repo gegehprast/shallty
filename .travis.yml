@@ -1,6 +1,8 @@
 language: node_js
 node_js:
 - node
+addons:
+  ssh_known_hosts: $REMOTE_ADDRESS
 before_install:
 - openssl aes-256-cbc -K $encrypted_49bd58a06f0b_key -iv $encrypted_49bd58a06f0b_iv
   -in deploy-key.enc -out deploy-key -d
