@@ -8,7 +8,7 @@ jobs:
     
     steps:
     - name: Rename config example to config.json
-    - run: mv "config.example.json" "config.json"
+      run: mv "config.example.json" "config.json"
   test:
     needs: before_install
     
