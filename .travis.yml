@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - node
 before_install:
-- openssl aes-256-cbc -k "$super_secret_password" -in super_secret.txt.enc -out super_secret.txt -d
+- openssl aes-256-cbc -k "$super_secret_password" -in deploy-key.enc -out deploy-key -d
 - rm deploy-key.enc
 - chmod 600 deploy-key
 - mv deploy-key ~/.ssh/id_rsa
