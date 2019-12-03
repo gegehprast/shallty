@@ -3,8 +3,15 @@ name: Node CI
 on: [push]
 
 jobs:
-  build:
-
+  before_install:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - name: Rename config example to config.json
+    - run: mv "config.example.json" "config.json"
+  test:
+    needs: before_install
+    
     runs-on: ubuntu-18.04
 
     strategy:
@@ -19,7 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
       run: |
-        mv "config.example.json" "config.json"
         npm ci
         npm test
       env:
