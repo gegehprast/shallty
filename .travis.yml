@@ -11,11 +11,9 @@ before_install:
 after_success:
 - cd _site
 - git init
-      
 - git remote add deploy "deploy@$REMOTE_ADDRESS:/home/$REMOTE_USER_REPO/$REMOTE_REPO"
 - git config user.name "Travis CI"
 - git config user.email "travisCI@gmail.com"
-  
 - git add .
 - git commit -m "Deploy"
 - git push --force deploy dev
