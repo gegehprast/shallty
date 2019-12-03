@@ -3,15 +3,7 @@ name: Node CI
 on: [push]
 
 jobs:
-  before_install:
-    runs-on: ubuntu-18.04
-    
-    steps:
-    - name: Rename config example to config.json
-      run: mv "config.example.json" "config.json"
   test:
-    needs: before_install
-    
     runs-on: ubuntu-18.04
 
     strategy:
@@ -20,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Rename config example to config.json
+      run: mv "config.example.json" "config.json"
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
