@@ -21,5 +21,4 @@ after_success:
 - git config user.email "travisCI@gmail.com"
 - git add .
 - git commit -m "Deploy"
-- git branch
 - git push --force deploy master
