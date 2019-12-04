@@ -10,6 +10,8 @@ before_install:
 - chmod 600 deploy-key
 - mv deploy-key ~/.ssh/id_rsa
 - mv config.example.json config.json
+before_script:
+- echo -e "Host $REMOTE_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 after_success:
 - cd _site
 - git init
