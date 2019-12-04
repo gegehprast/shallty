@@ -13,6 +13,7 @@ before_install:
 before_script:
 - echo -e "Host $REMOTE_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 after_success:
+- git init
 - git remote add deploy "ssh://deploy@$REMOTE_ADDRESS:/home/deploy/shallty/.git"
 - git config user.name "Travis CI"
 - git config user.email "travisCI@gmail.com"
