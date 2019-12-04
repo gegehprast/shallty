@@ -6,6 +6,7 @@ const NeonimeController = require('../controllers/NeonimeController')
 const OploverzController = require('../controllers/OploverzController')
 const KusonimeController = require('../controllers/KusonimeController')
 const KiryuuController = require('../controllers/KiryuuController')
+const MoenimeController = require('../controllers/MoenimeController')
 
 routes.get('/meownime/anime', MeownimeController.anime)
 routes.get('/meownime/movie', MeownimeController.movie)
@@ -43,5 +44,7 @@ routes.get('/kiryuu/mangaInfo', KiryuuController.mangaInfo)
 routes.get('/kiryuu/chapters', KiryuuController.chapters)
 routes.get('/kiryuu/images', KiryuuController.images)
 routes.get('/kiryuu/newReleases', KiryuuController.newReleases)
+
+routes.get('/moenime/animeList', MoenimeController.animeList)
 
 module.exports = routes
