@@ -13,4 +13,4 @@ before_install:
 before_script:
 - echo -e "Host $REMOTE_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 after_success:
-- bash _scripts/deploy.sh
+- bash deploy.sh
