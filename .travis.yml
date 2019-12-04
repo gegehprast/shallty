@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - node
 addons:
-  ssh_known_hosts: $REMOTE_ADDRESS:22
+  ssh_known_hosts: $REMOTE_ADDRESS
 before_install:
 - openssl aes-256-cbc -K $encrypted_49bd58a06f0b_key -iv $encrypted_49bd58a06f0b_iv
   -in deploy-key.enc -out deploy-key -d
@@ -13,7 +13,7 @@ before_install:
 after_success:
 - cd _site
 - git init
-- git remote add deploy "deploy@$REMOTE_ADDRESS:/home/$REMOTE_USER_REPO/$REMOTE_REPO"
+- git remote add deploy "ssh://deploy@$REMOTE_ADDRESS:/home/deploy/shallty-test/.git"
 - git config user.name "Travis CI"
 - git config user.email "travisCI@gmail.com"
 - git add .
