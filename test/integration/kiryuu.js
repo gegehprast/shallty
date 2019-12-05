@@ -39,7 +39,7 @@ describe('kiryuu', function () {
         })
     })
 
-    describe('new release', function () {
+    describe('new releases', function () {
         it('should return 200', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/kiryuu/newReleases')

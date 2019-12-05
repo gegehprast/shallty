@@ -46,5 +46,7 @@ routes.get('/kiryuu/images', KiryuuController.images)
 routes.get('/kiryuu/newReleases', KiryuuController.newReleases)
 
 routes.get('/moenime/animeList', MoenimeController.animeList)
+routes.get('/moenime/episodes', MoenimeController.episodes)
+routes.get('/moenime/newReleases', MoenimeController.newReleases)
 
 module.exports = routes
