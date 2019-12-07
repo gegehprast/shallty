@@ -45,6 +45,20 @@ class Browser {
         }
         await page.close()
     }
+
+    async waitAndGetSelector(page, selector) {
+        await page.waitForSelector(selector)
+
+        return await page.$(selector)
+    }
+
+    async getPlainProperty(selector, property) {
+        return await selector.getProperty(property).then(x => x.jsonValue())
+    }
+
+    async clickWithNewNavigation(page) {
+
+    }
 }
 
 module.exports = new Browser
