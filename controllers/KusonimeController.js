@@ -2,16 +2,9 @@ const Browser = require('../services/Browser')
 const Kusonime = require('../services/Kusonime')
 
 class KusonimeController {
-    constructor() {
-        this.animeList = this.animeList.bind(this)
-        this.homePage = this.homePage.bind(this)
-        this.getDownloadLinks = this.getDownloadLinks.bind(this)
-        this.semrawut = this.semrawut.bind(this)
-    }
-
     async animeList(req, res) {
-        const anime = await new Kusonime(Browser).animeList(req.query.link)
-        if (!anime) {
+        const anime = await new Kusonime(Browser).animeList()
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
                 message: anime.message
@@ -27,7 +20,7 @@ class KusonimeController {
 
     async homePage(req, res) {
         const posts = await new Kusonime(Browser).homePage(req.query.page)
-        if (!posts) {
+        if (posts.error) {
             res.status(500).json({
                 status: 500,
                 message: posts.message
@@ -43,7 +36,7 @@ class KusonimeController {
 
     async getDownloadLinks(req, res) {
         const data = await new Kusonime(Browser).getDownloadLinks(req.query.link)
-        if (!data) {
+        if (data.error) {
             res.status(500).json({
                 status: 500,
                 message: data.message
@@ -59,7 +52,7 @@ class KusonimeController {
 
     async semrawut(req, res) {
         const semrawut = await new Kusonime(Browser).semrawut(req.query.link)
-        if (!semrawut) {
+        if (semrawut.error) {
             res.status(500).json({
                 status: 500,
                 message: semrawut.message

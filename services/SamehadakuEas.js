@@ -63,8 +63,8 @@ class Samehadaku {
             const episodeList = await page.$$('div.episodelist > ul > li')
             await Util.asyncForEach(episodeList, async (item) => {
                 const anchor = await item.$('span.lefttitle > a')
-                const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const title = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 if (!link.match(/(opening)/) && !link.match(/(ending)/)) {
                     const episodeMatches = link.match(/(?<=episode-)(\d+)/)

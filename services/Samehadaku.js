@@ -166,10 +166,8 @@ class Samehadaku {
             await page.waitForSelector('div.download-eps')
             const downloadDivs = await page.$$('div.download-eps')
             await Util.asyncForEach(downloadDivs, async downloadDiv => {
-                let format
                 const p = await page.evaluateHandle(node => node.previousElementSibling, downloadDiv)
-                format = await p.getProperty('innerText')
-                format = await format.jsonValue()
+                let format = await this.browser.getPlainProperty(p, 'innerText')
                 format = format.replace('</b>', '')
                     .replace('</b>', '')
                     .replace(/(&amp;)/, '')
@@ -188,13 +186,11 @@ class Samehadaku {
                 await Util.asyncForEach(list, async item => {
                     const strong = await item.$('strong')
                     if (strong && strong != null) {
-                        let quality = await strong.getProperty('innerText')
-                        quality = await quality.jsonValue()
-
+                        const quality = this.browser.getPlainProperty(strong, 'innerText')
                         const anchors = await item.$$('a')
                         await Util.asyncForEach(anchors, async anchor => {
-                            const host = await anchor.getProperty('innerText').then(async property => await property.jsonValue())
-                            const link = await anchor.getProperty('href').then(async property => await property.jsonValue())
+                            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                            const link = await this.browser.getPlainProperty(anchor, 'href')
 
                             downloadLinks.push({
                                 quality: `${format} ${quality}`,
@@ -302,10 +298,10 @@ class Samehadaku {
      * @param link njiir url.
      */
     async njiir(link) {
-        let downloadLink, anchor
         const page = await this.browser.browser.newPage()
 
         try {
+            let downloadLink, anchor
             link = decodeURIComponent(link)
             await page.goto(link, {
                 timeout: 30000
@@ -314,13 +310,13 @@ class Samehadaku {
             await page.waitForSelector('div.result > a')
             await Util.sleep(8000)
             anchor = await page.$('div.result > a')
-            downloadLink = await anchor.getProperty('href').then(x => x.jsonValue())
+            downloadLink = await this.browser.getPlainProperty(anchor, 'href')
             if (downloadLink == 'javascript:' || downloadLink.includes('javascript') == true) {
                 await anchor.click()
             }
             await Util.sleep(5000)
             anchor = await page.$('div.result > a')
-            downloadLink = await anchor.getProperty('href').then(x => x.jsonValue())
+            downloadLink = await this.browser.getPlainProperty(anchor, 'href')
             await page.close()
 
             return {url: downloadLink}

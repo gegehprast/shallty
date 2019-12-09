@@ -1,11 +1,11 @@
 const Browser = require('../services/Browser')
-const Moenime = new(require('../services/Moenime'))(Browser)
+const Moenime = new (require('../services/Moenime'))(Browser)
 
 class MoenimeController {
     async animeList(req, res) {
         const type = (['ongoing', 'movie'].includes(req.query.link)) ? type : 'all'
         const anime = await Moenime.animeList(type)
-        if (!anime) {
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
                 message: anime.message
@@ -21,7 +21,7 @@ class MoenimeController {
 
     async episodes(req, res) {
         const episodes = await Moenime.episodes(req.query.link)
-        if (!episodes) {
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
                 message: episodes.message
@@ -37,7 +37,7 @@ class MoenimeController {
 
     async newReleases(req, res) {
         const anime = await Moenime.newReleases()
-        if (!anime) {
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
                 message: anime.message

@@ -15,8 +15,8 @@ class Kusonime {
 
         try {
             let animeList = []
-            for (let i = 1; i < 2; i++) {
-                await page.goto(`${kusonime_url}/anime-list-batch/${page > 1 ? `page/${page}/`: ''}`, {
+            for (let i = 1; i < 3; i++) {
+                await page.goto(`${kusonime_url}/anime-list-batch/${i > 1 ? `page/${i}/`: ''}`, {
                     timeout: 300000
                 })
 
@@ -57,8 +57,8 @@ class Kusonime {
             
             await Util.asyncForEach(kovers, async (kover) => {
                 const anchor = await kover.$('.episodeye > a')
-                const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const title = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 posts.push({
                     link: link,
@@ -91,11 +91,11 @@ class Kusonime {
                 return false
             }
 
-            const quality = await strong.getProperty('innerText').then(x => x.jsonValue())
+            const quality = await this.browser.getPlainProperty(strong, 'innerText')
 
             await Util.asyncForEach(anchors, async (anchor) => {
-                const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 const episode = {
                     'episode': episodeTitle,
@@ -123,7 +123,7 @@ class Kusonime {
             if (typeof smokettl == 'undefined' || !smokettl) {
                 smokettl = await smokeddl.$('.smokeurl:nth-child(1)')
             }
-            const episodeTitle = await smokettl.getProperty('innerText').then(x => x.jsonValue())
+            const episodeTitle = await this.browser.getPlainProperty(smokettl, 'innerText')
             const smokeurls = await smokeddl.$$('div.smokeurl')
             const newDownloadLinks = await this.parseSmokeurl(smokeurls, episodeTitle)
             downloadLinks = downloadLinks.concat(newDownloadLinks)
@@ -142,7 +142,7 @@ class Kusonime {
         if (typeof smokettl == 'undefined' || !smokettl) {
             smokettl = await dlbod.$('.smokeurl:nth-child(1)')
         }
-        const episodeTitle = await smokettl.getProperty('innerText').then(x => x.jsonValue())
+        const episodeTitle = await this.browser.getPlainProperty(smokettl, 'innerText')
         const smokeurls = await dlbod.$$('div.smokeurl')
         const downloadLinks = await this.parseSmokeurl(smokeurls, episodeTitle)
 
@@ -216,10 +216,10 @@ class Kusonime {
     }
 
     async waitGetLinkElementToShowUp(downloadButton) {
-        let classProp = await downloadButton.getProperty('className').then(x => x.jsonValue())
+        let classProp = await this.browser.getPlainProperty(downloadButton, 'className')
         do {
             await Util.sleep(5000)
-            classProp = await downloadButton.getProperty('className').then(x => x.jsonValue())
+            classProp = await this.browser.getPlainProperty(downloadButton, 'className')
             console.log(classProp)
         } while (classProp !== 'get-link')
 
@@ -246,7 +246,7 @@ class Kusonime {
             await Util.sleep(5000)
             const downloadButton = await page.$('a.get-link')
             await this.waitGetLinkElementToShowUp(downloadButton)
-            const downloadLinks = await downloadButton.getProperty('href').then(x => x.jsonValue())
+            const downloadLinks = await this.browser.getPlainProperty(downloadButton, 'href')
 
             await this.browser.closePage(page)
 

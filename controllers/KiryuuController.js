@@ -2,14 +2,6 @@ const Browser = require('../services/Browser')
 const Kiryuu = new (require('../services/Kiryuu'))(Browser)
 
 class KiryuuController {
-    constructor() {
-        this.mangaList = this.mangaList.bind(this)
-        this.chapters = this.chapters.bind(this)
-        this.images = this.images.bind(this)
-        this.mangaInfo = this.mangaInfo.bind(this)
-        this.newReleases = this.newReleases.bind(this)
-    }
-
     async mangaList(req, res) {
         const manga = await Kiryuu.getMangaList()
         if (manga.error) {

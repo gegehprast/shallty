@@ -56,8 +56,8 @@ class Moenime {
         
         const dlLinkAnchors = await dlLinkRow.$$('a')
         await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-            const link = await anchor.getProperty('href').then(x => x.jsonValue())
+            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+            const link = await this.browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: `${quality.split(' — ')[1]} - ${size}`,
@@ -83,8 +83,8 @@ class Moenime {
         const dlLinkAnchors = await episodeDiv.$$('tr[bgcolor="#eee"] a')
 
         await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-            const link = await anchor.getProperty('href').then(x => x.jsonValue())
+            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+            const link = await this.browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: quality.replace(' | ', ' - '),

@@ -55,10 +55,6 @@ class Browser {
     async getPlainProperty(selector, property) {
         return await selector.getProperty(property).then(x => x.jsonValue())
     }
-
-    async clickWithNewNavigation(page) {
-
-    }
 }
 
 module.exports = new Browser
