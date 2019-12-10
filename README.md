@@ -1,8 +1,8 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast98/shallty) [![Build Status](https://travis-ci.com/gegehprast98/shallty.svg?branch=master)](https://travis-ci.com/gegehprast98/shallty)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast98/shallty) [![Build Status](https://travis-ci.com/gegehprast/shallty.svg?branch=master)](https://travis-ci.com/gegehprast/shallty)
 
 # shallty
 
-Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk ~~Meownime~~, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
+Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk Moenime, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
 
 Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggunakan aplikasi ini.
 
@@ -130,8 +130,9 @@ Contoh: `/samehadaku/tetew?link=https%3A%2F%2Fanjay.info%2F%3Fid%3DVWErNWlBZmpCU
 **/samehadaku/njiir?link={url}**
 
 Keterangan: Lihat bagian `/samehadaku/tetew?link={url}` di atas.
-
-
+<br/>
+<br/>
+<br/>
 **/neonime/checkOnGoingPage**
 
 Keterangan: Mengambil daftar rilisan terbaru.
