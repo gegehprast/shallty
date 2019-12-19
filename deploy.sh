@@ -7,7 +7,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
     git config user.email "travisCI@gmail.com"
     git add .
     git commit -m "Deploy"
-    git push deploy dev --force
+    git push deploy master --force
 else
     echo "Not deploying, since this branch isn't master."
 fi
