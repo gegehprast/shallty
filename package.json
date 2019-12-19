@@ -4,21 +4,29 @@
   "description": "Shallty adalah aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk Meownime, Samehadaku, Neonime, dan Oploverz. https://shallty.kyuun.id",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha --recursive --exit"
+    "test": "node ./node_modules/mocha/bin/mocha --recursive --exit",
+    "unit-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/",
+    "int-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/",
+    "f-unit-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/ --grep",
+    "f-int-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/ --grep"
   },
   "author": "gegehprast98",
   "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gegehprast/shallty.git"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "lodash": "^4.17.15",
-    "puppeteer": "^1.20.0",
-    "supertest": "^4.0.2",
+    "puppeteer": "^2.0.0",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^4.3.0"
+    "winston-daily-rotate-file": "^4.3.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "supertest": "^4.0.2"
   }
 }

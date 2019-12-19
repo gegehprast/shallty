@@ -1,25 +1,10 @@
 const Browser = require('../services/Browser')
-const Neonime = new (require('../services/Neonime'))(Browser)
+const Moenime = new (require('../services/Moenime'))(Browser)
 
-class NeonimeController {
-    async checkOnGoingPage(req, res) {
-        const anime = await Neonime.checkOnGoingPage()
-        if (anime.error) {
-            res.status(500).json({
-                status: 500,
-                message: anime.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: anime
-            })
-        }
-    }
-
+class MoenimeController {
     async animeList(req, res) {
-        const anime = await Neonime.animeList(req.query.link)
+        const show = (['ongoing', 'movie'].includes(req.query.show)) ? req.query.show : 'all'
+        const anime = await Moenime.animeList(show)
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -34,8 +19,8 @@ class NeonimeController {
         }
     }
 
-    async tvShow(req, res) {
-        const episodes = await Neonime.tvShow(req.query.link)
+    async episodes(req, res) {
+        const episodes = await Moenime.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -50,8 +35,8 @@ class NeonimeController {
         }
     }
 
-    async getBatchEpisodes(req, res) {
-        const episodes = await Neonime.getBatchEpisodes(req.query.link)
+    async completedEpisodes(req, res) {
+        const episodes = await Moenime.completedEpisodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -66,24 +51,24 @@ class NeonimeController {
         }
     }
 
-    async getEpisodes(req, res) {
-        const episodes = await Neonime.getEpisodes(req.query.link)
-        if (episodes.error) {
+    async newReleases(req, res) {
+        const anime = await Moenime.newReleases()
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
-                message: episodes.message
+                message: anime.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: episodes
+                data: anime
             })
         }
     }
 
-    async hightech(req, res) {
-        const url = await Neonime.hightech(req.query.link)
+    async teknoku(req, res) {
+        const url = await Moenime.teknoku(req.query.link)
         if (url.error) {
             res.status(500).json({
                 status: 500,
@@ -99,4 +84,4 @@ class NeonimeController {
     }
 }
 
-module.exports = new NeonimeController
+module.exports = new MoenimeController

@@ -37,12 +37,12 @@ class Neonime {
             const tRows = await table.$$('tbody > tr')
             await Util.asyncForEach(tRows, async trow => {
                 const anchor = await trow.$('td.bb > a')
-                const text = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const text = await this.browser.getPlainProperty(anchor, 'innerText')
                 const episodeSplit = text.split(' Episode ')
                 const titleSplit = text.split(' Subtitle')
                 const episode = episodeSplit[episodeSplit.length - 1]
                 const title = titleSplit[0]
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 anime.push({
                     episode: episode,
@@ -150,8 +150,8 @@ class Neonime {
                 const quality = await item.$eval('label', node => node.innerText)
                 const anchors = await item.$$('a')
                 await Util.asyncForEach(anchors, async anchor => {
-                    const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                    const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                    const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                    const link = await this.browser.getPlainProperty(anchor, 'href')
 
                     if (link != neonime_url && !host.toLowerCase().includes('proses')) {
                         episodes.push({
@@ -200,8 +200,8 @@ class Neonime {
                     const quality = await smokeurl.$eval('strong', node => node.innerText)
                     const anchors = await smokeurl.$$('a')
                     await Util.asyncForEach(anchors, async anchor => {
-                        const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                        const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                        const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                        const link = await this.browser.getPlainProperty(anchor, 'href')
 
                         episodes.push({
                             quality: quality,
@@ -223,8 +223,8 @@ class Neonime {
                         const quality = await smokeurl.$eval('strong', node => node.innerText)
                         const anchors = await smokeurl.$$('a')
                         await Util.asyncForEach(anchors, async anchor => {
-                            const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                            const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                            const link = await this.browser.getPlainProperty(anchor, 'href')
 
                             episodes.push({
                                 quality: quality,
