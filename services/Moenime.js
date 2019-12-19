@@ -42,11 +42,45 @@ class Moenime {
     /**
      * Parse files of an episode.
      * 
+     * @param {ElementHandle} episodeDiv ElementHandle.
+     */
+    async parseOngoingEpisodeFiles(page, table, tRow) {
+        const files = []
+        let episode = await table.$eval('center', node => node.innerText)
+        const matches = episode.match(/Episode ([0-9])+/g)
+        if (!matches)
+            return {}
+
+        const alpha = matches[0].replace(/\s|-/g, '_').toLowerCase()
+        const qualityHandle = await page.evaluateHandle(tRow => tRow.previousElementSibling, tRow)
+        const quality = await this.browser.getPlainProperty(qualityHandle, 'innerText')
+
+        const anchors = await tRow.$$('a')
+        await Util.asyncForEach(anchors, async anchor => {
+            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+            const link = await this.browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: quality,
+                host: host,
+                link: link
+            })
+        })
+
+        return {
+            alpha: alpha,
+            files: files
+        }
+    }
+
+    /**
+     * Parse files of a completed episode.
+     * 
      * @param {String} quality Episode quality.
      * @param {ElementHandle} episodeDiv ElementHandle.
      * @param {ElementHandle} dlLinkRow ElementHandle.
      */
-    async parseEpisodeFiles(quality, episodeDiv, dlLinkRow) {
+    async parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRow) {
         const files = []
         const episode = await episodeDiv.$eval('td', node => node.innerText)
 
@@ -97,41 +131,76 @@ class Moenime {
     }
 
     /**
-     * Get episodes from anime page.
+     * Get episodes from ongoing anime page.
      * 
      * @param {String} link Anime page url.
      */
     async episodes(link) {
         const page = await this.browser.browser.newPage()
-        const episodes = {}
 
         try {
+            let episodes = {}
             link = decodeURIComponent(link)
             await page.goto(moenime_url + link, {
                 timeout: 60000
             })
 
-            await page.waitForSelector('div.moe-dl-link')
-            const moeDlLinks = await page.$$('div.moe-dl-link')
+            const tRowsHandle = await this.browser.waitAndGetSelectors(page, 'tr[bgcolor="#eee"]')
+            await Util.asyncForEach(tRowsHandle, async tRowHandle => {
+                // search for previous sibling table element
+                let tableHandle = await page.evaluateHandle(tRow => {
+                    return tRow.parentElement.previousElementSibling
+                }, tRowHandle)
+                // search again if table element is null
+                if (tableHandle.asElement() == null) {
+                    tableHandle = await page.evaluateHandle(tRow => {
+                        return tRow.parentElement.parentElement.previousElementSibling
+                    }, tRowHandle)
+                }
 
+                const { alpha, files } = await this.parseOngoingEpisodeFiles(page, tableHandle, tRowHandle)
+                episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
+            })
+
+            await page.close()
+
+            return episodes
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
+    }
+
+    /**
+     * Get episodes from completed anime page.
+     * 
+     * @param {String} link Anime page url.
+     */
+    async completedEpisodes(link) {
+        const page = await this.browser.browser.newPage()
+
+        try {
+            const episodes = {}
+            link = decodeURIComponent(link)
+            await page.goto(moenime_url + link, {
+                timeout: 60000
+            })
+
+            const moeDlLinks = await this.browser.waitAndGetSelectors(page, 'div.moe-dl-link')
             await Util.asyncForEach(moeDlLinks, async (moeDlLink) => {
                 const quality = await moeDlLink.$eval('div.tombol', nodes => nodes.innerText)
-
                 if (!quality.toLowerCase().includes('batch')) {
                     const episodeRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr:not([bgcolor="#eee"])')
                     const dlLinkRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr[bgcolor="#eee"]')
-
                     await Util.asyncForEach(episodeRows, async (episodeDiv, i) => {
-                        const { alpha, files } = await this.parseEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
-
+                        const { alpha, files } = await this.parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
                         episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
                     })
                 } else {
                     const episodeRows = await moeDlLink.$$('div.isi-dl > table')
-
                     await Util.asyncForEach(episodeRows, async (episodeDiv) => {
                         const files = await this.parseBatchEpisodeFiles(episodeDiv)
-
                         episodes.batch = episodes.batch ? episodes.batch.concat(files) : files
                     })
                 }
@@ -178,6 +247,41 @@ class Moenime {
             await page.close()
 
             return anime
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
+    }
+
+    async teknoku(link) {
+        const page = await this.browser.browser.newPage()
+
+        try {
+            link = decodeURIComponent(link)
+            await page.goto(link, {
+                timeout: 60000
+            })
+
+            await Promise.all([
+                page.waitForNavigation({
+                    timeout: 0,
+                    waitUntil: 'networkidle2'
+                }),
+                page.click('#srl > form > input.sorasubmit'),
+            ])
+
+            const fullContent = await page.content()
+            await page.close()
+
+            // eslint-disable-next-line quotes
+            let splitted = fullContent.split("function changeLink(){var a='")
+            splitted = splitted[1].split(';window.open')
+            splitted = splitted[0].replace(/(['"])+/g, '')
+
+            return {
+                url: splitted
+            }
         } catch (error) {
             await page.close()
 

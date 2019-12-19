@@ -46,14 +46,40 @@ class Browser {
         await page.close()
     }
 
-    async waitAndGetSelector(page, selector) {
-        await page.waitForSelector(selector)
+    /**
+     * Wait for a selector and then return one element
+     * of that selector.
+     * 
+     * @param {Object} element Element handle
+     * @param {String} selector Selector
+     */
+    async waitAndGetSelector(element, selector) {
+        await element.waitForSelector(selector)
 
-        return await page.$(selector)
+        return await element.$(selector)
     }
 
-    async getPlainProperty(selector, property) {
-        return await selector.getProperty(property).then(x => x.jsonValue())
+    /**
+     * Wait for a selector and then return all element
+     * of that selector.
+     * 
+     * @param {Object} element Element handle
+     * @param {String} selector Selector
+     */
+    async waitAndGetSelectors(element, selector) {
+        await element.waitForSelector(selector)
+
+        return await element.$$(selector)
+    }
+
+    /**
+     * Get the plain value of a element property.
+     * 
+     * @param {Object} element Element handle
+     * @param {String} property Property
+     */
+    async getPlainProperty(element, property) {
+        return await element.getProperty(property).then(x => x.jsonValue())
     }
 }
 

@@ -26,9 +26,24 @@ describe('moenime', function () {
     describe('episodes', function () {
         it('should return 200', function (done) {
             this.timeout(60000)
-            supertest(app).get('/api/moenime/episodes?link=%2Fabsolute-duo-sub-indo%2F')
+            supertest(app).get('/api/moenime/episodes?link=/kandagawa-jet-girls-sub-indo/')
                 .expect(200)
                 .end(function(err, res) {
+                    if (err) {
+                        console.log(res.body)
+                        return done(err)
+                    }
+                    done()
+                })
+        })
+    })
+
+    describe('completed episodes', function () {
+        it('should return 200', function (done) {
+            this.timeout(60000)
+            supertest(app).get('/api/moenime/completedEpisodes?link=%2Fabsolute-duo-sub-indo%2F')
+                .expect(200)
+                .end(function (err, res) {
                     if (err) {
                         console.log(res.body)
                         return done(err)
@@ -44,6 +59,21 @@ describe('moenime', function () {
             supertest(app).get('/api/moenime/newReleases')
                 .expect(200)
                 .end(function(err, res) {
+                    if (err) {
+                        console.log(res.body)
+                        return done(err)
+                    }
+                    done()
+                })
+        })
+    })
+
+    describe('teknoku', function () {
+        it('should return 200', function (done) {
+            this.timeout(60000)
+            supertest(app).get('/api/moenime/teknoku?link=https%3A%2F%2Fteknoku.me%2F%3Fid%3DcWFkTnBBZlEvZ1NvUHdYUGNkQ1ZPeGNnb0pjK2s1VDJWY2dlakh2Ykwrbjk0VkRUVGR2bWZwSHNpbVFVZUdhSjNTYUhySnBsS05jN2NmUHMzTk1BMWc9PQ%3D%3D')
+                .expect(200)
+                .end(function (err, res) {
                     if (err) {
                         console.log(res.body)
                         return done(err)
