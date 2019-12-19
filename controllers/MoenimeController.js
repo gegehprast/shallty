@@ -3,8 +3,8 @@ const Moenime = new (require('../services/Moenime'))(Browser)
 
 class MoenimeController {
     async animeList(req, res) {
-        const type = (['ongoing', 'movie'].includes(req.query.link)) ? type : 'all'
-        const anime = await Moenime.animeList(type)
+        const show = (['ongoing', 'movie'].includes(req.query.show)) ? req.query.show : 'all'
+        const anime = await Moenime.animeList(show)
         if (anime.error) {
             res.status(500).json({
                 status: 500,

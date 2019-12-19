@@ -9,9 +9,10 @@ class Moenime {
 
     /**
      * Get anime list from anime list page.
-     *
+     * 
+     * @param {String} show Show type, could be: movie, ongoing or, all.
      */
-    async animeList(type = 'all') {
+    async animeList(show = 'all') {
         const page = await this.browser.browser.newPage()
 
         try {
@@ -20,7 +21,7 @@ class Moenime {
             })
 
             await page.waitForSelector('div.tab-content')
-            const animeList = await page.$$eval(`div.tab-content #${type} a.nyaalist`, nodes => nodes.map(x => {
+            const animeList = await page.$$eval(`div.tab-content #${show} a.nyaalist`, nodes => nodes.map(x => {
                 const title = x.innerText
                 const link = x.href
 
@@ -42,7 +43,9 @@ class Moenime {
     /**
      * Parse files of an episode.
      * 
-     * @param {ElementHandle} episodeDiv ElementHandle.
+     * @param {ElementHandle} page ElementHandle.
+     * @param {ElementHandle} table ElementHandle.
+     * @param {ElementHandle} tRow ElementHandle.
      */
     async parseOngoingEpisodeFiles(page, table, tRow) {
         const files = []
