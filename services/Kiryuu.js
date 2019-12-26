@@ -24,8 +24,8 @@ class Kiryuu {
             const soraList = await page.$('div.soralist')
             const anchors = await soraList.$$('a.series')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const title = await anchor.getProperty('innerHTML').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 mangaList.push({
                     title: title,
@@ -155,8 +155,8 @@ class Kiryuu {
             const bixbox = await page.$('div.bixbox.bxcl')
             const anchors = await bixbox.$$('span.lchx > a')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const chapter = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const chapter = await this.browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 if (chapter && chapter !== '') {
                     chapters.push({
@@ -212,7 +212,7 @@ class Kiryuu {
             }
 
             await Util.asyncForEach(imgs, async (img, index) => {
-                const src = await img.getProperty('src').then(x => x.jsonValue())
+                const src = await this.browser.getPlainProperty(img, 'src')
 
                 images.push({
                     index: index,
