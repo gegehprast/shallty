@@ -169,6 +169,10 @@ class Moenime {
 
             return episodes
         } catch (error) {
+            if (error.message.includes('table.$eval is not a function')) {
+                return this.completedEpisodes(page)
+            }
+
             await page.close()
 
             return Handler.error(error)
@@ -180,15 +184,9 @@ class Moenime {
      * 
      * @param {String} link Anime page url.
      */
-    async completedEpisodes(link) {
-        const page = await this.browser.browser.newPage()
-
+    async completedEpisodes(page) {
         try {
             const episodes = {}
-            link = decodeURIComponent(link)
-            await page.goto(moenime_url + link, {
-                timeout: 60000
-            })
 
             const moeDlLinks = await this.browser.waitAndGetSelectors(page, 'div.moe-dl-link')
             await Util.asyncForEach(moeDlLinks, async (moeDlLink) => {
@@ -197,7 +195,10 @@ class Moenime {
                     const episodeRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr:not([bgcolor="#eee"])')
                     const dlLinkRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr[bgcolor="#eee"]')
                     await Util.asyncForEach(episodeRows, async (episodeDiv, i) => {
-                        const { alpha, files } = await this.parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
+                        const {
+                            alpha,
+                            files
+                        } = await this.parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
                         episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
                     })
                 } else {
@@ -208,7 +209,7 @@ class Moenime {
                     })
                 }
             })
-            
+
             await page.close()
 
             return episodes

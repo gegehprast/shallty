@@ -35,22 +35,6 @@ class MoenimeController {
         }
     }
 
-    async completedEpisodes(req, res) {
-        const episodes = await Moenime.completedEpisodes(req.query.link)
-        if (episodes.error) {
-            res.status(500).json({
-                status: 500,
-                message: episodes.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: episodes
-            })
-        }
-    }
-
     async newReleases(req, res) {
         const anime = await Moenime.newReleases()
         if (anime.error) {

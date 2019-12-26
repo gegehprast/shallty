@@ -47,7 +47,6 @@ route.get('/kiryuu/newReleases', KiryuuController.newReleases)
 
 route.get('/moenime/animeList', MoenimeController.animeList)
 route.get('/moenime/episodes', MoenimeController.episodes)
-route.get('/moenime/completedEpisodes', MoenimeController.completedEpisodes)
 route.get('/moenime/newReleases', MoenimeController.newReleases)
 route.get('/moenime/teknoku', MoenimeController.teknoku)
 
