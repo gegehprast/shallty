@@ -55,18 +55,6 @@ Contoh: `/moenime/episodes?link=%2Fboku-no-hero-academia-season-4-sub-indo%2F`
 <br/>
 <br/>
 <br/>
-**/moenime/completedEpisodes?link={url}**
-
-Keterangan: Mengambil daftar episode di halaman anime yang sudah tamat, termasuk batch jika tersedia.
-
-Parameter:
-
--  `url` - url halaman anime yang sudah tamat, tanpa domain (Contoh: /absolute-duo-sub-indo/)
-
-Contoh: `/moenime/completedEpisodes?link=%2Fabsolute-duo-sub-indo%2F`
-<br/>
-<br/>
-<br/>
 **/moenime/newReleases**
 
 Keterangan: Mengambil daftar rilisan terbaru.
