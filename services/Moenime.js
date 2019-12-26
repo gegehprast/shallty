@@ -156,9 +156,7 @@ class Moenime {
             })
         })
 
-        return {
-            files: files
-        }
+        return files
     }
 
     /**
@@ -190,7 +188,9 @@ class Moenime {
                 }
 
                 const { alpha, files } = await this.parseOngoingEpisodeFiles(page, tableHandle, tRowHandle)
-                episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
+                if (!Util.isUndefined(alpha) && !Util.isUndefined(files)) {
+                    episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
+                }
             })
 
             if (Util.isEmpty(episodes)) {
@@ -227,17 +227,18 @@ class Moenime {
                     const episodeRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr:not([bgcolor="#eee"])')
                     const dlLinkRows = await moeDlLink.$$('div.isi-dl > table > tbody > tr[bgcolor="#eee"]')
                     await Util.asyncForEach(episodeRows, async (episodeDiv, i) => {
-                        const {
-                            alpha,
-                            files
-                        } = await this.parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
-                        episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
+                        const { alpha, files } = await this.parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRows[i])
+                        if (!Util.isUndefined(alpha) && !Util.isUndefined(files)) {
+                            episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
+                        }
                     })
                 } else {
                     const episodeRows = await moeDlLink.$$('div.isi-dl > table')
                     await Util.asyncForEach(episodeRows, async (episodeDiv) => {
                         const files = await this.parseBatchEpisodeFiles(episodeDiv)
-                        episodes.batch = episodes.batch ? episodes.batch.concat(files) : files
+                        if (!Util.isUndefined(files)) {
+                            episodes.batch = episodes.batch ? episodes.batch.concat(files) : files
+                        }
                     })
                 }
             })
@@ -263,8 +264,10 @@ class Moenime {
                     return tRow.previousElementSibling
                 }, tRowHandle)
 
-                const { files } = await this.parseMovieEpisodeFiles(trQualityhandle, tRowHandle)
-                episodes.movie = episodes.movie ? episodes.movie.concat(files) : files
+                const files = await this.parseMovieEpisodeFiles(trQualityhandle, tRowHandle)
+                if (!Util.isUndefined(files)) {
+                    episodes.movie = episodes.movie ? episodes.movie.concat(files) : files
+                }
             })
 
             await page.close()
