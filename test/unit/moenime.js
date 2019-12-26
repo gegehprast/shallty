@@ -25,30 +25,7 @@ describe('moenime', function () {
             this.timeout(60000)
             await Browser.init()
             const Moenime = new(require('../../services/Moenime'))(Browser)
-            const episodes = await Moenime.episodes('/kandagawa-jet-girls-sub-indo/')
-
-            expect(episodes).to.be.an('object')
-            expect(episodes).to.not.be.empty
-            for (let episode in episodes) {
-                if (episodes.hasOwnProperty(episode)) {
-                    expect(episodes[episode]).to.be.an('array')
-                    expect(episodes[episode]).to.have.lengthOf(18)
-                    episodes[episode].forEach(file => {
-                        expect(file).to.has.property('quality')
-                        expect(file).to.has.property('host')
-                        expect(file).to.has.property('link')
-                    })
-                }
-            }
-        })
-    })
-
-    describe('completed episodes', function () {
-        it('should return an object which has array of episodes each with its own quality, host, and link', async function () {
-            this.timeout(60000)
-            await Browser.init()
-            const Moenime = new(require('../../services/Moenime'))(Browser)
-            const episodes = await Moenime.completedEpisodes('%2Fabsolute-duo-sub-indo%2F')
+            const episodes = await Moenime.episodes('%2Fabsolute-duo-sub-indo%2F')
 
             expect(episodes).to.be.an('object')
             expect(episodes).to.not.be.empty

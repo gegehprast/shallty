@@ -134,6 +134,34 @@ class Moenime {
     }
 
     /**
+     * Parse files of a completed episode.
+     * 
+     * @param {String} quality Episode quality.
+     * @param {ElementHandle} episodeDiv ElementHandle.
+     * @param {ElementHandle} dlLinkRow ElementHandle.
+     */
+    async parseMovieEpisodeFiles(qualityTrow, filesTRow) {
+        const files = []
+        const quality = await this.browser.getPlainProperty(qualityTrow, 'innerText')
+
+        const anchors = await filesTRow.$$('a')
+        await Util.asyncForEach(anchors, async anchor => {
+            const host = await this.browser.getPlainProperty(anchor, 'innerText')
+            const link = await this.browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: quality,
+                host: host,
+                link: link
+            })
+        })
+
+        return {
+            files: files
+        }
+    }
+
+    /**
      * Get episodes from ongoing anime page.
      * 
      * @param {String} link Anime page url.
@@ -164,6 +192,10 @@ class Moenime {
                 const { alpha, files } = await this.parseOngoingEpisodeFiles(page, tableHandle, tRowHandle)
                 episodes[alpha] = episodes[alpha] ? episodes[alpha].concat(files) : files
             })
+
+            if (Util.isEmpty(episodes)) {
+                return this.movieEpisodes(page)
+            }
 
             await page.close()
 
@@ -208,6 +240,31 @@ class Moenime {
                         episodes.batch = episodes.batch ? episodes.batch.concat(files) : files
                     })
                 }
+            })
+
+            await page.close()
+
+            return episodes
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
+    }
+
+    async movieEpisodes(page) {
+        try {
+            const episodes = {}
+
+            const tRowsHandle = await this.browser.waitAndGetSelectors(page, 'tr[bgcolor="#eee"]')
+            await Util.asyncForEach(tRowsHandle, async tRowHandle => {
+                // search for previous sibling tr element
+                let trQualityhandle = await page.evaluateHandle(tRow => {
+                    return tRow.previousElementSibling
+                }, tRowHandle)
+
+                const { files } = await this.parseMovieEpisodeFiles(trQualityhandle, tRowHandle)
+                episodes.movie = episodes.movie ? episodes.movie.concat(files) : files
             })
 
             await page.close()

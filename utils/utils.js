@@ -1,5 +1,19 @@
 class Util {
     /**
+     * Check if an object is empty.
+     * 
+     * @param {Object} obj Object to check.
+     */
+    isEmpty(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+                return false
+        }
+
+        return true
+    }
+
+    /**
      * Array.forEach but blocking.
      * 
      * @param {Array} array Array to iterate.
