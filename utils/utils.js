@@ -1,5 +1,14 @@
 class Util {
     /**
+     * Check if something is undefined.
+     * 
+     * @param {Any} variable Something to check.
+     */
+    isUndefined(variable) {
+        return typeof variable === 'undefined'
+    }
+    
+    /**
      * Check if an object is empty.
      * 
      * @param {Object} obj Object to check.
