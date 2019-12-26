@@ -12,7 +12,8 @@
             "program": "${workspaceFolder}/index.js",
             "restart": true,
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "internalConsoleOptions": "neverOpen",
+            "args": ["--ignore", "test/*"]
         },
     ]
 }

@@ -2,18 +2,9 @@ const Browser = require('../services/Browser')
 const Neonime = new (require('../services/Neonime'))(Browser)
 
 class NeonimeController {
-    constructor() {
-        this.checkOnGoingPage = this.checkOnGoingPage.bind(this)
-        this.animeList = this.animeList.bind(this)
-        this.tvShow = this.tvShow.bind(this)
-        this.getBatchEpisodes = this.getBatchEpisodes.bind(this)
-        this.getEpisodes = this.getEpisodes.bind(this)
-        this.hightech = this.hightech.bind(this)
-    }
-
     async checkOnGoingPage(req, res) {
         const anime = await Neonime.checkOnGoingPage()
-        if (!anime) {
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
                 message: anime.message
@@ -29,7 +20,7 @@ class NeonimeController {
 
     async animeList(req, res) {
         const anime = await Neonime.animeList(req.query.link)
-        if (!anime) {
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
                 message: anime.message
@@ -45,7 +36,7 @@ class NeonimeController {
 
     async tvShow(req, res) {
         const episodes = await Neonime.tvShow(req.query.link)
-        if (!episodes) {
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
                 message: episodes.message
@@ -61,7 +52,7 @@ class NeonimeController {
 
     async getBatchEpisodes(req, res) {
         const episodes = await Neonime.getBatchEpisodes(req.query.link)
-        if (!episodes) {
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
                 message: episodes.message
@@ -77,7 +68,7 @@ class NeonimeController {
 
     async getEpisodes(req, res) {
         const episodes = await Neonime.getEpisodes(req.query.link)
-        if (!episodes) {
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
                 message: episodes.message
@@ -93,7 +84,7 @@ class NeonimeController {
 
     async hightech(req, res) {
         const url = await Neonime.hightech(req.query.link)
-        if (!url) {
+        if (url.error) {
             res.status(500).json({
                 status: 500,
                 message: url.message

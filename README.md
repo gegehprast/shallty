@@ -1,23 +1,23 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast98/shallty) [![Build Status](https://travis-ci.org/gegehprast98/shallty.svg?branch=master)](https://travis-ci.org/gegehprast98/shallty)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast/shallty) [![Build Status](https://travis-ci.com/gegehprast/shallty.svg?branch=master)](https://travis-ci.com/gegehprast/shallty)
 
 # shallty
 
-Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk ~~Meownime~~, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
+Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk Moenime, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
 
 Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggunakan aplikasi ini.
 
 ## Instalasi
 1. Instal [node.js](https://nodejs.org/en/).
 
-2. Download [rilisan terbaru Shallty](https://github.com/gegehprast98/shallty/releases).
+2. Download [rilisan terbaru Shallty](https://github.com/gegehprast/shallty/releases).
 
 3. Unzip dan masuk ke root direktori lalu jalankan `npm install`.
 
-4. Salin file `config.example.json` dan rename menjadi `config.json`.
+4. Rename file `config.example.json` menjadi `config.json`.
 
-5. Sesuaikan `config.json`, misalnya ganti `app_env` menjadi `local` atau `dev` untuk bisa melihat proses crawling.
+5. Sesuaikan `config.json`, misalnya ganti `app_env` menjadi `local` untuk bisa melihat prosesnya secara langsung.
 
-6. Jalankan `node index.js` untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
+6. Jalankan perintah `node index.js` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
 
 
 ## Penggunaan
@@ -31,6 +31,50 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 ### Endpoint
 
+**/moenime/animeList?show={type}**
+
+Keterangan: Mengambil daftar anime di halaman anime list (https://moenime.id/daftar-anime-baru/).
+
+Parameter:
+
+-  `type` - tipe anime (movie, ongoing) (optional)
+
+Contoh: `/moenime/animeList?show=movie`
+<br/>
+<br/>
+<br/>
+**/moenime/episodes?link={url}**
+
+Keterangan: Mengambil daftar episode di halaman anime.
+
+Parameter:
+
+-  `url` - url halaman anime, tanpa domain (Contoh: /boku-no-hero-academia-season-4-sub-indo/)
+
+Contoh: `/moenime/episodes?link=%2Fboku-no-hero-academia-season-4-sub-indo%2F`
+<br/>
+<br/>
+<br/>
+**/moenime/newReleases**
+
+Keterangan: Mengambil daftar rilisan terbaru.
+
+Contoh: `/moenime/newReleases`
+<br/>
+<br/>
+<br/>
+**/moenime/teknoku?link={url}**
+
+Keterangan: Mengambil tautan unduh asli dari teknoku.
+
+Parameter:
+
+-  `url` - url shortlink teknoku (Contoh: https://teknoku.me/?id=eXRFbEsvdkFhNDQzeUZpV3B...)
+
+Contoh: `/moenime/teknoku?link=https%3A%2F%2Fteknoku.me%2F%3Fid%3DeXRFbEsvdkFhNDQzeUZpV3BjdTA4RmVDQ0JvbEZ6dVR0RzVWR0w5aUtYK20wVlFnVUltMklQbFVTdmE1MFYwSnptanROVVoraWhIMGd3b1o0bU5MeFE9PQ%3D%3D`
+<br/>
+<br/>
+<br/>
 **/kiryuu/mangaList**
 
 Keterangan: Mengambil daftar manga.
@@ -130,8 +174,9 @@ Contoh: `/samehadaku/tetew?link=https%3A%2F%2Fanjay.info%2F%3Fid%3DVWErNWlBZmpCU
 **/samehadaku/njiir?link={url}**
 
 Keterangan: Lihat bagian `/samehadaku/tetew?link={url}` di atas.
-
-
+<br/>
+<br/>
+<br/>
 **/neonime/checkOnGoingPage**
 
 Keterangan: Mengambil daftar rilisan terbaru.

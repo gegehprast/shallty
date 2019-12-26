@@ -25,8 +25,8 @@ class Oploverz {
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
             await Util.asyncForEach(list, async item => {
                 const anchor = await item.$('div.dtl > h2 > a')
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
-                const title = await anchor.getProperty('innerText').then(x => x.jsonValue())
+                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const title = await this.browser.getPlainProperty(anchor, 'innerText')
                 const matchEps = link.match(/(\d+)(?=-subtitle-indonesia)/)
                 if (matchEps && matchEps != null) {
                     const numeral = matchEps[0].length == 1 ? '0' + matchEps[0] : matchEps[0]
@@ -75,8 +75,8 @@ class Oploverz {
                 }
                 
                 const anchor = await item.$('span.leftoff > a')
-                const episode = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                const episode = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
 
                 episodes.push({
                     episode: episode,
@@ -116,12 +116,12 @@ class Oploverz {
                 const sorattls = await soraddl.$$('div[class="sorattl title-download"]')
                 const soraurls = await soraddl.$$('div[class="soraurl list-download"]')
                 await Util.asyncForEach(soraurls, async (soraurl, index) => {
-                    let quality = await sorattls[index].getProperty('innerText').then(x => x.jsonValue())
+                    let quality = await this.browser.getPlainProperty(sorattls[index], 'innerText')
                     quality = quality.replace('oploverz – ', '')
                     const anchors = await soraurl.$$('a')
                     await Util.asyncForEach(anchors, async anchor => {
-                        const host = await anchor.getProperty('innerText').then(x => x.jsonValue())
-                        const link = await anchor.getProperty('href').then(x => x.jsonValue())
+                        const host = await this.browser.getPlainProperty(anchor, 'innerText')
+                        const link = await this.browser.getPlainProperty(anchor, 'href')
 
                         downloadLinks.push({
                             quality: quality,
@@ -167,7 +167,7 @@ class Oploverz {
 
             await Util.sleep(7000)
             const anchor = await page.$('center.link-content > a')
-            const url = await anchor.getProperty('href').then(x => x.jsonValue())
+            const url = await this.browser.getPlainProperty(anchor, 'href')
             await page.close()
             
             return {url: url}

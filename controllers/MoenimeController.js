@@ -1,9 +1,10 @@
 const Browser = require('../services/Browser')
-const Kusonime = require('../services/Kusonime')
+const Moenime = new (require('../services/Moenime'))(Browser)
 
-class KusonimeController {
+class MoenimeController {
     async animeList(req, res) {
-        const anime = await new Kusonime(Browser).animeList()
+        const show = (['ongoing', 'movie'].includes(req.query.show)) ? req.query.show : 'all'
+        const anime = await Moenime.animeList(show)
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -18,53 +19,53 @@ class KusonimeController {
         }
     }
 
-    async homePage(req, res) {
-        const posts = await new Kusonime(Browser).homePage(req.query.page)
-        if (posts.error) {
+    async episodes(req, res) {
+        const episodes = await Moenime.episodes(req.query.link)
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
-                message: posts.message
+                message: episodes.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: posts
+                data: episodes
             })
         }
     }
 
-    async getDownloadLinks(req, res) {
-        const data = await new Kusonime(Browser).getDownloadLinks(req.query.link)
-        if (data.error) {
+    async newReleases(req, res) {
+        const anime = await Moenime.newReleases()
+        if (anime.error) {
             res.status(500).json({
                 status: 500,
-                message: data.message
+                message: anime.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: data
+                data: anime
             })
         }
     }
 
-    async semrawut(req, res) {
-        const semrawut = await new Kusonime(Browser).semrawut(req.query.link)
-        if (semrawut.error) {
+    async teknoku(req, res) {
+        const url = await Moenime.teknoku(req.query.link)
+        if (url.error) {
             res.status(500).json({
                 status: 500,
-                message: semrawut.message
+                message: url.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: semrawut
+                data: url
             })
         }
     }
 }
 
-module.exports = new KusonimeController
+module.exports = new MoenimeController

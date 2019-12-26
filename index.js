@@ -21,7 +21,7 @@ app.get(express.json())
 app.get('/', async (req, res) => {
     res.send(`<p style="font-weight: 600; margin-top: 15px; font-size: 1.25em;">
         Welcome! You can start crawling via "/api" endpoint. 
-        See <a href="https://github.com/gegehprast98/shallty/blob/master/README.md" target="_blank">https://github.com/gegehprast98/shallty/blob/master/README.md</a> for more information.
+        See <a href="https://github.com/gegehprast/shallty/blob/master/README.md" target="_blank">https://github.com/gegehprast/shallty/blob/master/README.md</a> for more information.
     </p>`)
 })
 
