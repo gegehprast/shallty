@@ -332,7 +332,7 @@ class Moenime {
                     timeout: 0,
                     waitUntil: 'networkidle2'
                 }),
-                page.click('#srl > form > input.sorasubmit'),
+                page.$eval('#srl > form', form => form.submit()),
             ])
 
             const fullContent = await page.content()
