@@ -329,8 +329,8 @@ class Moenime {
 
             await Promise.all([
                 page.waitForNavigation({
-                    timeout: 0,
-                    waitUntil: 'networkidle2'
+                    timeout: 60000,
+                    waitUntil: 'domcontentloaded'
                 }),
                 page.$eval('#srl > form', form => form.submit()),
             ])
