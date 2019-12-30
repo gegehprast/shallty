@@ -270,7 +270,7 @@ class Kusonime {
         const params = Util.getAllUrlParams(link)
 
         if (link.includes('kepoow.me')) {
-            return this.parseKepoow(link)
+            return this.parseKepoow(params)
         }
 
         if (link.includes('sukakesehattan.')) {
