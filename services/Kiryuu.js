@@ -12,7 +12,7 @@ class Kiryuu {
      *
      */
     async getMangaList() {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url + '/manga/?list', {
@@ -49,7 +49,7 @@ class Kiryuu {
      * @param {String} link Manga page url.
      */
     async getMangaInfo(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         let cover = null
 
         try {
@@ -142,7 +142,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -188,7 +188,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -238,7 +238,7 @@ class Kiryuu {
      *
      */
     async getNewReleases() {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url, {

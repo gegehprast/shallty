@@ -13,7 +13,7 @@ class Moenime {
      * @param {String} show Show type, could be: movie, ongoing or, all.
      */
     async animeList(show = 'all') {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(moenime_url + '/daftar-anime-baru/', {
@@ -165,7 +165,7 @@ class Moenime {
      * @param {String} link Anime page url.
      */
     async episodes(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             let episodes = {}
@@ -285,7 +285,7 @@ class Moenime {
      *
      */
     async newReleases() {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             const anime = []
@@ -319,7 +319,7 @@ class Moenime {
     }
 
     async teknoku(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)

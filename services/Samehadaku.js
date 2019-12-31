@@ -44,7 +44,7 @@ class Samehadaku {
         let totalPage
         const pageLimit = 3
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -107,7 +107,7 @@ class Samehadaku {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(samehadaku_url, {
@@ -154,7 +154,7 @@ class Samehadaku {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         const downloadLinks = []
 
         try {
@@ -186,7 +186,7 @@ class Samehadaku {
                 await Util.asyncForEach(list, async item => {
                     const strong = await item.$('strong')
                     if (strong && strong != null) {
-                        const quality = this.browser.getPlainProperty(strong, 'innerText')
+                        const quality = await this.browser.getPlainProperty(strong, 'innerText')
                         const anchors = await item.$$('a')
                         await Util.asyncForEach(anchors, async anchor => {
                             const host = await this.browser.getPlainProperty(anchor, 'innerText')
@@ -230,7 +230,7 @@ class Samehadaku {
      */
     async tetew(link, skip = false) {
         let final
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -298,7 +298,7 @@ class Samehadaku {
      * @param link njiir url.
      */
     async njiir(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             let downloadLink, anchor
@@ -328,7 +328,7 @@ class Samehadaku {
     }
 
     async eueSiherp(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -373,7 +373,7 @@ class Samehadaku {
 
     //anjay.info
     async anjay(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -385,7 +385,7 @@ class Samehadaku {
                 timeout: 30000
             })
 
-            await Util.sleep(10000)
+            await Util.sleep(13000)
             await page.waitForSelector('div.to > a')
             await page.click('div.to > a')
             await page.waitForSelector('#showlink')

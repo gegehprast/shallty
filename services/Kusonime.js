@@ -11,7 +11,7 @@ class Kusonime {
      * Parse and get anime list. Currently support only up to page 2.
      */
     async animeList() {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             let animeList = []
@@ -44,7 +44,7 @@ class Kusonime {
      * @param {Number} homePage Home page.
      */
     async homePage(homePage = 1) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         const posts = []
 
         try {
@@ -155,7 +155,7 @@ class Kusonime {
      * @param {String} link Episode page url.
      */
     async getDownloadLinks(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         
         try {
             link = decodeURIComponent(link)
@@ -227,7 +227,7 @@ class Kusonime {
     }
 
     async parseSemawur(link) {
-        const page = await this.browser.newPageWithNewContext()
+        const page = await this.newOptimizedPageWithNewContext()
 
         try {
             await page.goto(link, {
