@@ -25,7 +25,7 @@ class Neonime {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(neonime_url + '/episode/', {
@@ -66,7 +66,7 @@ class Neonime {
      * Parse and get anime list.
      */
     async animeList() {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(neonime_url + '/list-anime/', {
@@ -97,7 +97,7 @@ class Neonime {
      */
     async tvShow(link) {
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -136,7 +136,7 @@ class Neonime {
      */
     async getEpisodes(link) {
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -180,7 +180,7 @@ class Neonime {
     async getBatchEpisodes(link) {
         const episodes = []
         let info1 = false
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -261,7 +261,7 @@ class Neonime {
             }
         }
         
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(link, {

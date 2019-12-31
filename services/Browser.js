@@ -20,8 +20,26 @@ class Browser {
     }
 
     /**
+     * Create new disabled asset page.
+     */
+    async newOptimizedPage() {
+        const page = await this.browser.newPage()
+        await page.setRequestInterception(true)
+
+        page.on('request', (req) => {
+            if (req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image') {
+                req.abort()
+            } else {
+                req.continue()
+            }
+        })
+
+        return page
+    }
+
+    /**
      * Create new page with different browser context
-     * to support multiple sessions
+     * to support multiple sessions.
      * https://github.com/GoogleChrome/puppeteer/issues/85
      */
     async newPageWithNewContext() {
@@ -33,7 +51,7 @@ class Browser {
     }
 
     /**
-     * Close a page, use this function to close a page that has context
+     * Close a page, use this function to close a page that has context.
      * 
      * @param {Object} page Puppeteer page
      */

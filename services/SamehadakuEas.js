@@ -9,7 +9,7 @@ class Samehadaku {
 
     async checkOnGoingPage(navPage = 1) {
         const anime = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(`${samehadaku_url}/page/${navPage}/`, {
@@ -51,7 +51,7 @@ class Samehadaku {
 
     async getEpisodes(link) {
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)

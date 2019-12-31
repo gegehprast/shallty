@@ -12,7 +12,7 @@ class Oploverz {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1')
@@ -58,7 +58,7 @@ class Oploverz {
      */
     async series(link) {
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -100,7 +100,7 @@ class Oploverz {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         const downloadLinks = []
 
         try {
@@ -149,7 +149,7 @@ class Oploverz {
     }
 
     async hexa(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         try {
             link = decodeURIComponent(link)
 

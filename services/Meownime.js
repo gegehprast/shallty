@@ -12,7 +12,7 @@ class Meownime {
      * @param link anime page.
      */
     async getEpisodes(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         const episodes = new Map
 
         try {
@@ -75,7 +75,7 @@ class Meownime {
      * @param link davinsurance page.
      */
     async davinsurance(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -113,7 +113,7 @@ class Meownime {
      * @param link meowbox page.
      */
     async meowbox(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -185,7 +185,7 @@ class Meownime {
      */
     async meowdrive(link) {
         let finalUrl
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -226,7 +226,7 @@ class Meownime {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             await page.goto(meownime_url + '/tag/ongoing/', {
@@ -265,7 +265,7 @@ class Meownime {
      */
     async onGoingAnime(link) {
         const episodes = []
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -332,7 +332,7 @@ class Meownime {
      * @param link anime page.
      */
     async getMovieEpisodes(link) {
-        const page = await this.browser.browser.newPage()
+        const page = await this.browser.newOptimizedPage()
         const episodes = []
 
         try {
