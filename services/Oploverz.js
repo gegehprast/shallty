@@ -56,7 +56,7 @@ class Oploverz {
      * Parse series page and get episode list.
      * @param link series page.
      */
-    async series(link) {
+    async episodes(link) {
         const episodes = []
         const page = await this.browser.newOptimizedPage()
 
@@ -148,6 +148,12 @@ class Oploverz {
         return Util.base64Decode(params.r)
     }
 
+    parseKontenajaib(link) {
+        const params = Util.getAllUrlParams(link)
+
+        return Util.base64Decode(params.id)
+    }
+
     async hexa(link) {
         const page = await this.browser.newOptimizedPage()
         try {
@@ -158,7 +164,7 @@ class Oploverz {
             }
 
             if (link.includes('kontenajaib.xyz')) {
-                link = this.parseTravelling(link)
+                link = this.parseKontenajaib(link)
             }
 
             await page.goto(link, {

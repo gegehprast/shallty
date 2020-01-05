@@ -2,8 +2,8 @@ const Browser = require('../services/Browser')
 const Neonime = new (require('../services/Neonime'))(Browser)
 
 class NeonimeController {
-    async checkOnGoingPage(req, res) {
-        const anime = await Neonime.checkOnGoingPage()
+    async newReleases(req, res) {
+        const anime = await Neonime.newReleases()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -82,7 +82,7 @@ class NeonimeController {
         }
     }
 
-    async hightech(req, res) {
+    async shortlink(req, res) {
         const url = await Neonime.hightech(req.query.link)
         if (url.error) {
             res.status(500).json({

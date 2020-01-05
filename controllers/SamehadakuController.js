@@ -4,7 +4,7 @@ const SamehadakuEas = new (require('../services/SamehadakuEas'))(Browser)
 const Util = require('../utils/utils')
 
 class SamehadakuController {
-    async anime(req, res) {
+    async episodes(req, res) {
         const episodes = await SamehadakuEas.getEpisodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
@@ -20,7 +20,7 @@ class SamehadakuController {
         }
     }
 
-    async checkOnGoingPage(req, res) {
+    async newReleases(req, res) {
         const anime = await SamehadakuEas.checkOnGoingPage()
         const animeArr = [], checkOnGoingPageArr = []
 
@@ -54,7 +54,7 @@ class SamehadakuController {
         })
     }
 
-    async getDownloadLinks(req, res) {
+    async links(req, res) {
         const links = await Samehadaku.getDownloadLinks(req.query.link)
         if (links.error) {
             res.status(500).json({
@@ -70,7 +70,7 @@ class SamehadakuController {
         }
     }
 
-    async tetew(req, res) {
+    async shortlink(req, res) {
         const tetew = await Samehadaku.anjay(req.query.link)
         if (tetew.error) {
             res.status(500).json({

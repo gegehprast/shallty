@@ -159,7 +159,7 @@ class Samehadaku {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
+            await page.goto(samehadaku_url + link, {
                 timeout: 30000
             })
             

@@ -19,7 +19,7 @@ class MoenimeController {
         }
     }
 
-    async episodes(req, res) {
+    async links(req, res) {
         const episodes = await Moenime.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
@@ -51,7 +51,7 @@ class MoenimeController {
         }
     }
 
-    async teknoku(req, res) {
+    async shortlink(req, res) {
         const url = await Moenime.teknoku(req.query.link)
         if (url.error) {
             res.status(500).json({

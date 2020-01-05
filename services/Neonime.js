@@ -23,7 +23,7 @@ class Neonime {
     /**
      * Parse and get anime list.
      */
-    async checkOnGoingPage() {
+    async newReleases() {
         const anime = []
         const page = await this.browser.newOptimizedPage()
 
@@ -33,21 +33,16 @@ class Neonime {
             })
 
             await page.waitForSelector('table.list')
-            const table = await page.$('table.list')
-            const tRows = await table.$$('tbody > tr')
+            const tRows = await page.$$('table.list tbody > tr')
             await Util.asyncForEach(tRows, async trow => {
                 const anchor = await trow.$('td.bb > a')
                 const text = await this.browser.getPlainProperty(anchor, 'innerText')
-                const episodeSplit = text.split(' Episode ')
-                const titleSplit = text.split(' Subtitle')
-                const episode = episodeSplit[episodeSplit.length - 1]
-                const title = titleSplit[0]
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const epsSplit = text.split(' Episode ')
+                const episode = epsSplit[epsSplit.length - 1]
+                const title = text.split(' Subtitle')[0]
+                const link = (await this.browser.getPlainProperty(anchor, 'href')).replace(neonime_url, '')
 
-                anime.push({
-                    episode: episode,
-                    title: title,
-                    link: link
+                anime.push({ episode: episode, title: title, link: link
                 })
             })
 
@@ -66,6 +61,7 @@ class Neonime {
      * Parse and get anime list.
      */
     async animeList() {
+        const animeList = []
         const page = await this.browser.newOptimizedPage()
 
         try {
@@ -74,13 +70,17 @@ class Neonime {
             })
 
             await page.waitForSelector('#az-slider')
-            const slider = await page.$('#az-slider')
-            const animeList = await slider.$$eval('a', nodes => nodes.map(x => {
-                const title = x.innerText
-                const link = x.href
+            const anchors = await page.$$('#az-slider a')
 
-                return {link: link, title: title}
-            }))
+            await Util.asyncForEach(anchors, async (anchor) => {
+                const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
+                const link = (await this.browser.getPlainProperty(anchor, 'href')).replace(neonime_url, '')
+                const isBatch = link.startsWith('/batch')
+
+                animeList.push({ title: title, link: link, is_batch: isBatch
+                })
+            })
+            
             await page.close()
 
             return animeList
