@@ -13,11 +13,10 @@ route.get('/samehadaku/newReleases', SamehadakuController.newReleases)
 route.get('/samehadaku/shortlink', SamehadakuController.shortlink)
 
 route.get('/neonime/animeList', NeonimeController.animeList)
-route.get('/neonime/tvShow', NeonimeController.tvShow)
-route.get('/neonime/getEpisodes', NeonimeController.getEpisodes) // including download links
-route.get('/neonime/getBatchEpisodes', NeonimeController.getBatchEpisodes) // including download links
-route.get('/neonime/shortlink', NeonimeController.shortlink)
+route.get('/neonime/episodes', NeonimeController.episodes)
+route.get('/neonime/links', NeonimeController.links)
 route.get('/neonime/newReleases', NeonimeController.newReleases)
+route.get('/neonime/shortlink', NeonimeController.shortlink)
 
 route.get('/oploverz/episodes', OploverzController.episodes)
 route.get('/oploverz/links', OploverzController.links)

@@ -37,12 +37,16 @@ class Neonime {
             await Util.asyncForEach(tRows, async trow => {
                 const anchor = await trow.$('td.bb > a')
                 const text = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await this.browser.getPlainProperty(anchor, 'href')
                 const epsSplit = text.split(' Episode ')
                 const episode = epsSplit[epsSplit.length - 1]
                 const title = text.split(' Subtitle')[0]
-                const link = (await this.browser.getPlainProperty(anchor, 'href')).replace(neonime_url, '')
 
-                anime.push({ episode: episode, title: title, link: link
+                anime.push({
+                    episode: episode,
+                    title: title,
+                    link: link.replace(neonime_url, ''),
+                    raw_link: link
                 })
             })
 
@@ -74,10 +78,14 @@ class Neonime {
 
             await Util.asyncForEach(anchors, async (anchor) => {
                 const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const link = (await this.browser.getPlainProperty(anchor, 'href')).replace(neonime_url, '')
-                const isBatch = link.startsWith('/batch')
+                const rawLink = await this.browser.getPlainProperty(anchor, 'href')
+                const link = rawLink.replace(neonime_url, '')
 
-                animeList.push({ title: title, link: link, is_batch: isBatch
+                animeList.push({
+                    title: title,
+                    link: link,
+                    raw_link: rawLink,
+                    is_batch: link.startsWith('/batch')
                 })
             })
             
@@ -95,29 +103,33 @@ class Neonime {
      * Parse tv show page and get episodes.
      * @param link tv show page.
      */
-    async tvShow(link) {
+    async episodes(link) {
         const episodes = []
         const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
+            
+            if (link.startsWith('/batch')) {
+                return this.getBatchLinks(link)
+            }
+
+            await page.goto(neonime_url + link, {
                 timeout: 60000
             })
 
             await page.waitForSelector('div.episodiotitle')
             const episodios = await page.$$('div.episodiotitle')
             await Util.asyncForEach(episodios, async episodio => {
-                const { episode, link } = await episodio.$eval('a', node => (
-                    {
-                        episode: node.innerText,
-                        link: node.href
-                    }
-                ))
+                const anchor = await episodio.$('a')
+                const episode = await this.browser.getPlainProperty(anchor, 'innerHTML')
+                const rawLink = await this.browser.getPlainProperty(anchor, 'href')
+                const link = rawLink.replace(neonime_url, '')
 
                 episodes.push({
-                    episode: episode,
-                    link: link
+                    episode: episode.trim(),
+                    link: link,
+                    raw_link: rawLink
                 })
             })
             await page.close()
@@ -134,13 +146,27 @@ class Neonime {
      * Parse episode page and get download links.
      * @param link episode page.
      */
-    async getEpisodes(link) {
-        const episodes = []
+    async links(link) {
+        link = decodeURIComponent(link)
+
+        if (link.startsWith('/batch')) {
+            return this.getBatchLinks(link)
+        }
+
+        return this.getLinks(link)
+    }
+
+    /**
+     * Parse episode page and get download links.
+     * @param link episode page.
+     */
+    async getLinks(link) {
+        const links = []
         const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
+            await page.goto(neonime_url + link, {
                 timeout: 60000
             })
 
@@ -154,7 +180,7 @@ class Neonime {
                     const link = await this.browser.getPlainProperty(anchor, 'href')
 
                     if (link != neonime_url && !host.toLowerCase().includes('proses')) {
-                        episodes.push({
+                        links.push({
                             quality: quality,
                             host: host,
                             link: link
@@ -165,7 +191,7 @@ class Neonime {
             
             await page.close()
 
-            return episodes
+            return links
         } catch (error) {
             await page.close()
 
@@ -177,14 +203,14 @@ class Neonime {
      * Parse batch episode page and get download links.
      * @param link episode page.
      */
-    async getBatchEpisodes(link) {
-        const episodes = []
+    async getBatchLinks(link) {
+        const links = []
         let info1 = false
         const page = await this.browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
+            await page.goto(neonime_url + link, {
                 timeout: 60000
             })
 
@@ -203,7 +229,7 @@ class Neonime {
                         const host = await this.browser.getPlainProperty(anchor, 'innerText')
                         const link = await this.browser.getPlainProperty(anchor, 'href')
 
-                        episodes.push({
+                        links.push({
                             quality: quality,
                             host: host,
                             link: link
@@ -226,7 +252,7 @@ class Neonime {
                             const host = await this.browser.getPlainProperty(anchor, 'innerText')
                             const link = await this.browser.getPlainProperty(anchor, 'href')
 
-                            episodes.push({
+                            links.push({
                                 quality: quality,
                                 host: host,
                                 link: link
@@ -240,7 +266,7 @@ class Neonime {
 
             await page.close()
 
-            return episodes
+            return links
         } catch (error) {
             await page.close()
 

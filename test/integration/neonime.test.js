@@ -10,7 +10,7 @@ describe('neonime', function () {
     })
 
     describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title and link', function (done) {
+        it('should return 200 and an array of anime list which has title, link, raw link, and is batch', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/neonime/animeList')
                 .expect(200)
@@ -20,8 +20,10 @@ describe('neonime', function () {
                     expect(res.body.data).to.be.an('array')
                     res.body.data.forEach(item => {
                         expect(item).to.be.an('object')
-                        expect(item).to.has.property('link')
                         expect(item).to.has.property('title')
+                        expect(item).to.has.property('link')
+                        expect(item).to.has.property('raw_link')
+                        expect(item).to.has.property('is_batch')
                     })
                 })
                 .end(function (err, res) {
@@ -35,9 +37,9 @@ describe('neonime', function () {
     })
 
     describe('episodes', function () {
-        it('should return 200 and an array of episodes which has episode and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, link, and raw link', function (done) {
             this.timeout(60000)
-            supertest(app).get('/api/neonime/episodes?link=%2Fanime%2Fgegege-no-kitarou-2018%2F')
+            supertest(app).get('/api/neonime/episodes?link=%2Ftvshows%2Fa-i-c-o-incarnation-subtitle-indonesia%2F')
                 .expect(200)
                 .expect(function (res) {
                     expect(res.body.status).to.equal(200)
@@ -46,8 +48,8 @@ describe('neonime', function () {
                     res.body.data.forEach(item => {
                         expect(item).to.be.an('object')
                         expect(item).to.has.property('episode')
-                        expect(item).to.has.property('title')
                         expect(item).to.has.property('link')
+                        expect(item).to.has.property('raw_link')
                     })
                 })
                 .end(function (err, res) {
@@ -63,7 +65,7 @@ describe('neonime', function () {
     describe('links', function () {
         it('should return 200 and an array of download links which has quality, host, and link', function (done) {
             this.timeout(60000)
-            supertest(app).get('/api/neonime/links?link=%2Fgegege-no-kitarou-episode-87%2F')
+            supertest(app).get('/api/neonime/links?link=%2Fepisode%2Fa-i-c-o-incarnation-1x12')
                 .expect(200)
                 .expect(function (res) {
                     expect(res.body.status).to.equal(200)
@@ -115,7 +117,7 @@ describe('neonime', function () {
     describe('shortlink', function () {
         it('should return 200 and a string of url', function (done) {
             this.timeout(60000)
-            supertest(app).get('/api/neonime/shortlink?link=https%3A%2F%2Fanjay.info%2F%3Fid%3DVWErNWlBZmpCUlMvT0pxVHE3YS84bGJVZGkrVjNwejZLTnR2UmVxRVJxell2UmdXdzA4T2tDVjBNK3gzcWk3Lw%3D%3D')
+            supertest(app).get('/api/neonime/shortlink?link=https%3A%2F%2Fxmaster.xyz%2F%3Fsitex%3DaHR0cHM6Ly9zZW5kaXQuY2xvdWQvN24zNXZlcGNibXpq')
                 .expect(200)
                 .expect(function (res) {
                     expect(res.body.status).to.equal(200)
@@ -123,7 +125,7 @@ describe('neonime', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://www32.zippyshare.com/v/IL24rZLX/file.html')
+                    expect(res.body.data.url).to.equal('https://sendit.cloud/7n35vepcbmzj')
                 })
                 .end(function (err, res) {
                     if (err) {
