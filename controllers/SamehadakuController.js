@@ -4,7 +4,7 @@ const Util = require('../utils/utils')
 
 class SamehadakuController {
     async animeList(req, res) {
-        const anime = await SamehadakuEas.animeList(req.query.link)
+        const anime = await SamehadakuEas.animeList()
         if (anime.error) {
             res.status(500).json({
                 status: 500,

@@ -285,7 +285,8 @@ class Neonime {
             await Util.sleep(3000)
             await page.click('a#link-download')
             
-            const newPage = await Browser.newPagePromise(page)
+            const newPage = await Browser.newTabPagePromise(page)
+            await Util.sleep(2000)
             const url = newPage.url()
             
             await page.close()

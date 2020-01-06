@@ -1,7 +1,22 @@
-const Browser = require('../services/Browser')
-const Oploverz = new (require('../services/Oploverz'))(Browser)
+const Oploverz = require('../services/Oploverz')
 
 class OploverzController {
+    async animeList(req, res) {
+        const anime = await Oploverz.animeList()
+        if (anime.error) {
+            res.status(500).json({
+                status: 500,
+                message: anime.message
+            })
+        } else {
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: anime
+            })
+        }
+    }
+
     async newReleases(req, res) {
         const anime = await Oploverz.checkOnGoingPage()
         if (anime.error) {

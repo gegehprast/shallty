@@ -113,7 +113,7 @@ describe('oploverz', function () {
     describe('shortlink', function () {
         it('should return 200 and a string of url', function (done) {
             this.timeout(60000)
-            supertest(app).get('/api/oploverz/shortlink?link=https%3A%2F%2Fkontenajaib.xyz%2F%3Fid%3DWUZqcVVkcVJPa3h5SjZpaW81MFpjaUFlWG1wZHpJVWc0VUpLeDZBbk9pN2QwZHoraW1NNVQyZFU3bi9pTUNScFA4T0djTzlseDkwYVhMNitwcHZ0SXNLSk1mekxHT2VBL0VUVExyQUtXVE44UXJqY2xVNEVXdGtGN3lpWk5EMjhCV3AvSFR1RVJFZXlFV3NhSCsvbVVHWi81WjJMZjVrOVFSVUFVLzAvbXpuRUk4ZmRoWk5EZVlIN3RRdC9LNnZ3TnZpSWpEU1FkczJaYzBFbnRIakFwZ3Nab2FiUExGckREakl2ajZXODM0RDQyK1Y1MnErMmJjb01GK2REQnpyRw%3D%3D')
+            supertest(app).get('/api/oploverz/shortlink?link=https%3A%2F%2Fkontenajaib.xyz%2F%3Fid%3DemFXMEdBNC9HbDBMUTh0SFdiRHVQaFEyRWhKS3YzVEJSRHlrRVlEbExLZUNlSEdZaENXTW5mWllrNTliSXYrMXQ2NnhXOEZUL1BkSkpvbXAyRHg2ZE9ycVdZTlU3ejc1TUV5RXFWNkhxc3ZQQnVicW9jdTBtYk5SSjMxb2JLOTEwOFVGK1hSTks3N0txTkxOZHdsWUF4enVwVEtkQ0htUFA1LzJhNmZ1bkdkQ3RJNS9mNHhJOFlMMUdLWEtOQnlwSzE0QlVpODkvZ3RBYmZIQVpMbnVBK3IwOG5xRWFnU1FDOFBQRG55dkhKZmtWQldmM2Jtb1lvRCtmRHhMdXdNVE9DUDNzUjlWeUwrTm1FSEVPb1cvTTV3cFk0NTlCbms3NnVFYkpqRmFnSHczNWxFNllDN2E5VHVLdDdjZTU3dU0%3D')
                 .expect(200)
                 .expect(function (res) {
                     expect(res.body.status).to.equal(200)
@@ -121,7 +121,7 @@ describe('oploverz', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://acefile.co/f/16563225/oploverz-dunianya-narue-rar')
+                    expect(res.body.data.url).to.equal('https://www110.zippyshare.com/v/7dqelZac/file.html')
                 })
                 .end(function (err, res) {
                     if (err) {

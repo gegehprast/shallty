@@ -1,18 +1,15 @@
+const Browser = require('../services/Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const { oploverz_url } = require('../config.json')
 
 class Oploverz {
-    constructor(browser) {
-        this.browser = browser
-    }
-
     /**
      * Check on going page and get latest released episodes.
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1')
@@ -25,8 +22,8 @@ class Oploverz {
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
             await Util.asyncForEach(list, async item => {
                 const anchor = await item.$('div.dtl > h2 > a')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
-                const title = await this.browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
+                const title = await Browser.getPlainProperty(anchor, 'innerText')
                 const matchEps = link.match(/(\d+)(?=-subtitle-indonesia)/)
                 if (matchEps && matchEps != null) {
                     const numeral = matchEps[0].length == 1 ? '0' + matchEps[0] : matchEps[0]
@@ -53,12 +50,44 @@ class Oploverz {
     }
 
     /**
+     * Parse and get anime list.
+     */
+    async animeList() {
+        const animeList = []
+        const page = await Browser.newOptimizedPage()
+
+        try {
+            await page.goto(oploverz_url + '/series/')
+
+            const anchors = await Browser.$$waitAndGet(page, 'div.postbody > .movlist> ul > li > a')
+            await Util.asyncForEach(anchors, async (anchor) => {
+                const title = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const rawLink = await Browser.getPlainProperty(anchor, 'href')
+
+                animeList.push({
+                    title: title,
+                    link: rawLink.replace(oploverz_url, ''),
+                    raw_link: rawLink
+                })
+            })
+
+            await page.close()
+
+            return animeList
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
+    }
+
+    /**
      * Parse series page and get episode list.
      * @param link series page.
      */
     async episodes(link) {
         const episodes = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -75,8 +104,8 @@ class Oploverz {
                 }
                 
                 const anchor = await item.$('span.leftoff > a')
-                const episode = await this.browser.getPlainProperty(anchor, 'innerText')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const episode = await Browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
                 episodes.push({
                     episode: episode,
@@ -100,7 +129,7 @@ class Oploverz {
      * @param link episode page.
      */
     async getDownloadLinks(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
         const downloadLinks = []
 
         try {
@@ -116,12 +145,12 @@ class Oploverz {
                 const sorattls = await soraddl.$$('div[class="sorattl title-download"]')
                 const soraurls = await soraddl.$$('div[class="soraurl list-download"]')
                 await Util.asyncForEach(soraurls, async (soraurl, index) => {
-                    let quality = await this.browser.getPlainProperty(sorattls[index], 'innerText')
+                    let quality = await Browser.getPlainProperty(sorattls[index], 'innerText')
                     quality = quality.replace('oploverz – ', '')
                     const anchors = await soraurl.$$('a')
                     await Util.asyncForEach(anchors, async anchor => {
-                        const host = await this.browser.getPlainProperty(anchor, 'innerText')
-                        const link = await this.browser.getPlainProperty(anchor, 'href')
+                        const host = await Browser.getPlainProperty(anchor, 'innerText')
+                        const link = await Browser.getPlainProperty(anchor, 'href')
 
                         downloadLinks.push({
                             quality: quality,
@@ -148,32 +177,60 @@ class Oploverz {
         return Util.base64Decode(params.r)
     }
 
-    parseKontenajaib(link) {
-        const params = Util.getAllUrlParams(link)
+    async parseKontenajaib(link) {
+        const page = await Browser.newOptimizedPage()
 
-        return Util.base64Decode(params.id)
+        try {
+            await page.goto(link)
+
+            await Util.sleep(7000)
+            await page.click('#generater')
+            await Util.sleep(7000)
+            await page.click('#showlink')
+            
+            const newPage = await Browser.newTabPagePromise(page)
+            await Util.sleep(7000)
+            await newPage.click('#generater')
+            await Util.sleep(7000)
+            await newPage.click('#showlink')
+
+            const finalPage = await Browser.newTabPagePromise(newPage)
+            await Util.sleep(2000)
+            const url = finalPage.url()
+            
+            await page.close()
+            await newPage.close()
+            await finalPage.close()
+
+            return {url: url}
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
     }
 
     async hexa(link) {
-        const page = await this.browser.newOptimizedPage()
+        link = decodeURIComponent(link)
+
+        if (link.includes('travellinginfos.com')) {
+            return this.parseTravelling(link)
+        }
+
+        if (link.includes('kontenajaib.xyz')) {
+            const url = await this.parseKontenajaib(link)
+
+            return url
+        }
+
+        const page = await Browser.newOptimizedPage()
+        
         try {
-            link = decodeURIComponent(link)
-
-            if (link.includes('travellinginfos.com')) {
-                link = this.parseTravelling(link)
-            }
-
-            if (link.includes('kontenajaib.xyz')) {
-                link = this.parseKontenajaib(link)
-            }
-
-            await page.goto(link, {
-                timeout: 300000
-            })
+            await page.goto(link)
 
             await Util.sleep(7000)
             const anchor = await page.$('center.link-content > a')
-            const url = await this.browser.getPlainProperty(anchor, 'href')
+            const url = await Browser.getPlainProperty(anchor, 'href')
             await page.close()
             
             return {url: url}
@@ -185,4 +242,4 @@ class Oploverz {
     }
 }
 
-module.exports = Oploverz
+module.exports = new Oploverz

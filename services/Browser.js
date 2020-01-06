@@ -64,7 +64,7 @@ class Browser {
      * Get new tab page instance.
      * @param page current page.
      */
-    async newPagePromise(page) {
+    async newTabPagePromise(page) {
         const pageTarget = page.target()
         const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
         const newPage = await newTarget.page()

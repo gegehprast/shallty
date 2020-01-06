@@ -337,19 +337,6 @@ class Samehadaku {
         }
     }
 
-    /**
-     * Get new tab page instance.
-     * @param page current page.
-     * @param browser current browser.
-     */
-    async newPagePromise(page, browser) {
-        const pageTarget = page.target()
-        const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget)
-        const newPage = await newTarget.page()
-
-        return newPage
-    }
-
     //anjay.info
     async anjay(link) {
         const page = await Browser.newOptimizedPage()
@@ -368,7 +355,8 @@ class Samehadaku {
             await page.waitForSelector('#showlink')
             await page.click('#showlink')
             
-            const newPage = await this.newPagePromise(page, Browser.browser)
+            const newPage = await Browser.newTabPagePromise(page)
+            await Util.sleep(2000)
             const url = newPage.url()
 
             await page.close()

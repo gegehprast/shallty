@@ -19,6 +19,7 @@ route.get('/neonime/links', NeonimeController.links)
 route.get('/neonime/newReleases', NeonimeController.newReleases)
 route.get('/neonime/shortlink', NeonimeController.shortlink)
 
+route.get('/oploverz/animeList', OploverzController.animeList)
 route.get('/oploverz/episodes', OploverzController.episodes)
 route.get('/oploverz/links', OploverzController.links)
 route.get('/oploverz/newReleases', OploverzController.newReleases)
