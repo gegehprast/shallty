@@ -128,6 +128,7 @@ describe('neonime', function () {
                         expect(item).to.has.property('episode')
                         expect(item).to.has.property('title')
                         expect(item).to.has.property('link')
+                        expect(item).to.has.property('raw_link')
                     })
                 })
                 .end(function (err, res) {

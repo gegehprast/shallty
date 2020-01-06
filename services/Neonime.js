@@ -5,7 +5,7 @@ const { neonime_url } = require('../config.json')
 
 class Neonime {
     /**
-     * Parse and get anime list.
+     * Parse and get new released episodes.
      */
     async newReleases() {
         const anime = []
@@ -89,7 +89,7 @@ class Neonime {
             link = decodeURIComponent(link)
             
             if (link.startsWith('/batch')) {
-                return this.getBatchLinks(link)
+                return this.parseBatchLinks(link)
             }
 
             await page.goto(neonime_url + link)
@@ -126,17 +126,17 @@ class Neonime {
         link = decodeURIComponent(link)
 
         if (link.startsWith('/batch')) {
-            return this.getBatchLinks(link)
+            return this.parseBatchLinks(link)
         }
 
-        return this.getLinks(link)
+        return this.parseLinks(link)
     }
 
     /**
      * Parse episode page and get download links.
      * @param link episode page.
      */
-    async getLinks(link) {
+    async parseLinks(link) {
         const links = []
         const page = await Browser.newOptimizedPage()
 
@@ -162,6 +162,35 @@ class Neonime {
                     }
                 })
             })
+            
+            await page.close()
+
+            return links
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
+    }
+
+    /**
+     * Parse batch episode page and get download links.
+     * @param link episode page.
+     */
+    async parseBatchLinks(link) {
+        let isInfoOne = false
+        const page = await Browser.newOptimizedPage()
+
+        try {
+            link = decodeURIComponent(link)
+            await page.goto(neonime_url + link)
+            
+            await page.waitForSelector('.smokeurl').catch(e => {
+                Handler.error(e)
+                isInfoOne = true
+            })
+
+            const links = !isInfoOne ? await this.parseSmokeUrl(page) : await this.parseInfoOne(page)
             
             await page.close()
 
@@ -229,35 +258,6 @@ class Neonime {
         })
 
         return links
-    }
-
-    /**
-     * Parse batch episode page and get download links.
-     * @param link episode page.
-     */
-    async getBatchLinks(link) {
-        let isInfoOne = false
-        const page = await Browser.newOptimizedPage()
-
-        try {
-            link = decodeURIComponent(link)
-            await page.goto(neonime_url + link)
-            
-            await page.waitForSelector('.smokeurl').catch(e => {
-                Handler.error(e)
-                isInfoOne = true
-            })
-
-            const links = !isInfoOne ? await this.parseSmokeUrl(page) : await this.parseInfoOne(page)
-            
-            await page.close()
-
-            return links
-        } catch (error) {
-            await page.close()
-
-            return Handler.error(error)
-        }
     }
 
     /**

@@ -7,6 +7,7 @@ const KusonimeController = require('../controllers/KusonimeController')
 const KiryuuController = require('../controllers/KiryuuController')
 const MoenimeController = require('../controllers/MoenimeController')
 
+route.get('/samehadaku/animeList', SamehadakuController.animeList)
 route.get('/samehadaku/episodes', SamehadakuController.episodes)
 route.get('/samehadaku/links', SamehadakuController.links)
 route.get('/samehadaku/newReleases', SamehadakuController.newReleases)

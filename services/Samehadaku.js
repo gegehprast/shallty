@@ -1,3 +1,4 @@
+const Browser = require('../services/Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const {
@@ -6,10 +7,6 @@ const {
 } = require('../config.json')
 
 class Samehadaku {
-    constructor(browser) {
-        this.browser = browser
-    }
-
     /**
      * Parse and get episode information from a post element handler.
      * @param post post element handler.
@@ -44,7 +41,7 @@ class Samehadaku {
         let totalPage
         const pageLimit = 3
         const episodes = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -103,7 +100,7 @@ class Samehadaku {
      */
     async checkOnGoingPage() {
         const anime = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(samehadaku_url)
@@ -147,8 +144,8 @@ class Samehadaku {
      * Parse download links from episode page of a title.
      * @param link episode page.
      */
-    async getDownloadLinks(link) {
-        const page = await this.browser.newOptimizedPage()
+    async links(link) {
+        const page = await Browser.newOptimizedPage()
         const downloadLinks = []
 
         try {
@@ -159,7 +156,7 @@ class Samehadaku {
             const downloadDivs = await page.$$('div.download-eps')
             await Util.asyncForEach(downloadDivs, async downloadDiv => {
                 const p = await page.evaluateHandle(node => node.previousElementSibling, downloadDiv)
-                let format = await this.browser.getPlainProperty(p, 'innerText')
+                let format = await Browser.getPlainProperty(p, 'innerText')
                 format = format.replace('</b>', '')
                     .replace('</b>', '')
                     .replace(/(&amp;)/, '')
@@ -178,11 +175,11 @@ class Samehadaku {
                 await Util.asyncForEach(list, async item => {
                     const strong = await item.$('strong')
                     if (strong && strong != null) {
-                        const quality = await this.browser.getPlainProperty(strong, 'innerText')
+                        const quality = await Browser.getPlainProperty(strong, 'innerText')
                         const anchors = await item.$$('a')
                         await Util.asyncForEach(anchors, async anchor => {
-                            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-                            const link = await this.browser.getPlainProperty(anchor, 'href')
+                            const host = await Browser.getPlainProperty(anchor, 'innerText')
+                            const link = await Browser.getPlainProperty(anchor, 'href')
 
                             downloadLinks.push({
                                 quality: `${format} ${quality}`,
@@ -222,7 +219,7 @@ class Samehadaku {
      */
     async tetew(link, skip = false) {
         let final
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -284,7 +281,7 @@ class Samehadaku {
      * @param link njiir url.
      */
     async njiir(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             let downloadLink, anchor
@@ -294,13 +291,13 @@ class Samehadaku {
             await page.waitForSelector('div.result > a')
             await Util.sleep(8000)
             anchor = await page.$('div.result > a')
-            downloadLink = await this.browser.getPlainProperty(anchor, 'href')
+            downloadLink = await Browser.getPlainProperty(anchor, 'href')
             if (downloadLink == 'javascript:' || downloadLink.includes('javascript') == true) {
                 await anchor.click()
             }
             await Util.sleep(5000)
             anchor = await page.$('div.result > a')
-            downloadLink = await this.browser.getPlainProperty(anchor, 'href')
+            downloadLink = await Browser.getPlainProperty(anchor, 'href')
             await page.close()
 
             return {url: downloadLink}
@@ -312,7 +309,7 @@ class Samehadaku {
     }
 
     async eueSiherp(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -355,7 +352,7 @@ class Samehadaku {
 
     //anjay.info
     async anjay(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -371,7 +368,7 @@ class Samehadaku {
             await page.waitForSelector('#showlink')
             await page.click('#showlink')
             
-            const newPage = await this.newPagePromise(page, this.browser.browser)
+            const newPage = await this.newPagePromise(page, Browser.browser)
             const url = newPage.url()
 
             await page.close()
@@ -388,4 +385,4 @@ class Samehadaku {
     }
 }
 
-module.exports = Samehadaku
+module.exports = new Samehadaku

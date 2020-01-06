@@ -1,11 +1,26 @@
-const Browser = require('../services/Browser')
-const Samehadaku = new (require('../services/Samehadaku'))(Browser)
-const SamehadakuEas = new (require('../services/SamehadakuEas'))(Browser)
+const Samehadaku = require('../services/Samehadaku')
+const SamehadakuEas = require('../services/SamehadakuEas')
 const Util = require('../utils/utils')
 
 class SamehadakuController {
+    async animeList(req, res) {
+        const anime = await SamehadakuEas.animeList(req.query.link)
+        if (anime.error) {
+            res.status(500).json({
+                status: 500,
+                message: anime.message
+            })
+        } else {
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: anime
+            })
+        }
+    }
+
     async episodes(req, res) {
-        const episodes = await SamehadakuEas.getEpisodes(req.query.link)
+        const episodes = await SamehadakuEas.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -21,11 +36,11 @@ class SamehadakuController {
     }
 
     async newReleases(req, res) {
-        const anime = await SamehadakuEas.checkOnGoingPage()
+        const anime = await SamehadakuEas.newReleases()
         const animeArr = [], checkOnGoingPageArr = []
 
         for (let i = 2; i < 8; i++) {
-            checkOnGoingPageArr.push(SamehadakuEas.checkOnGoingPage(i))
+            checkOnGoingPageArr.push(SamehadakuEas.newReleases(i))
         }
 
         await Promise.all(checkOnGoingPageArr)
@@ -55,7 +70,7 @@ class SamehadakuController {
     }
 
     async links(req, res) {
-        const links = await Samehadaku.getDownloadLinks(req.query.link)
+        const links = await Samehadaku.links(req.query.link)
         if (links.error) {
             res.status(500).json({
                 status: 500,
@@ -82,22 +97,6 @@ class SamehadakuController {
                 status: 200,
                 message: 'Success',
                 data: tetew
-            })
-        }
-    }
-
-    async njiir(req, res) {
-        const njiir = await Samehadaku.njiir(req.query.link)
-        if (njiir.error) {
-            res.status(500).json({
-                status: 500,
-                message: njiir.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: njiir
             })
         }
     }
