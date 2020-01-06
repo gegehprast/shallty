@@ -34,7 +34,7 @@ class KusonimeController {
         }
     }
 
-    async getDownloadLinks(req, res) {
+    async links(req, res) {
         const data = await new Kusonime(Browser).getDownloadLinks(req.query.link)
         if (data.error) {
             res.status(500).json({
@@ -50,7 +50,7 @@ class KusonimeController {
         }
     }
 
-    async semrawut(req, res) {
+    async shortlink(req, res) {
         const semrawut = await new Kusonime(Browser).semrawut(req.query.link)
         if (semrawut.error) {
             res.status(500).json({

@@ -56,7 +56,7 @@ class Samehadaku {
         try {
             link = decodeURIComponent(link)
             link = link.replace('/category/', '/anime/')
-            await page.goto(link, {
+            await page.goto(samehadaku_url + link, {
                 timeout: 300000
             })
             await page.waitForSelector('div.episodelist')

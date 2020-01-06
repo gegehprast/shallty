@@ -2,7 +2,7 @@ const Browser = require('../services/Browser')
 const Oploverz = new (require('../services/Oploverz'))(Browser)
 
 class OploverzController {
-    async checkOnGoingPage(req, res) {
+    async newReleases(req, res) {
         const anime = await Oploverz.checkOnGoingPage()
         if (anime.error) {
             res.status(500).json({
@@ -18,8 +18,8 @@ class OploverzController {
         }
     }
 
-    async series(req, res) {
-        const episodes = await Oploverz.series(req.query.link)
+    async episodes(req, res) {
+        const episodes = await Oploverz.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -34,7 +34,7 @@ class OploverzController {
         }
     }
 
-    async getDownloadLinks(req, res) {
+    async links(req, res) {
         const links = await Oploverz.getDownloadLinks(req.query.link)
         if (links.error) {
             res.status(500).json({
@@ -50,7 +50,7 @@ class OploverzController {
         }
     }
 
-    async hexa(req, res) {
+    async shortlink(req, res) {
         const hexa = await Oploverz.hexa(req.query.link)
         if (hexa.error) {
             res.status(500).json({

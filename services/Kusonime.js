@@ -159,22 +159,17 @@ class Kusonime {
         
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
+            await page.goto(kusonime_url + link, {
                 timeout: 300000
             })
             
             const dlbod = await this.browser.waitAndGetSelector(page, 'div.dlbod')
             const smokeddls = await dlbod.$$('div.smokeddl')
-            const info = await page.$('div.info > p:nth-child(6)')
-            const status = await this.browser.getPlainProperty(info, 'innerText')
             const downloadLinks = smokeddls.length > 0 ? await this.parseSmokeddl(smokeddls) : await this.parseZeroSmodeddl(dlbod)
             
             await page.close()
 
-            return {
-                status: (status && status == 'Status: Completed') ? 'completed' : 'airing',
-                links: downloadLinks
-            }
+            return downloadLinks
         } catch (error) {
             await page.close()
 
