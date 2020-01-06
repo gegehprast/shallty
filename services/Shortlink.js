@@ -11,13 +11,10 @@ class Shortlink {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 60000
-            })
+            await page.goto(link)
 
             await Promise.all([
                 page.waitForNavigation({
-                    timeout: 60000,
                     waitUntil: 'domcontentloaded'
                 }),
                 page.$eval('#srl > form', form => form.submit()),

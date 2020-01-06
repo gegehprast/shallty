@@ -163,7 +163,7 @@ class Kusonime {
                 timeout: 300000
             })
             
-            const dlbod = await this.browser.waitAndGetSelector(page, 'div.dlbod')
+            const dlbod = await this.browser.$waitAndGet(page, 'div.dlbod')
             const smokeddls = await dlbod.$$('div.smokeddl')
             const downloadLinks = smokeddls.length > 0 ? await this.parseSmokeddl(smokeddls) : await this.parseZeroSmodeddl(dlbod)
             
@@ -222,7 +222,7 @@ class Kusonime {
     }
 
     async parseSemawur(link) {
-        const page = await this.newOptimizedPageWithNewContext()
+        const page = await this.browser.newPageWithNewContext()
 
         try {
             await page.goto(link, {

@@ -8,8 +8,8 @@
     "test": "node ./node_modules/mocha/bin/mocha --recursive --exit",
     "unit-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/",
     "int-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/",
-    "f-unit-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/ --grep",
-    "f-int-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/ --grep"
+    "unit-test-filtered": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/ --grep",
+    "int-test-filtered": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/ --grep"
   },
   "author": "gegehprast98",
   "license": "GPL-3.0-only",

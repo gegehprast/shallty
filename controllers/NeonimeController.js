@@ -1,5 +1,4 @@
-const Browser = require('../services/Browser')
-const Neonime = new (require('../services/Neonime'))(Browser)
+const Neonime = require('../services/Neonime')
 
 class NeonimeController {
     async newReleases(req, res) {

@@ -48,9 +48,7 @@ class Samehadaku {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 30000
-            })
+            await page.goto(link)
 
             try {
                 await page.waitForSelector('#content > div > div > div.pages-nav')
@@ -79,9 +77,7 @@ class Samehadaku {
             })
 
             for (let i = 2; i <= totalPage; i++) {
-                await page.goto(link.replace(/\/+$/, '') + `/page/${i}`, {
-                    timeout: 30000
-                })
+                await page.goto(link.replace(/\/+$/, '') + `/page/${i}`)
                 await page.waitForSelector('ul#posts-container')
                 const postContainer = await page.$('ul#posts-container')
                 const posts = await postContainer.$$('h3.post-title')
@@ -110,9 +106,7 @@ class Samehadaku {
         const page = await this.browser.newOptimizedPage()
 
         try {
-            await page.goto(samehadaku_url, {
-                timeout: 30000
-            })
+            await page.goto(samehadaku_url)
             
             await page.waitForSelector('.mag-box-container')
             const magBoxContainer = await page.$$('.mag-box-container')
@@ -159,9 +153,7 @@ class Samehadaku {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(samehadaku_url + link, {
-                timeout: 30000
-            })
+            await page.goto(samehadaku_url + link)
             
             await page.waitForSelector('div.download-eps')
             const downloadDivs = await page.$$('div.download-eps')
@@ -234,9 +226,7 @@ class Samehadaku {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 30000
-            })
+            await page.goto(link)
 
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
@@ -267,16 +257,12 @@ class Samehadaku {
                 }
             }
 
-            await page.goto(untetewed, {
-                timeout: 30000
-            })
+            await page.goto(untetewed)
             try {
                 await page.waitForSelector('div.download-link')
                 const div2 = await page.$('div.download-link')
                 const untetewed2 = await div2.$eval('a', node => node.href)
-                await page.goto(untetewed2, {
-                    timeout: 30000
-                })
+                await page.goto(untetewed2)
                 final = page.url()
                 await page.close()
             } catch (e) {
@@ -303,9 +289,7 @@ class Samehadaku {
         try {
             let downloadLink, anchor
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 30000
-            })
+            await page.goto(link)
 
             await page.waitForSelector('div.result > a')
             await Util.sleep(8000)
@@ -332,9 +316,7 @@ class Samehadaku {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 30000
-            })
+            await page.goto(link)
 
             await page.waitForSelector('button#download2')
             await page.click('button#download2')
@@ -381,9 +363,7 @@ class Samehadaku {
                 return this.tetew(link, true)
             }
 
-            await page.goto(link, {
-                timeout: 30000
-            })
+            await page.goto(link)
 
             await Util.sleep(13000)
             await page.waitForSelector('div.to > a')

@@ -7,7 +7,7 @@ describe('neonime', function () {
         it('should return an array of anime list which has title, link, raw link, and is batch', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = new(require('../../services/Neonime'))(Browser)
+            const Neonime = require('../../services/Neonime')
             const list = await Neonime.animeList()
 
             expect(list).to.be.an('array')
@@ -26,7 +26,7 @@ describe('neonime', function () {
         it('should return an array of episodes which has episode, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = new(require('../../services/Neonime'))(Browser)
+            const Neonime = require('../../services/Neonime')
             const episodes = await Neonime.episodes('%2Ftvshows%2Fa-i-c-o-incarnation-subtitle-indonesia%2F')
 
             expect(episodes).to.be.an('array')
@@ -43,8 +43,25 @@ describe('neonime', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = new(require('../../services/Neonime'))(Browser)
+            const Neonime = require('../../services/Neonime')
             const links = await Neonime.links('%2Fepisode%2Fa-i-c-o-incarnation-1x12')
+
+            expect(links).to.be.an('array')
+            links.forEach(item => {
+                expect(item).to.be.an('object')
+                expect(item).to.has.property('quality')
+                expect(item).to.has.property('host')
+                expect(item).to.has.property('link')
+            })
+        })
+    })
+
+    describe('batch links', function () {
+        it('should return an array of download links which has quality, host, and link', async function () {
+            this.timeout(60000)
+            await Browser.init()
+            const Neonime = require('../../services/Neonime')
+            const links = await Neonime.links('%2Fbatch%2Fakame-ga-kill-bd-batch-subtitle-indonesia%2F')
 
             expect(links).to.be.an('array')
             links.forEach(item => {
@@ -60,7 +77,7 @@ describe('neonime', function () {
         it('should return an array of episodes which has episode, title, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = new(require('../../services/Neonime'))(Browser)
+            const Neonime = require('../../services/Neonime')
             const list = await Neonime.newReleases()
 
             expect(list).to.be.an('array')
@@ -78,7 +95,7 @@ describe('neonime', function () {
         it('should return an object which has a string url property', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = new(require('../../services/Neonime'))(Browser)
+            const Neonime = require('../../services/Neonime')
             const hightech = await Neonime.hightech('https%3A%2F%2Fxmaster.xyz%2F%3Fsitex%3DaHR0cHM6Ly9zZW5kaXQuY2xvdWQvN24zNXZlcGNibXpq')
             
             expect(hightech).to.be.an('object')

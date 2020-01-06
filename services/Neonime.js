@@ -1,43 +1,25 @@
+const Browser = require('../services/Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const { neonime_url } = require('../config.json')
 
 class Neonime {
-    constructor(browser) {
-        this.browser = browser
-    }
-    
-    /**
-     * Get new tab page instance.
-     * @param page current page.
-     * @param browser current browser.
-     */
-    async newPagePromise(page, browser) {
-        const pageTarget = page.target()
-        const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget)
-        const newPage = await newTarget.page()
-
-        return newPage
-    }
-
     /**
      * Parse and get anime list.
      */
     async newReleases() {
         const anime = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
-            await page.goto(neonime_url + '/episode/', {
-                timeout: 60000
-            })
+            await page.goto(neonime_url + '/episode/')
 
             await page.waitForSelector('table.list')
             const tRows = await page.$$('table.list tbody > tr')
             await Util.asyncForEach(tRows, async trow => {
                 const anchor = await trow.$('td.bb > a')
-                const text = await this.browser.getPlainProperty(anchor, 'innerText')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const text = await Browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
                 const epsSplit = text.split(' Episode ')
                 const episode = epsSplit[epsSplit.length - 1]
                 const title = text.split(' Subtitle')[0]
@@ -66,19 +48,15 @@ class Neonime {
      */
     async animeList() {
         const animeList = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
-            await page.goto(neonime_url + '/list-anime/', {
-                timeout: 60000
-            })
-
-            await page.waitForSelector('#az-slider')
-            const anchors = await page.$$('#az-slider a')
-
+            await page.goto(neonime_url + '/list-anime/')
+            
+            const anchors = await Browser.$$waitAndGet(page, '#az-slider a')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const rawLink = await this.browser.getPlainProperty(anchor, 'href')
+                const title = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(neonime_url, '')
 
                 animeList.push({
@@ -105,7 +83,7 @@ class Neonime {
      */
     async episodes(link) {
         const episodes = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -114,16 +92,14 @@ class Neonime {
                 return this.getBatchLinks(link)
             }
 
-            await page.goto(neonime_url + link, {
-                timeout: 60000
-            })
+            await page.goto(neonime_url + link)
 
             await page.waitForSelector('div.episodiotitle')
             const episodios = await page.$$('div.episodiotitle')
             await Util.asyncForEach(episodios, async episodio => {
                 const anchor = await episodio.$('a')
-                const episode = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const rawLink = await this.browser.getPlainProperty(anchor, 'href')
+                const episode = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(neonime_url, '')
 
                 episodes.push({
@@ -162,13 +138,11 @@ class Neonime {
      */
     async getLinks(link) {
         const links = []
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(neonime_url + link, {
-                timeout: 60000
-            })
+            await page.goto(neonime_url + link)
 
             await page.waitForSelector('div.central > div > ul > ul')
             const list = await page.$$('div > ul > ul')
@@ -176,8 +150,8 @@ class Neonime {
                 const quality = await item.$eval('label', node => node.innerText)
                 const anchors = await item.$$('a')
                 await Util.asyncForEach(anchors, async anchor => {
-                    const host = await this.browser.getPlainProperty(anchor, 'innerText')
-                    const link = await this.browser.getPlainProperty(anchor, 'href')
+                    const host = await Browser.getPlainProperty(anchor, 'innerText')
+                    const link = await Browser.getPlainProperty(anchor, 'href')
 
                     if (link != neonime_url && !host.toLowerCase().includes('proses')) {
                         links.push({
@@ -200,70 +174,82 @@ class Neonime {
     }
 
     /**
+     * Parse batch episode page that using info1 element.
+     * @param page episode page instance.
+     */
+    async parseInfoOne(page) {
+        const links = []
+        await page.waitForSelector('p[data-id="info1"]').catch(async e => {
+            await page.close()
+
+            return Handler.error(e)
+        })
+        const smokeurls = await page.$$('p[data-id="info1"]')
+        await Util.asyncForEach(smokeurls, async smokeurl => {
+            const strong = await smokeurl.$('strong')
+            if (strong && strong != null) {
+                const quality = await smokeurl.$eval('strong', node => node.innerText)
+                const anchors = await smokeurl.$$('a')
+                await Util.asyncForEach(anchors, async anchor => {
+                    const host = await Browser.getPlainProperty(anchor, 'innerText')
+                    const link = await Browser.getPlainProperty(anchor, 'href')
+
+                    links.push({
+                        quality: quality,
+                        host: host,
+                        link: link
+                    })
+                })
+            }
+        })
+
+        return links
+    }
+
+    /**
+     * Parse batch episode page that using smokeurl element.
+     * @param page episode page instance.
+     */
+    async parseSmokeUrl(page) {
+        const links = []
+        const smokeurls = await page.$$('.smokeurl')
+        await Util.asyncForEach(smokeurls, async smokeurl => {
+            const quality = await smokeurl.$eval('strong', node => node.innerText)
+            const anchors = await smokeurl.$$('a')
+            await Util.asyncForEach(anchors, async anchor => {
+                const host = await Browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
+
+                links.push({
+                    quality: quality,
+                    host: host,
+                    link: link
+                })
+            })
+        })
+
+        return links
+    }
+
+    /**
      * Parse batch episode page and get download links.
      * @param link episode page.
      */
     async getBatchLinks(link) {
-        const links = []
-        let info1 = false
-        const page = await this.browser.newOptimizedPage()
+        let isInfoOne = false
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(neonime_url + link, {
-                timeout: 60000
-            })
-
+            await page.goto(neonime_url + link)
             
             await page.waitForSelector('.smokeurl').catch(e => {
                 Handler.error(e)
-                info1 = true
+                isInfoOne = true
             })
 
-            if (!info1) {
-                const smokeurls = await page.$$('.smokeurl')
-                await Util.asyncForEach(smokeurls, async smokeurl => {
-                    const quality = await smokeurl.$eval('strong', node => node.innerText)
-                    const anchors = await smokeurl.$$('a')
-                    await Util.asyncForEach(anchors, async anchor => {
-                        const host = await this.browser.getPlainProperty(anchor, 'innerText')
-                        const link = await this.browser.getPlainProperty(anchor, 'href')
-
-                        links.push({
-                            quality: quality,
-                            host: host,
-                            link: link
-                        })
-                    })
-                })
-            } else {
-                await page.waitForSelector('p[data-id="info1"]').catch(async e => {
-                    await page.close()
-                    
-                    return Handler.error(e)
-                })
-                const smokeurls = await page.$$('p[data-id="info1"]')
-                await Util.asyncForEach(smokeurls, async smokeurl => {
-                    const strong = await smokeurl.$('strong')
-                    if (strong && strong != null) {
-                        const quality = await smokeurl.$eval('strong', node => node.innerText)
-                        const anchors = await smokeurl.$$('a')
-                        await Util.asyncForEach(anchors, async anchor => {
-                            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-                            const link = await this.browser.getPlainProperty(anchor, 'href')
-
-                            links.push({
-                                quality: quality,
-                                host: host,
-                                link: link
-                            })
-                        })
-                    }
-                })
-            }
+            const links = !isInfoOne ? await this.parseSmokeUrl(page) : await this.parseInfoOne(page)
             
-            
-
             await page.close()
 
             return links
@@ -287,12 +273,10 @@ class Neonime {
             }
         }
         
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
-            await page.goto(link, {
-                timeout: 60000
-            })
+            await page.goto(link)
 
             await Util.sleep(6000)
             await page.waitForSelector('a[href="#generate"]')
@@ -301,7 +285,7 @@ class Neonime {
             await Util.sleep(3000)
             await page.click('a#link-download')
             
-            const newPage = await this.newPagePromise(page, this.browser.browser)
+            const newPage = await Browser.newPagePromise(page)
             const url = newPage.url()
             
             await page.close()
@@ -316,4 +300,4 @@ class Neonime {
     }
 }
 
-module.exports = Neonime
+module.exports = new Neonime

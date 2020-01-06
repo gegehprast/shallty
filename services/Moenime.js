@@ -16,9 +16,7 @@ class Moenime {
         const page = await this.browser.newOptimizedPage()
 
         try {
-            await page.goto(moenime_url + '/daftar-anime-baru/', {
-                timeout: 60000
-            })
+            await page.goto(moenime_url + '/daftar-anime-baru/')
 
             await page.waitForSelector('div.tab-content')
             const animeList = await page.$$eval(`div.tab-content #${show} a.nyaalist`, nodes => nodes.map(x => {
@@ -170,11 +168,9 @@ class Moenime {
         try {
             let episodes = {}
             link = decodeURIComponent(link)
-            await page.goto(moenime_url + link, {
-                timeout: 60000
-            })
+            await page.goto(moenime_url + link)
 
-            const tRowsHandle = await this.browser.waitAndGetSelectors(page, 'tr[bgcolor="#eee"]')
+            const tRowsHandle = await this.browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
             await Util.asyncForEach(tRowsHandle, async tRowHandle => {
                 // search for previous sibling table element
                 let tableHandle = await page.evaluateHandle(tRow => {
@@ -220,7 +216,7 @@ class Moenime {
         try {
             const episodes = {}
 
-            const moeDlLinks = await this.browser.waitAndGetSelectors(page, 'div.moe-dl-link')
+            const moeDlLinks = await this.browser.$$waitAndGet(page, 'div.moe-dl-link')
             await Util.asyncForEach(moeDlLinks, async (moeDlLink) => {
                 const quality = await moeDlLink.$eval('div.tombol', nodes => nodes.innerText)
                 if (!quality.toLowerCase().includes('batch')) {
@@ -257,7 +253,7 @@ class Moenime {
         try {
             const episodes = {}
 
-            const tRowsHandle = await this.browser.waitAndGetSelectors(page, 'tr[bgcolor="#eee"]')
+            const tRowsHandle = await this.browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
             await Util.asyncForEach(tRowsHandle, async tRowHandle => {
                 // search for previous sibling tr element
                 let trQualityhandle = await page.evaluateHandle(tRow => {
@@ -289,9 +285,7 @@ class Moenime {
 
         try {
             const anime = []
-            await page.goto(moenime_url + '/tag/ongoing/', {
-                timeout: 60000
-            })
+            await page.goto(moenime_url + '/tag/ongoing/')
 
             await page.waitForSelector('article')
             const articles = await page.$$('article')
@@ -323,13 +317,10 @@ class Moenime {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 60000
-            })
+            await page.goto(link)
 
             await Promise.all([
                 page.waitForNavigation({
-                    timeout: 60000,
                     waitUntil: 'domcontentloaded'
                 }),
                 page.$eval('#srl > form', form => form.submit()),
