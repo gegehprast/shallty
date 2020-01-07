@@ -98,6 +98,7 @@ describe('oploverz', function () {
                     expect(res.body.data).to.be.an('array')
                     res.body.data.forEach(item => {
                         expect(item).to.be.an('object')
+                        expect(item).to.has.property('episode')
                         expect(item).to.has.property('title')
                         expect(item).to.has.property('link')
                         expect(item).to.has.property('raw_link')

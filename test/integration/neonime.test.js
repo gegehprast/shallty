@@ -9,33 +9,6 @@ describe('neonime', function () {
         setTimeout(done, 3000)
     })
 
-    describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title, link, raw link, and is batch', function (done) {
-            this.timeout(60000)
-            supertest(app).get('/api/neonime/animeList')
-                .expect(200)
-                .expect(function (res) {
-                    expect(res.body.status).to.equal(200)
-                    expect(res.body.message).to.equal('Success')
-                    expect(res.body.data).to.be.an('array')
-                    res.body.data.forEach(item => {
-                        expect(item).to.be.an('object')
-                        expect(item).to.has.property('title')
-                        expect(item).to.has.property('link')
-                        expect(item).to.has.property('raw_link')
-                        expect(item).to.has.property('is_batch')
-                    })
-                })
-                .end(function (err, res) {
-                    if (err) {
-                        console.log(res.body)
-                        return done(err)
-                    }
-                    done()
-                })
-        })
-    })
-
     describe('episodes', function () {
         it('should return 200 and an array of episodes which has episode, link, and raw link', function (done) {
             this.timeout(60000)

@@ -3,25 +3,6 @@ const expect = require('chai').expect
 const Browser = require('../../services/Browser')
 
 describe('neonime', function () {
-    describe('anime list', function () {
-        it('should return an array of anime list which has title, link, raw link, and is batch', async function () {
-            this.timeout(60000)
-            await Browser.init()
-            const Neonime = require('../../services/Neonime')
-            const list = await Neonime.animeList()
-
-            expect(list).to.be.an('array')
-            expect(list).to.not.be.empty
-            list.forEach(item => {
-                expect(item).to.be.an('object')
-                expect(item).to.has.property('title')
-                expect(item).to.has.property('link')
-                expect(item).to.has.property('raw_link')
-                expect(item).to.has.property('is_batch')
-            })
-        })
-    })
-
     describe('episodes', function () {
         it('should return an array of episodes which has episode, link, and raw link', async function () {
             this.timeout(60000)

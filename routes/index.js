@@ -27,7 +27,7 @@ route.get('/oploverz/shortlink', OploverzController.shortlink)
 
 route.get('/kusonime/animeList', KusonimeController.animeList)
 route.get('/kusonime/links', KusonimeController.links)
-route.get('/kusonime/newReleases', KusonimeController.homePage)
+route.get('/kusonime/newReleases', KusonimeController.newReleases)
 route.get('/kusonime/shortlink', KusonimeController.shortlink)
 
 route.get('/moenime/animeList', MoenimeController.animeList)

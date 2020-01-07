@@ -90,26 +90,26 @@ class Browser {
      * Wait for a selector and then return one element
      * of that selector.
      * 
-     * @param {Object} element Element handle
+     * @param {Object} page Browser page
      * @param {String} selector Selector
      */
-    async $waitAndGet(element, selector) {
-        await element.waitForSelector(selector)
+    async $waitAndGet(page, selector) {
+        await page.waitForSelector(selector)
 
-        return await element.$(selector)
+        return await page.$(selector)
     }
 
     /**
      * Wait for a selector and then return all element
      * of that selector.
      * 
-     * @param {Object} element Element handle
+     * @param {Object} page Browser page
      * @param {String} selector Selector
      */
-    async $$waitAndGet(element, selector) {
-        await element.waitForSelector(selector)
+    async $$waitAndGet(page, selector) {
+        await page.waitForSelector(selector)
 
-        return await element.$$(selector)
+        return await page.$$(selector)
     }
 
     /**
