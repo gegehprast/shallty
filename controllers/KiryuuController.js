@@ -1,5 +1,4 @@
-const Browser = require('../services/Browser')
-const Kiryuu = new (require('../services/Kiryuu'))(Browser)
+const Kiryuu = require('../services/Kiryuu')
 
 class KiryuuController {
     async mangaList(req, res) {

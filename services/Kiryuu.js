@@ -1,18 +1,15 @@
+const Browser = require('../services/Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const { kiryuu_url } = require('../config.json')
 
 class Kiryuu {
-    constructor(browser) {
-        this.browser = browser
-    }
-    
     /**
      * Get manga list from manga list page.
      *
      */
     async getMangaList() {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url + '/manga/?list', {
@@ -24,8 +21,8 @@ class Kiryuu {
             const soraList = await page.$('div.soralist')
             const anchors = await soraList.$$('a.series')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const title = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
                 mangaList.push({
                     title: title,
@@ -49,7 +46,7 @@ class Kiryuu {
      * @param {String} link Manga page url.
      */
     async getMangaInfo(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
         let cover = null
 
         try {
@@ -142,7 +139,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -155,8 +152,8 @@ class Kiryuu {
             const bixbox = await page.$('div.bixbox.bxcl')
             const anchors = await bixbox.$$('span.lchx > a')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const chapter = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const chapter = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
                 if (chapter && chapter !== '') {
                     chapters.push({
@@ -188,7 +185,7 @@ class Kiryuu {
                 message: 'Browser not ready.'
             }
 
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -212,7 +209,7 @@ class Kiryuu {
             }
 
             await Util.asyncForEach(imgs, async (img, index) => {
-                const src = await this.browser.getPlainProperty(img, 'src')
+                const src = await Browser.getPlainProperty(img, 'src')
 
                 images.push({
                     index: index,
@@ -238,7 +235,7 @@ class Kiryuu {
      *
      */
     async getNewReleases() {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url, {
@@ -284,4 +281,4 @@ class Kiryuu {
     }
 }
 
-module.exports = Kiryuu
+module.exports = new Kiryuu
