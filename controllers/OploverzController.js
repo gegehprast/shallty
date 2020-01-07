@@ -18,7 +18,7 @@ class OploverzController {
     }
 
     async newReleases(req, res) {
-        const anime = await Oploverz.checkOnGoingPage()
+        const anime = await Oploverz.newReleases()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -50,7 +50,7 @@ class OploverzController {
     }
 
     async links(req, res) {
-        const links = await Oploverz.getDownloadLinks(req.query.link)
+        const links = await Oploverz.links(req.query.link)
         if (links.error) {
             res.status(500).json({
                 status: 500,

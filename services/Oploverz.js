@@ -7,7 +7,7 @@ class Oploverz {
     /**
      * Check on going page and get latest released episodes.
      */
-    async checkOnGoingPage() {
+    async newReleases() {
         const anime = []
         const page = await Browser.newOptimizedPage()
 
@@ -22,9 +22,9 @@ class Oploverz {
             const list = await page.$$('#content > div.postbody > div.boxed > div.right > div.lts > ul > li')
             await Util.asyncForEach(list, async item => {
                 const anchor = await item.$('div.dtl > h2 > a')
-                const link = await Browser.getPlainProperty(anchor, 'href')
+                const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const title = await Browser.getPlainProperty(anchor, 'innerText')
-                const matchEps = link.match(/(\d+)(?=-subtitle-indonesia)/)
+                const matchEps = rawLink.match(/(\d+)(?=-subtitle-indonesia)/)
                 if (matchEps && matchEps != null) {
                     const numeral = matchEps[0].length == 1 ? '0' + matchEps[0] : matchEps[0]
                     const matchTitles = title.match(/(.+)(?= \d+)/, '')
@@ -33,7 +33,8 @@ class Oploverz {
                         anime.push({
                             episode: numeral,
                             title: parsedTitle,
-                            link: link
+                            raw_link: rawLink,
+                            link: rawLink.replace(oploverz_url, '')
                         })
                     }
                 }
@@ -91,12 +92,8 @@ class Oploverz {
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 300000
-            })
-            
+            await page.goto(oploverz_url + link)
             await Util.sleep(15000)
-
             const list = await page.$$('#content > div.postbody > div > div.episodelist > ul > li')
             await Util.asyncForEach(list, async (item, index) => {
                 if (index >= 30) {
@@ -105,11 +102,13 @@ class Oploverz {
                 
                 const anchor = await item.$('span.leftoff > a')
                 const episode = await Browser.getPlainProperty(anchor, 'innerText')
-                const link = await Browser.getPlainProperty(anchor, 'href')
+                const rawLink = await Browser.getPlainProperty(anchor, 'href')
+                const link = rawLink.replace(oploverz_url, '')
 
                 episodes.push({
                     episode: episode,
-                    link: link
+                    link: link,
+                    raw_link: rawLink
                 })
             })
 
@@ -128,15 +127,13 @@ class Oploverz {
      * Parse download links from episode page.
      * @param link episode page.
      */
-    async getDownloadLinks(link) {
+    async links(link) {
         const page = await Browser.newOptimizedPage()
         const downloadLinks = []
 
         try {
             link = decodeURIComponent(link)
-            await page.goto(link, {
-                timeout: 300000
-            })
+            await page.goto(oploverz_url + link)
 
             await Util.sleep(15000)
             
@@ -183,15 +180,15 @@ class Oploverz {
         try {
             await page.goto(link)
 
-            await Util.sleep(7000)
+            await Util.sleep(9000)
             await page.click('#generater')
-            await Util.sleep(7000)
+            await Util.sleep(9000)
             await page.click('#showlink')
             
             const newPage = await Browser.newTabPagePromise(page)
-            await Util.sleep(7000)
+            await Util.sleep(9000)
             await newPage.click('#generater')
-            await Util.sleep(7000)
+            await Util.sleep(9000)
             await newPage.click('#showlink')
 
             const finalPage = await Browser.newTabPagePromise(newPage)
