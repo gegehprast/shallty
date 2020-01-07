@@ -1,5 +1,4 @@
-const Browser = require('../services/Browser')
-const Moenime = new (require('../services/Moenime'))(Browser)
+const Moenime = require('../fansubs/Moenime')
 
 class MoenimeController {
     async animeList(req, res) {

@@ -1,13 +1,9 @@
-const Util = require('../utils/utils')
+const Browser = require('../Browser')
 const Handler = require('../exceptions/Handler')
 
-class Shortlink {
-    constructor(browser) {
-        this.browser = browser
-    }
-
-    async teknoku(link) {
-        const page = await this.browser.newOptimizedPage()
+class Teknoku {
+    async parse(link) {
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(link)
@@ -39,4 +35,4 @@ class Shortlink {
     }
 }
 
-module.exports = new Shortlink
+module.exports = new Teknoku

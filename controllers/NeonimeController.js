@@ -1,4 +1,4 @@
-const Neonime = require('../services/Neonime')
+const Neonime = require('../fansubs/Neonime')
 
 class NeonimeController {
     async newReleases(req, res) {

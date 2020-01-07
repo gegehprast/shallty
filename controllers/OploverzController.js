@@ -1,4 +1,4 @@
-const Oploverz = require('../services/Oploverz')
+const Oploverz = require('../fansubs/Oploverz')
 
 class OploverzController {
     async animeList(req, res) {

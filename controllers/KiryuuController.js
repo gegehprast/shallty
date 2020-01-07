@@ -1,4 +1,4 @@
-const Kiryuu = require('../services/Kiryuu')
+const Kiryuu = require('../fantls/Kiryuu')
 
 class KiryuuController {
     async mangaList(req, res) {

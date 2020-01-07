@@ -1,19 +1,16 @@
+const Browser = require('../Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const { moenime_url } = require('../config.json')
 
 class Moenime {
-    constructor(browser) {
-        this.browser = browser
-    }
-
     /**
      * Get anime list from anime list page.
      * 
      * @param {String} show Show type, could be: movie, ongoing or, all.
      */
     async animeList(show = 'all') {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(moenime_url + '/daftar-anime-baru/')
@@ -54,12 +51,12 @@ class Moenime {
 
         const alpha = matches[0].replace(/\s|-/g, '_').toLowerCase()
         const qualityHandle = await page.evaluateHandle(tRow => tRow.previousElementSibling, tRow)
-        const quality = await this.browser.getPlainProperty(qualityHandle, 'innerText')
+        const quality = await Browser.getPlainProperty(qualityHandle, 'innerText')
 
         const anchors = await tRow.$$('a')
         await Util.asyncForEach(anchors, async anchor => {
-            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-            const link = await this.browser.getPlainProperty(anchor, 'href')
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: quality,
@@ -91,8 +88,8 @@ class Moenime {
         
         const dlLinkAnchors = await dlLinkRow.$$('a')
         await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-            const link = await this.browser.getPlainProperty(anchor, 'href')
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: `${quality.split(' — ')[1]} - ${size}`,
@@ -118,8 +115,8 @@ class Moenime {
         const dlLinkAnchors = await episodeDiv.$$('tr[bgcolor="#eee"] a')
 
         await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-            const link = await this.browser.getPlainProperty(anchor, 'href')
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: quality.replace(' | ', ' - '),
@@ -140,12 +137,12 @@ class Moenime {
      */
     async parseMovieEpisodeFiles(qualityTrow, filesTRow) {
         const files = []
-        const quality = await this.browser.getPlainProperty(qualityTrow, 'innerText')
+        const quality = await Browser.getPlainProperty(qualityTrow, 'innerText')
 
         const anchors = await filesTRow.$$('a')
         await Util.asyncForEach(anchors, async anchor => {
-            const host = await this.browser.getPlainProperty(anchor, 'innerText')
-            const link = await this.browser.getPlainProperty(anchor, 'href')
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
 
             files.push({
                 quality: quality,
@@ -163,14 +160,14 @@ class Moenime {
      * @param {String} link Anime page url.
      */
     async episodes(link) {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             let episodes = {}
             link = decodeURIComponent(link)
             await page.goto(moenime_url + link)
 
-            const tRowsHandle = await this.browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
+            const tRowsHandle = await Browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
             await Util.asyncForEach(tRowsHandle, async tRowHandle => {
                 // search for previous sibling table element
                 let tableHandle = await page.evaluateHandle(tRow => {
@@ -216,7 +213,7 @@ class Moenime {
         try {
             const episodes = {}
 
-            const moeDlLinks = await this.browser.$$waitAndGet(page, 'div.moe-dl-link')
+            const moeDlLinks = await Browser.$$waitAndGet(page, 'div.moe-dl-link')
             await Util.asyncForEach(moeDlLinks, async (moeDlLink) => {
                 const quality = await moeDlLink.$eval('div.tombol', nodes => nodes.innerText)
                 if (!quality.toLowerCase().includes('batch')) {
@@ -253,7 +250,7 @@ class Moenime {
         try {
             const episodes = {}
 
-            const tRowsHandle = await this.browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
+            const tRowsHandle = await Browser.$$waitAndGet(page, 'tr[bgcolor="#eee"]')
             await Util.asyncForEach(tRowsHandle, async tRowHandle => {
                 // search for previous sibling tr element
                 let trQualityhandle = await page.evaluateHandle(tRow => {
@@ -281,7 +278,7 @@ class Moenime {
      *
      */
     async newReleases() {
-        const page = await this.browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
             const anime = []
@@ -311,38 +308,6 @@ class Moenime {
             return Handler.error(error)
         }
     }
-
-    async teknoku(link) {
-        const page = await this.browser.newOptimizedPage()
-
-        try {
-            link = decodeURIComponent(link)
-            await page.goto(link)
-
-            await Promise.all([
-                page.waitForNavigation({
-                    waitUntil: 'domcontentloaded'
-                }),
-                page.$eval('#srl > form', form => form.submit()),
-            ])
-
-            const fullContent = await page.content()
-            await page.close()
-
-            // eslint-disable-next-line quotes
-            let splitted = fullContent.split("function changeLink(){var a='")
-            splitted = splitted[1].split(';window.open')
-            splitted = splitted[0].replace(/(['"])+/g, '')
-
-            return {
-                url: splitted
-            }
-        } catch (error) {
-            await page.close()
-
-            return Handler.error(error)
-        }
-    }
 }
 
-module.exports = Moenime
+module.exports = new Moenime

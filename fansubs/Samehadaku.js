@@ -1,4 +1,4 @@
-const Browser = require('../services/Browser')
+const Browser = require('../Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const {

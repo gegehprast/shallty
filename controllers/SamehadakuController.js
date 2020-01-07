@@ -1,5 +1,5 @@
-const Samehadaku = require('../services/Samehadaku')
-const SamehadakuEas = require('../services/SamehadakuEas')
+const Samehadaku = require('../fansubs/Samehadaku')
+const SamehadakuEas = require('../fansubs/SamehadakuEas')
 const Util = require('../utils/utils')
 
 class SamehadakuController {

@@ -1,4 +1,4 @@
-const Kusonime = require('../services/Kusonime')
+const Kusonime = require('../fansubs/Kusonime')
 
 class KusonimeController {
     async animeList(req, res) {
