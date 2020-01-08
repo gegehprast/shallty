@@ -64,22 +64,6 @@ class OploverzController {
             })
         }
     }
-
-    async shortlink(req, res) {
-        const hexa = await Oploverz.hexa(req.query.link)
-        if (hexa.error) {
-            res.status(500).json({
-                status: 500,
-                message: hexa.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: hexa
-            })
-        }
-    }
 }
 
 module.exports = new OploverzController

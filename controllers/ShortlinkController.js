@@ -2,7 +2,7 @@ const Shorlink = require('../shortlinks')
 
 class ShortlinkController {
     async index(req, res) {
-        const data = await Shorlink.parse(req.params.shorterner, req.query.link)
+        const data = await Shorlink.parse(req.query.link)
         if (data.error) {
             res.status(500).json({
                 status: 500,

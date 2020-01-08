@@ -64,22 +64,6 @@ class NeonimeController {
             })
         }
     }
-
-    async shortlink(req, res) {
-        const url = await Neonime.hightech(req.query.link)
-        if (url.error) {
-            res.status(500).json({
-                status: 500,
-                message: url.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: url
-            })
-        }
-    }
 }
 
 module.exports = new NeonimeController

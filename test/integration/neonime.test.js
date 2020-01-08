@@ -113,27 +113,4 @@ describe('neonime', function () {
                 })
         })
     })
-
-    describe('shortlink', function () {
-        it('should return 200 and a string of url', function (done) {
-            this.timeout(60000)
-            supertest(app).get('/api/neonime/shortlink?link=https%3A%2F%2Fxmaster.xyz%2F%3Fsitex%3DaHR0cHM6Ly9zZW5kaXQuY2xvdWQvN24zNXZlcGNibXpq')
-                .expect(200)
-                .expect(function (res) {
-                    expect(res.body.status).to.equal(200)
-                    expect(res.body.message).to.equal('Success')
-                    expect(res.body.data).to.be.an('object')
-                    expect(res.body.data).to.has.property('url')
-                    expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://sendit.cloud/7n35vepcbmzj')
-                })
-                .end(function (err, res) {
-                    if (err) {
-                        console.log(res.body)
-                        return done(err)
-                    }
-                    done()
-                })
-        })
-    })
 })

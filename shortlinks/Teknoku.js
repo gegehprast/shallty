@@ -2,6 +2,10 @@ const Browser = require('../Browser')
 const Handler = require('../exceptions/Handler')
 
 class Teknoku {
+    constructor() {
+        this.marker = 'teknoku'
+    }
+
     async parse(link) {
         const page = await Browser.newOptimizedPage()
 

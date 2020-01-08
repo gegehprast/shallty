@@ -84,22 +84,6 @@ class SamehadakuController {
             })
         }
     }
-
-    async shortlink(req, res) {
-        const tetew = await Samehadaku.anjay(req.query.link)
-        if (tetew.error) {
-            res.status(500).json({
-                status: 500,
-                message: tetew.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: tetew
-            })
-        }
-    }
 }
 
 module.exports = new SamehadakuController

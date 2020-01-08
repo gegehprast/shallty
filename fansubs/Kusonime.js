@@ -72,40 +72,33 @@ class Kusonime {
             return Handler.error(error)
         }
     }
-
+    
     /**
-     * Parse download links from smokeurls div.
+     * Parse download links from episode page of a title.
      * 
-     * @param smokeurls ElementHandle.
-     * @param {String} episodeTitle Episode title.
+     * @param {String} link Episode page url.
      */
-    async parseSmokeurl(smokeurls, episodeTitle) {
-        const downloadLinks = []
-        await Util.asyncForEach(smokeurls, async (smokeurl) => {
-            const anchors = await smokeurl.$$('a')
-            const strong = await smokeurl.$('strong')
-            if (typeof strong == 'undefined' || !strong) {
-                return false
-            }
-
-            const quality = await Browser.getPlainProperty(strong, 'innerText')
-
-            await Util.asyncForEach(anchors, async (anchor) => {
-                const host = await Browser.getPlainProperty(anchor, 'innerText')
-                const link = await Browser.getPlainProperty(anchor, 'href')
-
-                const episode = {
-                    'episode': episodeTitle,
-                    'quality': quality,
-                    'host': host,
-                    'link': link
-                }
-
-                downloadLinks.push(episode)
+    async links(link) {
+        const page = await Browser.newOptimizedPage()
+        
+        try {
+            link = decodeURIComponent(link)
+            await page.goto(kusonime_url + link, {
+                timeout: 300000
             })
-        })
+            
+            const dlbod = await Browser.$waitAndGet(page, 'div.dlbod')
+            const smokeddls = await dlbod.$$('div.smokeddl')
+            const downloadLinks = smokeddls.length > 0 ? await this.parseSmokeddl(smokeddls) : await this.parseZeroSmodeddl(dlbod)
+            
+            await page.close()
 
-        return downloadLinks
+            return downloadLinks
+        } catch (error) {
+            await page.close()
+
+            return Handler.error(error)
+        }
     }
 
     /**
@@ -147,139 +140,38 @@ class Kusonime {
     }
 
     /**
-     * Parse download links from episode page of a title.
+     * Parse download links from smokeurls div.
      * 
-     * @param {String} link Episode page url.
+     * @param smokeurls ElementHandle.
+     * @param {String} episodeTitle Episode title.
      */
-    async links(link) {
-        const page = await Browser.newOptimizedPage()
-        
-        try {
-            link = decodeURIComponent(link)
-            await page.goto(kusonime_url + link, {
-                timeout: 300000
-            })
-            
-            const dlbod = await Browser.$waitAndGet(page, 'div.dlbod')
-            const smokeddls = await dlbod.$$('div.smokeddl')
-            const downloadLinks = smokeddls.length > 0 ? await this.parseSmokeddl(smokeddls) : await this.parseZeroSmodeddl(dlbod)
-            
-            await page.close()
-
-            return downloadLinks
-        } catch (error) {
-            await page.close()
-
-            return Handler.error(error)
-        }
-    }
-
-    /**
-     * Parse kepoow and get original download link.
-     * 
-     * @param {String} link kepoow url. 
-     */
-    parseKepoow(params) {
-        return {
-            url: decodeURIComponent(Util.base64Decode(params.r))
-        }
-    }
-
-    /**
-     * Parse sukakesehattan and get original download link.
-     * 
-     * @param {String} link sukakesehattan url.
-     */
-    parseSukakesehattan(params) {
-        return {
-            url: decodeURIComponent(params.url)
-        }
-    }
-
-    /**
-     * Parse jelajahinternet and get original download link.
-     * 
-     * @param {String} link jelajahinternet url. 
-     */
-    parseJelajahinternet(params) {
-        return {
-            url: decodeURIComponent(params.url)
-        }
-    }
-
-    async waitGetLinkElementToShowUp(downloadButton) {
-        let classProp = await Browser.getPlainProperty(downloadButton, 'className')
-        do {
-            await Util.sleep(5000)
-            classProp = await Browser.getPlainProperty(downloadButton, 'className')
-            console.log(classProp)
-        } while (classProp !== 'get-link')
-
-        return true
-    }
-
-    async parseSemawur(link) {
-        const page = await Browser.newPageWithNewContext()
-
-        try {
-            await page.goto(link, {
-                timeout: 300000
-            })
-
-            await page.waitForSelector('#link-view > button')
-            await Promise.all([
-                page.waitForNavigation({
-                    timeout: 0,
-                    waitUntil: 'networkidle2'
-                }),
-                page.click('#link-view > button')
-            ])
-            await page.waitForSelector('a.get-link')
-            await Util.sleep(5000)
-            const downloadButton = await page.$('a.get-link')
-            await this.waitGetLinkElementToShowUp(downloadButton)
-            const downloadLinks = await Browser.getPlainProperty(downloadButton, 'href')
-
-            await Browser.closePage(page)
-
-            return {
-                url: downloadLinks
+    async parseSmokeurl(smokeurls, episodeTitle) {
+        const downloadLinks = []
+        await Util.asyncForEach(smokeurls, async (smokeurl) => {
+            const anchors = await smokeurl.$$('a')
+            const strong = await smokeurl.$('strong')
+            if (typeof strong == 'undefined' || !strong) {
+                return false
             }
-        } catch (error) {
-            await page.close()
 
-            return Handler.error(error)
-        }
-    }
+            const quality = await Browser.getPlainProperty(strong, 'innerText')
 
-    /**
-     * Proceed semawur to get original download link.
-     * 
-     * @param {String} link URL decoded semawur url.
-     */
-    async semrawut(link) {
-        link = decodeURIComponent(link)
-        const params = Util.getAllUrlParams(link)
+            await Util.asyncForEach(anchors, async (anchor) => {
+                const host = await Browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
-        if (link.includes('kepoow.me')) {
-            return this.parseKepoow(params)
-        }
+                const episode = {
+                    'episode': episodeTitle,
+                    'quality': quality,
+                    'host': host,
+                    'link': link
+                }
 
-        if (link.includes('sukakesehattan.')) {
-            return this.parseSukakesehattan(params)
-        }
+                downloadLinks.push(episode)
+            })
+        })
 
-        if (link.includes('jelajahinternet.')) {
-            return this.parseJelajahinternet(params)
-        }
-
-        if (Object.entries(params).length > 0 && params.url) {
-            return {
-                url: decodeURIComponent(params.url).replace(/\++/g, ' ')
-            }
-        }
-        
-        return await this.parseSemawur(link)
+        return downloadLinks
     }
 }
 

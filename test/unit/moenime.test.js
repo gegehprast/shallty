@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
 const expect = require('chai').expect
-const Browser = require('../../services/Browser')
+const Browser = require('../../Browser')
 
 describe('moenime', function () {
     describe('anime list', function() {
         it('should return an array of anime list with title and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../services/Moenime')
+            const Moenime = require('../../fansubs/Moenime')
             const list = await Moenime.animeList()
 
             expect(list).to.be.an('array')
@@ -24,7 +24,7 @@ describe('moenime', function () {
         it('should return an object which has array of episodes each with its own quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../services/Moenime')
+            const Moenime = require('../../fansubs/Moenime')
             const episodes = await Moenime.episodes('%2Fabsolute-duo-sub-indo%2F')
 
             expect(episodes).to.be.an('object')
@@ -47,7 +47,7 @@ describe('moenime', function () {
         it('should return an array of anime list with episode, title, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../services/Moenime')
+            const Moenime = require('../../fansubs/Moenime')
             const list = await Moenime.newReleases()
 
             expect(list).to.be.an('array')

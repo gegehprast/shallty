@@ -48,22 +48,6 @@ class KusonimeController {
             })
         }
     }
-
-    async shortlink(req, res) {
-        const semrawut = await Kusonime.semrawut(req.query.link)
-        if (semrawut.error) {
-            res.status(500).json({
-                status: 500,
-                message: semrawut.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: semrawut
-            })
-        }
-    }
 }
 
 module.exports = new KusonimeController

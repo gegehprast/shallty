@@ -259,46 +259,6 @@ class Neonime {
 
         return links
     }
-
-    /**
-     * Parse high tech.
-     * @param link anime page.
-     */
-    async hightech(link) {
-        link = decodeURIComponent(link)
-        const params = Util.getAllUrlParams(link)
-        if (params.sitex) {
-            return {
-                url: Util.base64Decode(params.sitex)
-            }
-        }
-        
-        const page = await Browser.newOptimizedPage()
-
-        try {
-            await page.goto(link)
-
-            await Util.sleep(6000)
-            await page.waitForSelector('a[href="#generate"]')
-            await page.click('a[href="#generate"]')
-            await page.waitForSelector('a#link-download')
-            await Util.sleep(3000)
-            await page.click('a#link-download')
-            
-            const newPage = await Browser.newTabPagePromise(page)
-            await Util.sleep(2000)
-            const url = newPage.url()
-            
-            await page.close()
-            await newPage.close()
-
-            return {url: url}
-        } catch (error) {
-            await page.close()
-
-            return Handler.error(error)
-        }
-    }
 }
 
 module.exports = new Neonime
