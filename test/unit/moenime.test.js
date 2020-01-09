@@ -4,7 +4,7 @@ const Browser = require('../../Browser')
 
 describe('moenime', function () {
     describe('anime list', function() {
-        it('should return an array of anime list with title and link', async function () {
+        it('should return an array of anime list with title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
             const Moenime = require('../../fansubs/Moenime')
@@ -14,8 +14,9 @@ describe('moenime', function () {
             expect(list).to.not.be.empty
             list.forEach(anime => {
                 expect(anime).to.be.an('object')
-                expect(anime).to.has.property('link')
                 expect(anime).to.has.property('title')
+                expect(anime).to.has.property('link')
+                expect(anime).to.has.property('raw_link')
             })
         })
     })
@@ -44,7 +45,7 @@ describe('moenime', function () {
     })
 
     describe('new releases', function () {
-        it('should return an array of anime list with episode, title, and link', async function () {
+        it('should return an array of anime list with episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
             const Moenime = require('../../fansubs/Moenime')
@@ -57,6 +58,7 @@ describe('moenime', function () {
                 expect(anime).to.has.property('episode')
                 expect(anime).to.has.property('title')
                 expect(anime).to.has.property('link')
+                expect(anime).to.has.property('raw_link')
             })
         })
     })

@@ -14,9 +14,8 @@ class Neonime {
         try {
             await page.goto(neonime_url + '/episode/')
 
-            await page.waitForSelector('table.list')
-            const tRows = await page.$$('table.list tbody > tr')
-            await Util.asyncForEach(tRows, async trow => {
+            const tRows = await Browser.$$waitAndGet(page, 'table.list tbody > tr')
+            await Util.asyncForEach(tRows, async (trow) => {
                 const anchor = await trow.$('td.bb > a')
                 const text = await Browser.getPlainProperty(anchor, 'innerText')
                 const link = await Browser.getPlainProperty(anchor, 'href')

@@ -10,7 +10,7 @@ describe('kusonime', function () {
     })
 
     describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title and link', function (done) {
+        it('should return 200 and an array of anime list which has title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/kusonime/animeList')
                 .expect(200)
@@ -62,7 +62,7 @@ describe('kusonime', function () {
     })
 
     describe('new releases', function () {
-        it('should return 200 and an array of episodes which has episode, title, and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/kusonime/newReleases')
                 .expect(200)

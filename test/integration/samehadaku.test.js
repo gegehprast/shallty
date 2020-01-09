@@ -10,7 +10,7 @@ describe('samehadaku', function () {
     })
 
     describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title and link', function (done) {
+        it('should return 200 and an array of anime list which has title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/samehadaku/animeList')
                 .expect(200)
@@ -36,7 +36,7 @@ describe('samehadaku', function () {
     })
 
     describe('episodes', function () {
-        it('should return 200 and an array of episodes which has episode and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/samehadaku/episodes?link=%2Fanime%2Fgegege-no-kitarou-2018%2F')
                 .expect(200)
@@ -89,7 +89,7 @@ describe('samehadaku', function () {
     })
 
     describe('new releases', function () {
-        it('should return 200 and an array of episodes which has episode, title, and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/samehadaku/newReleases')
                 .expect(200)
@@ -102,6 +102,7 @@ describe('samehadaku', function () {
                         expect(item).to.has.property('episode')
                         expect(item).to.has.property('title')
                         expect(item).to.has.property('link')
+                        expect(item).to.has.property('raw_link')
                     })
                 })
                 .end(function (err, res) {

@@ -89,7 +89,7 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://drive.google.com/file/d/1eoR2pnJpuygsi8nwOlcft8jL502ppMiE/view')
+                    expect(res.body.data.url).to.include('1eoR2pnJpuygsi8nwOlcft8jL502ppMiE')
                 })
                 .end(function (err, res) {
                     if (err) {

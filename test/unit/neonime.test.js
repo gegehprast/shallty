@@ -55,7 +55,7 @@ describe('neonime', function () {
     })
 
     describe('new releases', function () {
-        it('should return an array of episodes which has episode, title, and link', async function () {
+        it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
             const Neonime = require('../../fansubs/Neonime')

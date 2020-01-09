@@ -51,7 +51,7 @@ describe('shortlink', function () {
             expect(data).to.be.an('object')
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
-            expect(data.url).to.equal('https://www110.zippyshare.com/v/7dqelZac/file.html')
+            expect(data.url).to.include('zippyshare.com')
         })
     })
 

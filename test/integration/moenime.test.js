@@ -10,7 +10,7 @@ describe('moenime', function () {
     })
     
     describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title and link', function (done) {
+        it('should return 200 and an array of anime list which has title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/moenime/animeList')
                 .expect(200)
@@ -22,6 +22,7 @@ describe('moenime', function () {
                         expect(item).to.be.an('object')
                         expect(item).to.has.property('link')
                         expect(item).to.has.property('title')
+                        expect(item).to.has.property('raw_link')
                     })
                 })
                 .end(function(err, res) {
@@ -63,7 +64,7 @@ describe('moenime', function () {
     })
 
     describe('new releases', function () {
-        it('should return 200 and an array of episodes which has episode, title, and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/moenime/newReleases')
                 .expect(200)
@@ -76,6 +77,7 @@ describe('moenime', function () {
                         expect(item).to.has.property('episode')
                         expect(item).to.has.property('title')
                         expect(item).to.has.property('link')
+                        expect(item).to.has.property('raw_link')
                     })
                 })
                 .end(function(err, res) {

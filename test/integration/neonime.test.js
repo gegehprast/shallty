@@ -88,7 +88,7 @@ describe('neonime', function () {
     })
 
     describe('new releases', function () {
-        it('should return 200 and an array of episodes which has episode, title, and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/neonime/newReleases')
                 .expect(200)

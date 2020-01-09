@@ -4,7 +4,7 @@ const Browser = require('../../Browser')
 
 describe('oploverz', function () {
     describe('anime list', function () {
-        it('should return an array of anime list which has title, link, raw link, and is batch', async function () {
+        it('should return an array of anime list which has title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
             const Oploverz = require('../../fansubs/Oploverz')
@@ -56,7 +56,7 @@ describe('oploverz', function () {
     })
 
     describe('new releases', function () {
-        it('should return an array of episodes which has episode, title, and link', async function () {
+        it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
             const Oploverz = require('../../fansubs/Oploverz')

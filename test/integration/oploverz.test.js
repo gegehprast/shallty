@@ -10,7 +10,7 @@ describe('oploverz', function () {
     })
 
     describe('anime list', function () {
-        it('should return 200 and an array of anime list which has title and link', function (done) {
+        it('should return 200 and an array of anime list which has title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/oploverz/animeList')
                 .expect(200)
@@ -36,7 +36,7 @@ describe('oploverz', function () {
     })
 
     describe('episodes', function () {
-        it('should return 200 and an array of episodes which has episode and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/oploverz/episodes?link=%2Fseries%2F3d-kanojo-real-girl-s2%2F')
                 .expect(200)
@@ -88,7 +88,7 @@ describe('oploverz', function () {
     })
 
     describe('new releases', function () {
-        it('should return 200 and an array of episodes which has episode, title, and link', function (done) {
+        it('should return 200 and an array of episodes which has episode, title, link, and raw link', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/oploverz/newReleases')
                 .expect(200)

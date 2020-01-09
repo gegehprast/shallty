@@ -13,145 +13,29 @@ class Moenime {
         const page = await Browser.newOptimizedPage()
 
         try {
+            const anime = []
             await page.goto(moenime_url + '/daftar-anime-baru/')
 
-            await page.waitForSelector('div.tab-content')
-            const animeList = await page.$$eval(`div.tab-content #${show} a.nyaalist`, nodes => nodes.map(x => {
-                const title = x.innerText
-                const link = x.href
+            const nyaalist = await Browser.$$waitAndGet(page, `div.tab-content #${show} a.nyaalist`)
+            await Util.asyncForEach(nyaalist, async (anchor) => {
+                const title = await Browser.getPlainProperty(anchor, 'innerText')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
-                return {
-                    link: link,
-                    title: title
-                }
-            }))
+                anime.push({
+                    title: title,
+                    link: link.replace(moenime_url, ''),
+                    raw_link: link
+                })
+            })
+            
             await page.close()
 
-            return animeList
+            return anime
         } catch (error) {
             await page.close()
 
             return Handler.error(error)
         }
-    }
-
-    /**
-     * Parse files of an episode.
-     * 
-     * @param {ElementHandle} page ElementHandle.
-     * @param {ElementHandle} table ElementHandle.
-     * @param {ElementHandle} tRow ElementHandle.
-     */
-    async parseOngoingEpisodeFiles(page, table, tRow) {
-        const files = []
-        let episode = await table.$eval('center', node => node.innerText)
-        const matches = episode.match(/Episode ([0-9])+/g)
-        if (!matches)
-            return {}
-
-        const alpha = matches[0].replace(/\s|-/g, '_').toLowerCase()
-        const qualityHandle = await page.evaluateHandle(tRow => tRow.previousElementSibling, tRow)
-        const quality = await Browser.getPlainProperty(qualityHandle, 'innerText')
-
-        const anchors = await tRow.$$('a')
-        await Util.asyncForEach(anchors, async anchor => {
-            const host = await Browser.getPlainProperty(anchor, 'innerText')
-            const link = await Browser.getPlainProperty(anchor, 'href')
-
-            files.push({
-                quality: quality,
-                host: host,
-                link: link
-            })
-        })
-
-        return {
-            alpha: alpha,
-            files: files
-        }
-    }
-
-    /**
-     * Parse files of a completed episode.
-     * 
-     * @param {String} quality Episode quality.
-     * @param {ElementHandle} episodeDiv ElementHandle.
-     * @param {ElementHandle} dlLinkRow ElementHandle.
-     */
-    async parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRow) {
-        const files = []
-        const episode = await episodeDiv.$eval('td', node => node.innerText)
-
-        const episodeSplit = episode.split(' — ')
-        const alpha = episodeSplit[0].replace(/\s|-/g, '_').toLowerCase()
-        const size = episodeSplit[1]
-        
-        const dlLinkAnchors = await dlLinkRow.$$('a')
-        await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await Browser.getPlainProperty(anchor, 'innerText')
-            const link = await Browser.getPlainProperty(anchor, 'href')
-
-            files.push({
-                quality: `${quality.split(' — ')[1]} - ${size}`,
-                host: host,
-                link: link
-            })
-        })
-
-        return {
-            alpha: alpha,
-            files: files
-        }
-    }
-
-    /**
-     * Parse files of a batch episode.
-     * 
-     * @param {ElementHandle} episodeDiv ElementHandle.
-     */
-    async parseBatchEpisodeFiles(episodeDiv) {
-        const files = []
-        const quality = await episodeDiv.$eval('tr:not([bgcolor="#eee"]', node => node.innerText)
-        const dlLinkAnchors = await episodeDiv.$$('tr[bgcolor="#eee"] a')
-
-        await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
-            const host = await Browser.getPlainProperty(anchor, 'innerText')
-            const link = await Browser.getPlainProperty(anchor, 'href')
-
-            files.push({
-                quality: quality.replace(' | ', ' - '),
-                host: host,
-                link: link
-            })
-        })
-
-        return files
-    }
-
-    /**
-     * Parse files of a completed episode.
-     * 
-     * @param {String} quality Episode quality.
-     * @param {ElementHandle} episodeDiv ElementHandle.
-     * @param {ElementHandle} dlLinkRow ElementHandle.
-     */
-    async parseMovieEpisodeFiles(qualityTrow, filesTRow) {
-        const files = []
-        const quality = await Browser.getPlainProperty(qualityTrow, 'innerText')
-
-        const anchors = await filesTRow.$$('a')
-        await Util.asyncForEach(anchors, async anchor => {
-            const host = await Browser.getPlainProperty(anchor, 'innerText')
-            const link = await Browser.getPlainProperty(anchor, 'href')
-
-            files.push({
-                quality: quality,
-                host: host,
-                link: link
-            })
-        })
-
-        return files
     }
 
     /**
@@ -295,7 +179,8 @@ class Moenime {
                 anime.push({
                     episode: episode.split(' ')[1],
                     title: info.title,
-                    link: info.link.replace(moenime_url, '').replace(/\/+$/, '')
+                    link: info.link.replace(moenime_url, '').replace(/\/+$/, ''),
+                    raw_link: info.link
                 })
             })
 
@@ -307,6 +192,125 @@ class Moenime {
 
             return Handler.error(error)
         }
+    }
+
+    /**
+     * Parse files of an episode.
+     * 
+     * @param {ElementHandle} page ElementHandle.
+     * @param {ElementHandle} table ElementHandle.
+     * @param {ElementHandle} tRow ElementHandle.
+     */
+    async parseOngoingEpisodeFiles(page, table, tRow) {
+        const files = []
+        let episode = await table.$eval('center', node => node.innerText)
+        const matches = episode.match(/Episode ([0-9])+/g)
+        if (!matches)
+            return {}
+
+        const alpha = matches[0].replace(/\s|-/g, '_').toLowerCase()
+        const qualityHandle = await page.evaluateHandle(tRow => tRow.previousElementSibling, tRow)
+        const quality = await Browser.getPlainProperty(qualityHandle, 'innerText')
+
+        const anchors = await tRow.$$('a')
+        await Util.asyncForEach(anchors, async anchor => {
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: quality,
+                host: host,
+                link: link
+            })
+        })
+
+        return {
+            alpha: alpha,
+            files: files
+        }
+    }
+
+    /**
+     * Parse files of a completed episode.
+     * 
+     * @param {String} quality Episode quality.
+     * @param {ElementHandle} episodeDiv ElementHandle.
+     * @param {ElementHandle} dlLinkRow ElementHandle.
+     */
+    async parseCompletedEpisodeFiles(quality, episodeDiv, dlLinkRow) {
+        const files = []
+        const episode = await episodeDiv.$eval('td', node => node.innerText)
+
+        const episodeSplit = episode.split(' — ')
+        const alpha = episodeSplit[0].replace(/\s|-/g, '_').toLowerCase()
+        const size = episodeSplit[1]
+        
+        const dlLinkAnchors = await dlLinkRow.$$('a')
+        await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: `${quality.split(' — ')[1]} - ${size}`,
+                host: host,
+                link: link
+            })
+        })
+
+        return {
+            alpha: alpha,
+            files: files
+        }
+    }
+
+    /**
+     * Parse files of a batch episode.
+     * 
+     * @param {ElementHandle} episodeDiv ElementHandle.
+     */
+    async parseBatchEpisodeFiles(episodeDiv) {
+        const files = []
+        const quality = await episodeDiv.$eval('tr:not([bgcolor="#eee"]', node => node.innerText)
+        const dlLinkAnchors = await episodeDiv.$$('tr[bgcolor="#eee"] a')
+
+        await Util.asyncForEach(dlLinkAnchors, async (anchor) => {
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: quality.replace(' | ', ' - '),
+                host: host,
+                link: link
+            })
+        })
+
+        return files
+    }
+
+    /**
+     * Parse files of a completed episode.
+     * 
+     * @param {String} quality Episode quality.
+     * @param {ElementHandle} episodeDiv ElementHandle.
+     * @param {ElementHandle} dlLinkRow ElementHandle.
+     */
+    async parseMovieEpisodeFiles(qualityTrow, filesTRow) {
+        const files = []
+        const quality = await Browser.getPlainProperty(qualityTrow, 'innerText')
+
+        const anchors = await filesTRow.$$('a')
+        await Util.asyncForEach(anchors, async anchor => {
+            const host = await Browser.getPlainProperty(anchor, 'innerText')
+            const link = await Browser.getPlainProperty(anchor, 'href')
+
+            files.push({
+                quality: quality,
+                host: host,
+                link: link
+            })
+        })
+
+        return files
     }
 }
 
