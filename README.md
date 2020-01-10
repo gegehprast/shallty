@@ -28,11 +28,11 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 1. Instal [node.js](https://nodejs.org/en/).
 
-2. Download [rilisan terbaru Shallty](https://github.com/gegehprast/shallty/releases).
+2. Download [rilisan terbaru Shallty](https://github.com/gegehprast/shallty/releases) atau clone repositori ini.
 
 3. Unzip dan masuk ke root direktori lalu jalankan `npm install`.
 
-4. Rename file `config.example.json` menjadi `config.json`.
+4. Ganti nama file `config.example.json` menjadi `config.json`.
 
 5. Sesuaikan `config.json`, misalnya ganti `app_env` menjadi `local` untuk bisa melihat prosesnya secara langsung.
 
