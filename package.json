@@ -12,7 +12,7 @@
     "int-test-filtered": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/ --grep"
   },
   "author": "gegehprast98",
-  "license": "GPL-3.0-only",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/gegehprast/shallty.git"
