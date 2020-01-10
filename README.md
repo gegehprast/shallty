@@ -6,7 +6,26 @@ Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adal
 
 Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggunakan aplikasi ini.
 
+## Fitur
+
+### Anime
+
+- Kusonime
+
+- Moenime
+
+- Neonime
+
+- Oploverz
+
+- Samehadaku
+
+### Manga
+
+- Kiryuu
+
 ## Instalasi
+
 1. Instal [node.js](https://nodejs.org/en/).
 
 2. Download [rilisan terbaru Shallty](https://github.com/gegehprast/shallty/releases).
