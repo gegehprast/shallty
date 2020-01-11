@@ -13,6 +13,12 @@ class Xmaster {
                 url: Util.base64Decode(params.sitex)
             }
         }
+
+        if (params.xyzkl) {
+            return {
+                url: Util.base64Decode(params.xyzkl)
+            }
+        }
     }
 }
 

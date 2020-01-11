@@ -1,3 +1,4 @@
+const Ahexa = require('./Ahexa')
 const Anjay = require('./Anjay')
 const Hexa = require('./Hexa')
 const Hightech = require('./Hightech')
@@ -13,6 +14,7 @@ const Xmaster = require('./Xmaster')
 class Shortlink {
     constructor() {
         this.shorterners = [
+            Ahexa,
             Anjay, 
             Hexa, 
             Hightech, 

@@ -21,14 +21,14 @@ class Hightech {
         try {
             await page.goto(link)
 
-            await Util.sleep(6000)
+            await Util.sleep(8000)
             await page.waitForSelector('a[href="#generate"]')
             await page.click('a[href="#generate"]')
             await page.waitForSelector('a#link-download')
-            await Util.sleep(3000)
+            await Util.sleep(4000)
             await page.click('a#link-download')
 
-            const newPage = await Browser.newTabPagePromise(page)
+            const newPage = await Browser.getNewTabPage(page)
             await Util.sleep(2000)
             const url = newPage.url()
 
