@@ -3,6 +3,10 @@ const expect = require('chai').expect
 const Browser = require('../../Browser')
 
 describe('oploverz', function () {
+    before(function () {
+        this.skip()
+    })
+    
     describe('anime list', function () {
         it('should return an array of anime list which has title, link, and raw link', async function () {
             this.timeout(60000)

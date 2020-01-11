@@ -14,9 +14,3 @@ before_script:
 - echo -e "Host $REMOTE_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 after_success:
 - bash deploy.sh
-after_script:
-- if [ $TRAVIS_BRANCH == "deploy" ]; then
-    bash deploy.sh;
-  else
-    echo "Not deploying, since this branch isn't deploy.";
-  fi

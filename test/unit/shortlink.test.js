@@ -43,6 +43,10 @@ describe('shortlink', function () {
     })
 
     describe('kontenajaib', function () {
+        before(function () {
+            this.skip()
+        })
+
         it('should return an object which has a string url property', async function () {
             this.timeout(60000)
             await Browser.init()
