@@ -1,4 +1,5 @@
 const Util = require('../utils/utils')
+const Handler = require('../exceptions/Handler')
 
 class Xmaster {
     constructor() {
@@ -8,17 +9,21 @@ class Xmaster {
     async parse(link) {
         link = decodeURIComponent(link)
         const params = Util.getAllUrlParams(link)
+        let url = null
+
         if (params.sitex) {
-            return {
-                url: Util.base64Decode(params.sitex)
-            }
+            url = Util.base64Decode(params.sitex)
         }
 
         if (params.xyzkl) {
-            return {
-                url: Util.base64Decode(params.xyzkl)
-            }
+            url = Util.base64Decode(params.xyzkl)
         }
+
+        if (!url) {
+            return Handler.error('Error Xmaster: no paramater')
+        }
+
+        return {url: url}
     }
 }
 
