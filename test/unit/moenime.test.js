@@ -33,7 +33,6 @@ describe('moenime', function () {
             for (let episode in episodes) {
                 if (episodes.hasOwnProperty(episode)) {
                     expect(episodes[episode]).to.be.an('array')
-                    expect(episodes[episode]).to.have.lengthOf(18)
                     episodes[episode].forEach(file => {
                         expect(file).to.has.property('quality')
                         expect(file).to.has.property('host')

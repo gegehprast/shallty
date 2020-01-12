@@ -39,7 +39,7 @@ class Moenime {
     }
 
     /**
-     * Get episodes from ongoing anime page.
+     * Get episodes with links from ongoing anime page.
      * 
      * @param {String} link Anime page url.
      */
