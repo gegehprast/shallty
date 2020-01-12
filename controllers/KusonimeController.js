@@ -1,9 +1,8 @@
-const Browser = require('../services/Browser')
-const Kusonime = require('../services/Kusonime')
+const Kusonime = require('../fansubs/Kusonime')
 
 class KusonimeController {
     async animeList(req, res) {
-        const anime = await new Kusonime(Browser).animeList()
+        const anime = await Kusonime.animeList()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -18,8 +17,8 @@ class KusonimeController {
         }
     }
 
-    async homePage(req, res) {
-        const posts = await new Kusonime(Browser).homePage(req.query.page)
+    async newReleases(req, res) {
+        const posts = await Kusonime.newReleases(req.query.page)
         if (posts.error) {
             res.status(500).json({
                 status: 500,
@@ -34,8 +33,8 @@ class KusonimeController {
         }
     }
 
-    async getDownloadLinks(req, res) {
-        const data = await new Kusonime(Browser).getDownloadLinks(req.query.link)
+    async links(req, res) {
+        const data = await Kusonime.links(req.query.link)
         if (data.error) {
             res.status(500).json({
                 status: 500,
@@ -46,22 +45,6 @@ class KusonimeController {
                 status: 200,
                 message: 'Success',
                 data: data
-            })
-        }
-    }
-
-    async semrawut(req, res) {
-        const semrawut = await new Kusonime(Browser).semrawut(req.query.link)
-        if (semrawut.error) {
-            res.status(500).json({
-                status: 500,
-                message: semrawut.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: semrawut
             })
         }
     }

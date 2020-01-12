@@ -48,6 +48,7 @@ class Util {
      */
     base64Decode(string) {
         const buff = Buffer.from(string, 'base64')
+        
         return buff.toString('ascii')
     }
 

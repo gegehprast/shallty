@@ -20,10 +20,11 @@ class Browser {
     }
 
     /**
-     * Create new disabled asset page.
+     * Create new optimized asset page.
      */
     async newOptimizedPage() {
         const page = await this.browser.newPage()
+        page.setDefaultTimeout(60000)
         await page.setRequestInterception(true)
 
         page.on('request', (req) => {
@@ -46,8 +47,29 @@ class Browser {
         const { browserContextId } = await this.browser._connection.send('Target.createBrowserContext')
         const page = await this.browser._createPageInContext(browserContextId)
         page.browserContextId = browserContextId
+        page.setDefaultTimeout(60000)
+
+        page.on('request', (req) => {
+            if (req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image') {
+                req.abort()
+            } else {
+                req.continue()
+            }
+        })
 
         return page
+    }
+
+    /**
+     * Get new tab page instance.
+     * @param page current page.
+     */
+    async getNewTabPage(page) {
+        const pageTarget = page.target()
+        const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
+        const newPage = await newTarget.page()
+
+        return newPage
     }
 
     /**
@@ -68,26 +90,26 @@ class Browser {
      * Wait for a selector and then return one element
      * of that selector.
      * 
-     * @param {Object} element Element handle
+     * @param {Object} page Browser page
      * @param {String} selector Selector
      */
-    async waitAndGetSelector(element, selector) {
-        await element.waitForSelector(selector)
+    async $waitAndGet(page, selector) {
+        await page.waitForSelector(selector)
 
-        return await element.$(selector)
+        return await page.$(selector)
     }
 
     /**
      * Wait for a selector and then return all element
      * of that selector.
      * 
-     * @param {Object} element Element handle
+     * @param {Object} page Browser page
      * @param {String} selector Selector
      */
-    async waitAndGetSelectors(element, selector) {
-        await element.waitForSelector(selector)
+    async $$waitAndGet(page, selector) {
+        await page.waitForSelector(selector)
 
-        return await element.$$(selector)
+        return await page.$$(selector)
     }
 
     /**

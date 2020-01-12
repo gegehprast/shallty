@@ -1,9 +1,8 @@
-const Browser = require('../services/Browser')
-const Neonime = new (require('../services/Neonime'))(Browser)
+const Neonime = require('../fansubs/Neonime')
 
 class NeonimeController {
-    async checkOnGoingPage(req, res) {
-        const anime = await Neonime.checkOnGoingPage()
+    async newReleases(req, res) {
+        const anime = await Neonime.newReleases()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -34,8 +33,8 @@ class NeonimeController {
         }
     }
 
-    async tvShow(req, res) {
-        const episodes = await Neonime.tvShow(req.query.link)
+    async episodes(req, res) {
+        const episodes = await Neonime.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -50,8 +49,8 @@ class NeonimeController {
         }
     }
 
-    async getBatchEpisodes(req, res) {
-        const episodes = await Neonime.getBatchEpisodes(req.query.link)
+    async links(req, res) {
+        const episodes = await Neonime.links(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -62,38 +61,6 @@ class NeonimeController {
                 status: 200,
                 message: 'Success',
                 data: episodes
-            })
-        }
-    }
-
-    async getEpisodes(req, res) {
-        const episodes = await Neonime.getEpisodes(req.query.link)
-        if (episodes.error) {
-            res.status(500).json({
-                status: 500,
-                message: episodes.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: episodes
-            })
-        }
-    }
-
-    async hightech(req, res) {
-        const url = await Neonime.hightech(req.query.link)
-        if (url.error) {
-            res.status(500).json({
-                status: 500,
-                message: url.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: url
             })
         }
     }

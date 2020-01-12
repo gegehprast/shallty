@@ -1,18 +1,15 @@
+const Browser = require('../Browser')
 const Util = require('../utils/utils')
 const Handler = require('../exceptions/Handler')
 const { kiryuu_url } = require('../config.json')
 
 class Kiryuu {
-    constructor(browser) {
-        this.browser = browser
-    }
-    
     /**
      * Get manga list from manga list page.
      *
      */
-    async getMangaList() {
-        const page = await this.browser.newOptimizedPage()
+    async mangaList() {
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url + '/manga/?list', {
@@ -24,12 +21,13 @@ class Kiryuu {
             const soraList = await page.$('div.soralist')
             const anchors = await soraList.$$('a.series')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const title = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const title = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
                 mangaList.push({
                     title: title,
-                    link: link.replace(kiryuu_url, '')
+                    link: link.replace(kiryuu_url, ''),
+                    raw_link: link
                 })
             })
 
@@ -48,8 +46,8 @@ class Kiryuu {
      * 
      * @param {String} link Manga page url.
      */
-    async getMangaInfo(link) {
-        const page = await this.browser.newOptimizedPage()
+    async mangaInfo(link) {
+        const page = await Browser.newOptimizedPage()
         let cover = null
 
         try {
@@ -135,14 +133,8 @@ class Kiryuu {
      * 
      * @param {String} link Manga page url.
      */
-    async getChapters(link) {
-        if (!this.browser)
-            return {
-                error: true,
-                message: 'Browser not ready.'
-            }
-
-        const page = await this.browser.newOptimizedPage()
+    async chapters(link) {
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -155,13 +147,14 @@ class Kiryuu {
             const bixbox = await page.$('div.bixbox.bxcl')
             const anchors = await bixbox.$$('span.lchx > a')
             await Util.asyncForEach(anchors, async (anchor) => {
-                const chapter = await this.browser.getPlainProperty(anchor, 'innerHTML')
-                const link = await this.browser.getPlainProperty(anchor, 'href')
+                const chapter = await Browser.getPlainProperty(anchor, 'innerHTML')
+                const link = await Browser.getPlainProperty(anchor, 'href')
 
                 if (chapter && chapter !== '') {
                     chapters.push({
                         chapter: chapter.replace(/Chapter /gi, ''),
-                        link: link.replace(kiryuu_url, '')
+                        link: link.replace(kiryuu_url, ''),
+                        raw_link: link
                     })
                 }
             })
@@ -181,14 +174,8 @@ class Kiryuu {
      * 
      * @param {String} link Chapter page url.
      */
-    async getImages(link) {
-        if (!this.browser)
-            return {
-                error: true,
-                message: 'Browser not ready.'
-            }
-
-        const page = await this.browser.newOptimizedPage()
+    async images(link) {
+        const page = await Browser.newOptimizedPage()
 
         try {
             link = decodeURIComponent(kiryuu_url + link)
@@ -212,11 +199,11 @@ class Kiryuu {
             }
 
             await Util.asyncForEach(imgs, async (img, index) => {
-                const src = await this.browser.getPlainProperty(img, 'src')
+                const src = await Browser.getPlainProperty(img, 'src')
 
                 images.push({
                     index: index,
-                    link: src
+                    url: src
                 })
             })
 
@@ -237,8 +224,8 @@ class Kiryuu {
      * Get new releases from home page.
      *
      */
-    async getNewReleases() {
-        const page = await this.browser.newOptimizedPage()
+    async newReleases() {
+        const page = await Browser.newOptimizedPage()
 
         try {
             await page.goto(kiryuu_url, {
@@ -268,8 +255,10 @@ class Kiryuu {
                 releases.push({
                     title: title,
                     title_url: titleLink.replace(kiryuu_url, ''),
+                    raw_title_url: titleLink,
                     chapter: chapter.replace(/Ch. |Ch./gi, ''),
-                    chapter_url: chapterLink.replace(kiryuu_url, '')
+                    chapter_url: chapterLink.replace(kiryuu_url, ''),
+                    raw_chapter_url: chapterLink
                 })
             })
 
@@ -284,4 +273,4 @@ class Kiryuu {
     }
 }
 
-module.exports = Kiryuu
+module.exports = new Kiryuu

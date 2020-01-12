@@ -1,7 +1,7 @@
 const express = require('express')
 const routes = require('./routes')
 const app = express()
-const Browser = require('./services/Browser')
+const Browser = require('./Browser')
 const { app_port } = require('./config.json')
 const runningPort = process.env.PORT || app_port
 
