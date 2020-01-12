@@ -1,10 +1,9 @@
 const Samehadaku = require('../fansubs/Samehadaku')
-const SamehadakuEas = require('../fansubs/SamehadakuEas')
 const Util = require('../utils/utils')
 
 class SamehadakuController {
     async animeList(req, res) {
-        const anime = await SamehadakuEas.animeList()
+        const anime = await Samehadaku.animeList()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -20,7 +19,7 @@ class SamehadakuController {
     }
 
     async episodes(req, res) {
-        const episodes = await SamehadakuEas.episodes(req.query.link)
+        const episodes = await Samehadaku.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -36,14 +35,14 @@ class SamehadakuController {
     }
 
     async newReleases(req, res) {
-        const anime = await SamehadakuEas.newReleases()
-        const animeArr = [], checkOnGoingPageArr = []
+        const anime = await Samehadaku.newReleases()
+        const animeArr = [], checkNewReleases = []
 
         for (let i = 2; i < 8; i++) {
-            checkOnGoingPageArr.push(SamehadakuEas.newReleases(i))
+            checkNewReleases.push(Samehadaku.newReleases(i))
         }
 
-        await Promise.all(checkOnGoingPageArr)
+        await Promise.all(checkNewReleases)
             .then(values => {
                 for (let i = 2; i < 8; i++) {
                     animeArr[i] = values[i - 2].error ? [] : values[i - 2]

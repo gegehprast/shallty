@@ -7,7 +7,7 @@ describe('samehadaku', function () {
         it('should return an array of anime list which has title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/SamehadakuEas')
+            const Samehadaku = require('../../fansubs/Samehadaku')
             const list = await Samehadaku.animeList()
 
             expect(list).to.be.an('array')
@@ -25,7 +25,7 @@ describe('samehadaku', function () {
         it('should return an array of episodes which has episode, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/SamehadakuEas')
+            const Samehadaku = require('../../fansubs/Samehadaku')
             const episodes = await Samehadaku.episodes('%2Fanime%2Fgegege-no-kitarou-2018%2F')
 
             expect(episodes).to.be.an('array')
@@ -59,7 +59,7 @@ describe('samehadaku', function () {
         it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/SamehadakuEas')
+            const Samehadaku = require('../../fansubs/Samehadaku')
             const list = await Samehadaku.newReleases()
 
             expect(list).to.be.an('array')
