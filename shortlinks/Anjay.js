@@ -20,7 +20,7 @@ class Anjay {
             await page.waitForSelector('#showlink')
             await page.click('#showlink')
 
-            const newPage = await Browser.newTabPagePromise(page)
+            const newPage = await Browser.getNewTabPage(page)
             await Util.sleep(2000)
             const final = this.parseAxeha(newPage)
 

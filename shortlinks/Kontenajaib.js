@@ -9,6 +9,7 @@ class Kontenajaib {
 
     async parse(link) {
         const page = await Browser.newOptimizedPage()
+        let newPage = null, finalPage = null
 
         try {
             link = decodeURIComponent(link)
@@ -19,13 +20,13 @@ class Kontenajaib {
             await Util.sleep(9500)
             await page.click('#showlink')
 
-            const newPage = await Browser.newTabPagePromise(page)
+            const newPage = await Browser.getNewTabPage(page)
             await Util.sleep(9500)
             await newPage.click('#generater')
             await Util.sleep(9500)
             await newPage.click('#showlink')
 
-            const finalPage = await Browser.newTabPagePromise(newPage)
+            const finalPage = await Browser.getNewTabPage(newPage)
             await Util.sleep(2000)
             const url = finalPage.url()
 
@@ -38,6 +39,14 @@ class Kontenajaib {
             }
         } catch (error) {
             await page.close()
+
+            if (newPage) {
+                await newPage.close()
+            }
+
+            if (finalPage) {
+                await finalPage.close()
+            }
 
             return Handler.error(error)
         }

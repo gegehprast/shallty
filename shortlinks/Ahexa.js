@@ -1,6 +1,6 @@
-const Browser = require('../../Browser')
-const Handler = require('../../exceptions/Handler')
-const Util = require('../../utils/utils')
+const Browser = require('../Browser')
+const Handler = require('../exceptions/Handler')
+const Util = require('../utils/utils')
 
 class Ahexa {
     constructor() {
