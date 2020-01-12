@@ -69,14 +69,6 @@ class Browser {
         const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
         const newPage = await newTarget.page()
 
-        newPage.on('request', (req) => {
-            if (req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image') {
-                req.abort()
-            } else {
-                req.continue()
-            }
-        })
-
         return newPage
     }
 

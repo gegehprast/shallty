@@ -10,6 +10,7 @@ const Sukakesehattan = require('./Sukakesehattan')
 const Teknoku = require('./Teknoku')
 const Travellinginfos = require('./Travellinginfos')
 const Xmaster = require('./Xmaster')
+const Handler = require('../exceptions/Handler')
 
 class Shortlink {
     constructor() {
@@ -30,13 +31,17 @@ class Shortlink {
     }
 
     async parse(link) {
-        let shorterner
+        let shorterner = null
 
         for (const i of this.shorterners) {
             if (link.includes(i.marker)) {
                 shorterner = i
                 break
             }
+        }
+
+        if (!shorterner) {
+            return Handler.error('Error: Unknown shortlink.')
         }
 
         return await shorterner.parse(link)

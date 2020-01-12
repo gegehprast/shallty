@@ -20,7 +20,7 @@ class Xmaster {
         }
 
         if (!url) {
-            return Handler.error('Error Xmaster: no paramater')
+            return Handler.error('Error Xmaster: no paramater.')
         }
 
         return {url: url}
