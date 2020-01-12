@@ -1,9 +1,8 @@
-const Browser = require('../services/Browser')
-const Kiryuu = new (require('../services/Kiryuu'))(Browser)
+const Kiryuu = require('../fantls/Kiryuu')
 
 class KiryuuController {
     async mangaList(req, res) {
-        const manga = await Kiryuu.getMangaList()
+        const manga = await Kiryuu.mangaList()
         if (manga.error) {
             res.status(500).json({
                 status: 500,
@@ -19,7 +18,7 @@ class KiryuuController {
     }
 
     async mangaInfo(req, res) {
-        const result = await Kiryuu.getMangaInfo(req.query.link)
+        const result = await Kiryuu.mangaInfo(req.query.link)
         if (result.error) {
             res.status(500).json({
                 status: 500,
@@ -35,7 +34,7 @@ class KiryuuController {
     }
 
     async chapters(req, res) {
-        const chapters = await Kiryuu.getChapters(req.query.link)
+        const chapters = await Kiryuu.chapters(req.query.link)
         if (chapters.error) {
             res.status(500).json({
                 status: 500,
@@ -51,7 +50,7 @@ class KiryuuController {
     }
 
     async images(req, res) {
-        const images = await Kiryuu.getImages(req.query.link)
+        const images = await Kiryuu.images(req.query.link)
         if (images.error) {
             res.status(500).json({
                 status: 500,
@@ -67,7 +66,7 @@ class KiryuuController {
     }
 
     async newReleases(req, res) {
-        const releases = await Kiryuu.getNewReleases(req.query.link)
+        const releases = await Kiryuu.newReleases(req.query.link)
         if (releases.error) {
             res.status(500).json({
                 status: 500,

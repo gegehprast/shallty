@@ -1,9 +1,8 @@
-const Browser = require('../services/Browser')
-const Oploverz = new (require('../services/Oploverz'))(Browser)
+const Oploverz = require('../fansubs/Oploverz')
 
 class OploverzController {
-    async checkOnGoingPage(req, res) {
-        const anime = await Oploverz.checkOnGoingPage()
+    async animeList(req, res) {
+        const anime = await Oploverz.animeList()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -18,8 +17,24 @@ class OploverzController {
         }
     }
 
-    async series(req, res) {
-        const episodes = await Oploverz.series(req.query.link)
+    async newReleases(req, res) {
+        const anime = await Oploverz.newReleases()
+        if (anime.error) {
+            res.status(500).json({
+                status: 500,
+                message: anime.message
+            })
+        } else {
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: anime
+            })
+        }
+    }
+
+    async episodes(req, res) {
+        const episodes = await Oploverz.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -34,8 +49,8 @@ class OploverzController {
         }
     }
 
-    async getDownloadLinks(req, res) {
-        const links = await Oploverz.getDownloadLinks(req.query.link)
+    async links(req, res) {
+        const links = await Oploverz.links(req.query.link)
         if (links.error) {
             res.status(500).json({
                 status: 500,
@@ -46,22 +61,6 @@ class OploverzController {
                 status: 200,
                 message: 'Success',
                 data: links
-            })
-        }
-    }
-
-    async hexa(req, res) {
-        const hexa = await Oploverz.hexa(req.query.link)
-        if (hexa.error) {
-            res.status(500).json({
-                status: 500,
-                message: hexa.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: hexa
             })
         }
     }

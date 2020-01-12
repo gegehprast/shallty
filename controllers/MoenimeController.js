@@ -1,5 +1,4 @@
-const Browser = require('../services/Browser')
-const Moenime = new (require('../services/Moenime'))(Browser)
+const Moenime = require('../fansubs/Moenime')
 
 class MoenimeController {
     async animeList(req, res) {
@@ -19,7 +18,7 @@ class MoenimeController {
         }
     }
 
-    async episodes(req, res) {
+    async links(req, res) {
         const episodes = await Moenime.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
@@ -47,22 +46,6 @@ class MoenimeController {
                 status: 200,
                 message: 'Success',
                 data: anime
-            })
-        }
-    }
-
-    async teknoku(req, res) {
-        const url = await Moenime.teknoku(req.query.link)
-        if (url.error) {
-            res.status(500).json({
-                status: 500,
-                message: url.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: url
             })
         }
     }
