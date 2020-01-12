@@ -104,9 +104,11 @@ class Oploverz {
                 const episode = await Browser.getPlainProperty(anchor, 'innerText')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(oploverz_url, '')
+                const episodeMatches = episode.match(/([\d-]+)/g)
+                const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
 
                 episodes.push({
-                    episode: episode,
+                    episode: numeral,
                     link: link,
                     raw_link: rawLink
                 })
@@ -143,7 +145,8 @@ class Oploverz {
                 const soraurls = await soraddl.$$('div[class="soraurl list-download"]')
                 await Util.asyncForEach(soraurls, async (soraurl, index) => {
                     let quality = await Browser.getPlainProperty(sorattls[index], 'innerText')
-                    quality = quality.replace('oploverz – ', '')
+                    quality = this.parseQuality(quality)
+
                     const anchors = await soraurl.$$('a')
                     await Util.asyncForEach(anchors, async anchor => {
                         const host = await Browser.getPlainProperty(anchor, 'innerText')
@@ -166,6 +169,32 @@ class Oploverz {
 
             return Handler.error(error)
         }
+    }
+
+    parseQuality(quality) {
+        let result = ''
+
+        if (quality.match(/(x265)/i)) {
+            result += 'x265'
+        } else if (quality.match(/(MKV)/i)) {
+            result += 'MKV'
+        } else {
+            result += 'MP4'
+        }
+
+        if (quality.match(/(1080p)/i)) {
+            result += ' 1080p'
+        } else if (quality.match(/(720p)/i)) {
+            result += ' 720p'
+        } else if (quality.match(/(480p)/i)) {
+            result += ' 480p'
+        }
+
+        if (quality.match(/(10bit)/i)) {
+            result += ' 10bit'
+        }
+
+        return result
     }
 }
 

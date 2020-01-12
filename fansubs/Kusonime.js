@@ -147,6 +147,9 @@ class Kusonime {
      */
     async parseSmokeurl(smokeurls, episodeTitle) {
         const downloadLinks = []
+        const episodeMatches = episodeTitle.match(/([\d-]+)/g)
+        const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
+        
         await Util.asyncForEach(smokeurls, async (smokeurl) => {
             const anchors = await smokeurl.$$('a')
             const strong = await smokeurl.$('strong')
@@ -161,7 +164,7 @@ class Kusonime {
                 const link = await Browser.getPlainProperty(anchor, 'href')
 
                 const episode = {
-                    'episode': episodeTitle,
+                    'episode': numeral,
                     'quality': quality,
                     'host': host,
                     'link': link

@@ -21,10 +21,11 @@ class Neonime {
                 const link = await Browser.getPlainProperty(anchor, 'href')
                 const epsSplit = text.split(' Episode ')
                 const episode = epsSplit[epsSplit.length - 1]
+                const numeral = episode.length == 1 ? '0' + episode : episode
                 const title = text.split(' Subtitle')[0]
 
                 anime.push({
-                    episode: episode,
+                    episode: numeral,
                     title: title,
                     link: link.replace(neonime_url, ''),
                     raw_link: link
@@ -59,7 +60,7 @@ class Neonime {
                 const link = rawLink.replace(neonime_url, '')
 
                 animeList.push({
-                    title: title,
+                    title: title.trim(),
                     link: link,
                     raw_link: rawLink,
                     is_batch: link.startsWith('/batch')
@@ -100,9 +101,11 @@ class Neonime {
                 const episode = await Browser.getPlainProperty(anchor, 'innerHTML')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(neonime_url, '')
+                const episodeMatches = episode.match(/([\d-]+)/g)
+                const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
 
                 episodes.push({
-                    episode: episode.trim(),
+                    episode: numeral.trim(),
                     link: link,
                     raw_link: rawLink
                 })
@@ -154,7 +157,7 @@ class Neonime {
 
                     if (link != neonime_url && !host.toLowerCase().includes('proses')) {
                         links.push({
-                            quality: quality,
+                            quality: quality.trim(),
                             host: host,
                             link: link
                         })
@@ -223,7 +226,7 @@ class Neonime {
                     const link = await Browser.getPlainProperty(anchor, 'href')
 
                     links.push({
-                        quality: quality,
+                        quality: quality.trim(),
                         host: host,
                         link: link
                     })
@@ -249,7 +252,7 @@ class Neonime {
                 const link = await Browser.getPlainProperty(anchor, 'href')
 
                 links.push({
-                    quality: quality,
+                    quality: quality.trim(),
                     host: host,
                     link: link
                 })
