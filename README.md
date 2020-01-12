@@ -24,6 +24,14 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 - Kiryuu
 
+### Shortlink
+
+- Ahexa
+- Anjay
+- Hexa
+- Hightech
+- etc, etc.
+
 ## Instalasi
 
 1. Instal [node.js](https://nodejs.org/en/).
