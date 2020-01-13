@@ -25,7 +25,7 @@ describe('shortlink', function () {
             expect(data).to.be.an('object')
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
-            expect(data.url).to.equal('https://acefile.co/f/16742192/kusonime-topeng-macan-w-001-020-360p-rar')
+            expect(data.url).to.include('acefile.co')
         })
     })
 
@@ -38,7 +38,7 @@ describe('shortlink', function () {
             expect(data).to.be.an('object')
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
-            expect(data.url).to.equal('https://sendit.cloud/7n35vepcbmzj')
+            expect(data.url).to.include('sendit.cloud')
         })
     })
 
@@ -68,7 +68,7 @@ describe('shortlink', function () {
             expect(data).to.be.an('object')
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
-            expect(data.url).to.equal('https://www63.zippyshare.com/v/ACM44jzR/file.html')
+            expect(data.url).to.include('zippyshare.com')
         })
     })
 
@@ -81,7 +81,20 @@ describe('shortlink', function () {
             expect(data).to.be.an('object')
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
-            expect(data.url).to.equal('https://www32.zippyshare.com/v/IL24rZLX/file.html')
+            expect(data.url).to.include('zippyshare.com')
+        })
+    })
+
+    describe('coeg', function () {
+        it('should return an object which has a string url property', async function () {
+            this.timeout(60000)
+            await Browser.init()
+            const data = await Shortlink.parse('http%3A%2F%2Fcoeg.in%2Fd5uuo')
+
+            expect(data).to.be.an('object')
+            expect(data).to.has.property('url')
+            expect(data.url).to.be.a('string')
+            expect(data.url).to.include('solidfiles.com')
         })
     })
 })
