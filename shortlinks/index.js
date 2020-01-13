@@ -1,5 +1,6 @@
 const Ahexa = require('./Ahexa')
 const Anjay = require('./Anjay')
+const Coeg = require('./Coeg')
 const Hexa = require('./Hexa')
 const Hightech = require('./Hightech')
 const Jelajahinternet = require('./Jelajahinternet')
@@ -17,6 +18,7 @@ class Shortlink {
         this.shorterners = [
             Ahexa,
             Anjay, 
+            Coeg, 
             Hexa, 
             Hightech, 
             Jelajahinternet, 
