@@ -2,9 +2,14 @@ const Browser = require('../Browser')
 const Handler = require('../exceptions/Handler')
 const Util = require('../utils/utils')
 
-class Ahexa {
+class Coeg {
     constructor() {
-        this.marker = 'ahexa.com'
+        this.marker = [
+            'coeg',
+            'siotong',
+            'telondasmu',
+            'greget'
+        ]
     }
 
     async parse(link) {
@@ -14,32 +19,27 @@ class Ahexa {
             link = decodeURIComponent(link)
             await page.goto(link)
 
-            await Util.sleep(3000)
-            const url = page.url()
-
-            if (!url.includes('ahexa') && !url.includes('anjay')) {
-                await page.close()
-
-                return {
-                    url: url
-                }
-            }
-
-            await page.waitForSelector('div.download-link')
-            const div = await page.$('div.download-link')
-            const raw = await div.$eval('a', node => node.href)
+            const anchor = await Browser.$waitAndGet(page, 'div.download-link > a')
+            const raw = await Browser.getPlainProperty(anchor, 'href')
 
             await page.close()
 
             const queries = Util.getAllUrlParams(raw)
             if (queries.r) {
+                const decoded = Util.base64Decode(queries.r)
+                for (const marker of this.marker) {
+                    if (decoded.includes(marker)) {
+                        return this.parse(decoded)
+                    }
+                }
+
                 return {
-                    url: Util.base64Decode(queries.r)
+                    url: decoded
                 }
             }
 
             return {
-                url: raw
+                url: link
             }
         } catch (error) {
             await page.close()
@@ -49,4 +49,4 @@ class Ahexa {
     }
 }
 
-module.exports = new Ahexa
+module.exports = new Coeg

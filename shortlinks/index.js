@@ -1,5 +1,6 @@
 const Ahexa = require('./Ahexa')
 const Anjay = require('./Anjay')
+const Coeg = require('./Coeg')
 const Hexa = require('./Hexa')
 const Hightech = require('./Hightech')
 const Jelajahinternet = require('./Jelajahinternet')
@@ -17,6 +18,7 @@ class Shortlink {
         this.shorterners = [
             Ahexa,
             Anjay, 
+            Coeg, 
             Hexa, 
             Hightech, 
             Jelajahinternet, 
@@ -34,9 +36,22 @@ class Shortlink {
         let shorterner = null
 
         for (const i of this.shorterners) {
-            if (link.includes(i.marker)) {
-                shorterner = i
-                break
+            if (Array.isArray(i.marker)) {
+                for (const marker of i.marker) {
+                    if (link.includes(marker)) {
+                        shorterner = i
+                        break
+                    }
+                }
+
+                if (shorterner) {
+                    break
+                }
+            } else {
+                if (link.includes(i.marker)) {
+                    shorterner = i
+                    break
+                }
             }
         }
 
