@@ -7,6 +7,7 @@ const Jelajahinternet = require('./Jelajahinternet')
 const Kepoow = require('./Kepoow')
 const Kontenajaib = require('./Kontenajaib')
 const Semawur = require('./Semawur')
+const Siotong = require('./Siotong')
 const Sukakesehattan = require('./Sukakesehattan')
 const Teknoku = require('./Teknoku')
 const Travellinginfos = require('./Travellinginfos')
@@ -25,6 +26,7 @@ class Shortlink {
             Kepoow, 
             Kontenajaib, 
             Semawur, 
+            Siotong, 
             Sukakesehattan, 
             Teknoku, 
             Travellinginfos,
