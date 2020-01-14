@@ -24,7 +24,7 @@ class Browser {
      */
     async newOptimizedPage() {
         const page = await this.browser.newPage()
-        page.setDefaultTimeout(60000)
+        page.setDefaultTimeout(30000)
         await page.setRequestInterception(true)
 
         page.on('request', (req) => {

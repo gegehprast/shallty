@@ -17,7 +17,7 @@ class Ahexa {
             await Util.sleep(3000)
             const url = page.url()
 
-            if (!url.includes('ahexa')) {
+            if (!url.includes('ahexa') && !url.includes('anjay')) {
                 await page.close()
 
                 return {

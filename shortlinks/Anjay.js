@@ -15,18 +15,21 @@ class Anjay {
             await page.goto(link)
 
             await Util.sleep(13000)
-            await page.waitForSelector('div.to > a')
-            await page.click('div.to > a')
+            try {
+                await page.waitForSelector('div.to > a')
+                await page.click('div.to > a')
+            } catch (error) {
+                return this.parseAxeha(page)
+            }
+            
             await page.waitForSelector('#showlink')
             await page.click('#showlink')
 
             const newPage = await Browser.getNewTabPage(page)
-            await Util.sleep(2000)
-            const final = this.parseAxeha(newPage)
-
             await page.close()
-
-            return final
+            await Util.sleep(2000)
+            
+            return this.parseAxeha(newPage)
         } catch (error) {
             await page.close()
 
@@ -39,7 +42,7 @@ class Anjay {
             await Util.sleep(3000)
             const url = page.url()
 
-            if (!url.includes('ahexa')) {
+            if (!url.includes('ahexa') && !url.includes('anjay')) {
                 await page.close()
 
                 return {
