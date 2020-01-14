@@ -39,7 +39,7 @@ class Anjay {
             await Util.sleep(3000)
             const url = page.url()
 
-            if (!url.includes('axeha')) {
+            if (!url.includes('ahexa')) {
                 await page.close()
 
                 return {
