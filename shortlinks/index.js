@@ -10,6 +10,7 @@ const Semawur = require('./Semawur')
 const Siotong = require('./Siotong')
 const Sukakesehattan = require('./Sukakesehattan')
 const Teknoku = require('./Teknoku')
+const Telondasmu = require('./Telondasmu')
 const Travellinginfos = require('./Travellinginfos')
 const Xmaster = require('./Xmaster')
 const Handler = require('../exceptions/Handler')
@@ -29,6 +30,7 @@ class Shortlink {
             Siotong, 
             Sukakesehattan, 
             Teknoku, 
+            Telondasmu, 
             Travellinginfos,
             Xmaster
         ]
