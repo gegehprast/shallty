@@ -14,6 +14,17 @@ class Ahexa {
             link = decodeURIComponent(link)
             await page.goto(link)
 
+            await Util.sleep(3000)
+            const url = page.url()
+
+            if (!url.includes('axeha')) {
+                await page.close()
+
+                return {
+                    url: url
+                }
+            }
+
             await page.waitForSelector('div.download-link')
             const div = await page.$('div.download-link')
             const raw = await div.$eval('a', node => node.href)
