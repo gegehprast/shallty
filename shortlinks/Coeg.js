@@ -19,6 +19,24 @@ class Coeg {
             link = decodeURIComponent(link)
             await page.goto(link)
 
+            await Util.sleep(3000)
+            const currentUrl = page.url()
+            let isFinal = true
+
+            for (const marker of this.marker) {
+                if (currentUrl.includes(marker)) {
+                    isFinal = false
+                }
+            }
+
+            if (isFinal) {
+                await page.close()
+
+                return {
+                    url: currentUrl
+                }
+            }
+
             const anchor = await Browser.$waitAndGet(page, 'div.download-link > a')
             const raw = await Browser.getPlainProperty(anchor, 'href')
 
@@ -27,6 +45,7 @@ class Coeg {
             const queries = Util.getAllUrlParams(raw)
             if (queries.r) {
                 const decoded = Util.base64Decode(queries.r)
+                console.log(decoded)
                 for (const marker of this.marker) {
                     if (decoded.includes(marker)) {
                         return this.parse(decoded)
