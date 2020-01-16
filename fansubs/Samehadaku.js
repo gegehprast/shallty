@@ -22,7 +22,7 @@ class Samehadaku {
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
 
                 const parsedTitle = title.split(' Episode')[0]
-                const matches = rawLink.match(/(?<=episode-)(\d+)/)
+                const matches = rawLink.match(/(?<=episode-)(\d+)/gi)
                 if (matches && matches != null) {
                     const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 

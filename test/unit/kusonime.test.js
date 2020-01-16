@@ -36,6 +36,21 @@ describe('kusonime', function () {
                 expect(item).to.has.property('link')
             })
         })
+
+        it('should return an array of download links which has quality, host, and link', async function () {
+            this.timeout(60000)
+            await Browser.init()
+            const Kusonime = require('../../fansubs/Kusonime')
+            const links = await Kusonime.links('/kenja-no-mago-batch-subtitle-indonesia/')
+
+            expect(links).to.be.an('array')
+            links.forEach(item => {
+                expect(item).to.be.an('object')
+                expect(item).to.has.property('quality')
+                expect(item).to.has.property('host')
+                expect(item).to.has.property('link')
+            })
+        })
     })
 
     describe('new releases', function () {

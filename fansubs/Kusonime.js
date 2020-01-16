@@ -147,8 +147,11 @@ class Kusonime {
      */
     async parseSmokeurl(smokeurls, episodeTitle) {
         const downloadLinks = []
+        let numeral = 'Batch'
         const episodeMatches = episodeTitle.match(/([\d-]+)/g)
-        const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
+        if (episodeMatches) {
+            numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
+        }
         
         await Util.asyncForEach(smokeurls, async (smokeurl) => {
             const anchors = await smokeurl.$$('a')
