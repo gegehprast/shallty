@@ -8,7 +8,8 @@ class Coeg {
             'coeg',
             'siotong',
             'telondasmu',
-            'greget'
+            'greget',
+            'siherp'
         ]
     }
 
@@ -45,7 +46,6 @@ class Coeg {
             const queries = Util.getAllUrlParams(raw)
             if (queries.r) {
                 const decoded = Util.base64Decode(queries.r)
-                console.log(decoded)
                 for (const marker of this.marker) {
                     if (decoded.includes(marker)) {
                         return this.parse(decoded)
