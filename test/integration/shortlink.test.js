@@ -128,6 +128,29 @@ describe('shortlink', function () {
         })
     })
 
+    describe('hightech', function () {
+        it('should return 200 and a string of url', function (done) {
+            this.timeout(60000)
+            supertest(app).get('/api/shortlink?link=https%3A%2F%2Fhightech.web.id%2Fko82jkl9%2F%3Fxyzkl%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL3VjP2lkPTFheVhtZlcwWV9VZjRGMDhqcjVjTDl0NDhDVnBmUlJ2Xw%3D%3D')
+                .expect(200)
+                .expect(function (res) {
+                    expect(res.body.status).to.equal(200)
+                    expect(res.body.message).to.equal('Success')
+                    expect(res.body.data).to.be.an('object')
+                    expect(res.body.data).to.has.property('url')
+                    expect(res.body.data.url).to.be.a('string')
+                    expect(res.body.data.url).to.include('google')
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        console.log(res.body)
+                        return done(err)
+                    }
+                    done()
+                })
+        })
+    })
+
     describe('anjay', function () {
         it('should return 200 and a string of url', function (done) {
             this.timeout(60000)
