@@ -8,7 +8,8 @@ class Coeg {
             'coeg',
             'siotong',
             'telondasmu',
-            'greget'
+            'greget',
+            'siherp'
         ]
     }
 
@@ -18,6 +19,24 @@ class Coeg {
         try {
             link = decodeURIComponent(link)
             await page.goto(link)
+
+            await Util.sleep(3000)
+            const currentUrl = page.url()
+            let isFinal = true
+
+            for (const marker of this.marker) {
+                if (currentUrl.includes(marker)) {
+                    isFinal = false
+                }
+            }
+
+            if (isFinal) {
+                await page.close()
+
+                return {
+                    url: currentUrl
+                }
+            }
 
             const anchor = await Browser.$waitAndGet(page, 'div.download-link > a')
             const raw = await Browser.getPlainProperty(anchor, 'href')

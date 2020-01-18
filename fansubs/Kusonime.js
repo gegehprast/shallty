@@ -102,7 +102,7 @@ class Kusonime {
     }
 
     /**
-     * Parse download links from episode page of a title that does not have smokeddl div.
+     * Parse download links from episode page of a title.
      * 
      * @param smokeddls dlbod ElementHandle.
      */
@@ -147,8 +147,7 @@ class Kusonime {
      */
     async parseSmokeurl(smokeurls, episodeTitle) {
         const downloadLinks = []
-        const episodeMatches = episodeTitle.match(/([\d-]+)/g)
-        const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
+        const alpha = episodeTitle.replace(/download/i, '').replace(/subtitle /i, '').replace(/indonesia/i, '').trim()
         
         await Util.asyncForEach(smokeurls, async (smokeurl) => {
             const anchors = await smokeurl.$$('a')
@@ -164,7 +163,7 @@ class Kusonime {
                 const link = await Browser.getPlainProperty(anchor, 'href')
 
                 const episode = {
-                    'episode': numeral,
+                    'episode': alpha,
                     'quality': quality,
                     'host': host,
                     'link': link

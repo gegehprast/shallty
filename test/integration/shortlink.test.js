@@ -79,6 +79,10 @@ describe('shortlink', function () {
     })
 
     describe('kontenajaib', function () {
+        before(function () {
+            this.skip()
+        })
+        
         it('should return 200 and a string of url', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/shortlink?link=https%3A%2F%2Fkontenajaib.xyz%2F%3Fid%3DWWI3dG5VNlRiUUoyVUdOcEpnZ0kxL3lRck5zZlAweVFwdzBUOGpiTDdZSWhNTGtvMjNEYjVTMjdMcUFDNjl5ZUxCbWJaUlZYM2FSalhuQlorVStsMENuWjAzQ2FON05jM2Rtc05pYUQ2VTV0a01YUXJvQ1M0U1d3L0t4bzQrWFFCLzZjNDMwWnJqdlk0dXoxYndBcHdSUzNmZUthVGhRcWFWRGFrWDkyeFdEZjJMNWRWbkFNbGZLdE8xSS9admcyZUZuMGl6MDQzN0V2TGxaQmlsZGNQSjd3SkZTSFEvd291em5IektjTkFZWjRqbUdweFVDcEFFLytnUkgwNC92SXdXeWpEeHliTCtTbzQyOFZBWk9iMWE1NE5xdWVHTWNkc1I3Z2R2YmxSSnJVQ3haeHV5V0UxY2NqcVNnZFM4SlJmQXRaWGVsVS9RVXFPZmprODNkc1EzTGQ4V2NEcENHZU5pajkxSnVFNmlZPQ%3D%3D')
