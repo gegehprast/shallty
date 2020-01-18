@@ -16,7 +16,7 @@ class Hightech {
             }
         }
 
-        const page = await Browser.newOptimizedPage()
+        const page = await Browser.newPageWithNewContext()
 
         try {
             await page.goto(link)
