@@ -94,17 +94,17 @@ class Samehadaku {
                 const anchor = await item.$('span.lefttitle > a')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(samehadaku_url, '')
-                let episode = rawLink
+                let episode = link
 
                 if (!link.match(/(opening)/) && !link.match(/(ending)/)) {
-                    const episodeMatches = rawLink.match(/(?<=episode-)([\d-]+)/g)
+                    const episodeMatches = link.match(/(?<=episode-)([\d-]+)/g)
                     const ovaMatches = link.match(/-ova/)
                     const ovaMatches2 = link.match(/ova-/)
 
                     if (episodeMatches && episodeMatches != null) {
                         episode = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
                     } else if ((ovaMatches && ovaMatches != null) || (ovaMatches2 && ovaMatches2 != null)) {
-                        episode = rawLink
+                        episode = await Browser.getPlainProperty(anchor, 'innerText')
                     }
 
                     episodes.push({
