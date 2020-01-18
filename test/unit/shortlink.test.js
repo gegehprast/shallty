@@ -72,6 +72,19 @@ describe('shortlink', function () {
         })
     })
 
+    describe('hightech', function () {
+        it('should return an object which has a string url property', async function () {
+            this.timeout(60000)
+            await Browser.init()
+            const data = await Shortlink.parse('https%3A%2F%2Fhightech.web.id%2Fko82jkl9%2F%3Fxyzkl%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL3VjP2lkPTFheVhtZlcwWV9VZjRGMDhqcjVjTDl0NDhDVnBmUlJ2Xw%3D%3D')
+
+            expect(data).to.be.an('object')
+            expect(data).to.has.property('url')
+            expect(data.url).to.be.a('string')
+            expect(data.url).to.include('google')
+        })
+    })
+
     describe('anjay', function () {
         it('should return an object which has a string url property', async function () {
             this.timeout(60000)

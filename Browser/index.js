@@ -121,6 +121,20 @@ class Browser {
     async getPlainProperty(element, property) {
         return await element.getProperty(property).then(x => x.jsonValue())
     }
+
+    /**
+     * Get a cookie object of page.
+     * 
+     * @param {Object} page Browser page
+     * @param {String} name Name of the cookie to select
+     */
+    async getCookie(page, name) {
+        const cookies = await page.cookies()
+
+        const cookie = cookies.filter(cookie => cookie.name == name)
+
+        return cookie[0]
+    }
 }
 
 module.exports = new Browser
