@@ -25,6 +25,41 @@ class Browser {
     async newOptimizedPage() {
         const page = await this.browser.newPage()
         page.setDefaultTimeout(30000)
+
+        return await this.optimizePage(page)
+    }
+
+    /**
+     * Create new page with different browser context
+     * to support multiple sessions. The returned page will be optimized.
+     * https://github.com/GoogleChrome/puppeteer/issues/85
+     */
+    async newPageWithNewContext() {
+        const { browserContextId } = await this.browser._connection.send('Target.createBrowserContext')
+        const page = await this.browser._createPageInContext(browserContextId)
+        page.browserContextId = browserContextId
+        page.setDefaultTimeout(30000)
+        
+        return await this.optimizePage(page)
+    }
+
+    /**
+     * Get new tab page instance.
+     * @param page current page.
+     */
+    async getNewTabPage(page) {
+        const pageTarget = page.target()
+        const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
+        const newPage = await newTarget.page()
+        newPage.setDefaultTimeout(30000)
+
+        return await this.optimizePage(newPage)
+    }
+
+    /**
+     * Optimize a page.
+     */
+    async optimizePage(page) {
         await page.setRequestInterception(true)
 
         page.on('request', (req) => {
@@ -36,40 +71,6 @@ class Browser {
         })
 
         return page
-    }
-
-    /**
-     * Create new page with different browser context
-     * to support multiple sessions.
-     * https://github.com/GoogleChrome/puppeteer/issues/85
-     */
-    async newPageWithNewContext() {
-        const { browserContextId } = await this.browser._connection.send('Target.createBrowserContext')
-        const page = await this.browser._createPageInContext(browserContextId)
-        page.browserContextId = browserContextId
-        page.setDefaultTimeout(60000)
-
-        page.on('request', (req) => {
-            if (req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image') {
-                req.abort()
-            } else {
-                req.continue()
-            }
-        })
-
-        return page
-    }
-
-    /**
-     * Get new tab page instance.
-     * @param page current page.
-     */
-    async getNewTabPage(page) {
-        const pageTarget = page.target()
-        const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
-        const newPage = await newTarget.page()
-
-        return newPage
     }
 
     /**
@@ -120,6 +121,20 @@ class Browser {
      */
     async getPlainProperty(element, property) {
         return await element.getProperty(property).then(x => x.jsonValue())
+    }
+
+    /**
+     * Get a cookie object of page.
+     * 
+     * @param {Object} page Browser page
+     * @param {String} name Name of the cookie to select
+     */
+    async getCookie(page, name) {
+        const cookies = await page.cookies()
+
+        const cookie = cookies.filter(cookie => cookie.name == name)
+
+        return cookie[0]
     }
 }
 
