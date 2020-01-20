@@ -20,7 +20,7 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://www60.zippyshare.com/v/dpn65heR/file.html')
+                    expect(res.body.data.url).to.include('zippyshare.com')
                 })
                 .end(function (err, res) {
                     if (err) {
@@ -43,7 +43,7 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://acefile.co/f/16742192/kusonime-topeng-macan-w-001-020-360p-rar')
+                    expect(res.body.data.url).to.include('acefile.co')
                 })
                 .end(function (err, res) {
                     if (err) {
@@ -66,7 +66,7 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://sendit.cloud/7n35vepcbmzj')
+                    expect(res.body.data.url).to.include('sendit.cloud')
                 })
                 .end(function (err, res) {
                     if (err) {
@@ -79,6 +79,10 @@ describe('shortlink', function () {
     })
 
     describe('kontenajaib', function () {
+        before(function () {
+            this.skip()
+        })
+        
         it('should return 200 and a string of url', function (done) {
             this.timeout(60000)
             supertest(app).get('/api/shortlink?link=https%3A%2F%2Fkontenajaib.xyz%2F%3Fid%3DWWI3dG5VNlRiUUoyVUdOcEpnZ0kxL3lRck5zZlAweVFwdzBUOGpiTDdZSWhNTGtvMjNEYjVTMjdMcUFDNjl5ZUxCbWJaUlZYM2FSalhuQlorVStsMENuWjAzQ2FON05jM2Rtc05pYUQ2VTV0a01YUXJvQ1M0U1d3L0t4bzQrWFFCLzZjNDMwWnJqdlk0dXoxYndBcHdSUzNmZUthVGhRcWFWRGFrWDkyeFdEZjJMNWRWbkFNbGZLdE8xSS9admcyZUZuMGl6MDQzN0V2TGxaQmlsZGNQSjd3SkZTSFEvd291em5IektjTkFZWjRqbUdweFVDcEFFLytnUkgwNC92SXdXeWpEeHliTCtTbzQyOFZBWk9iMWE1NE5xdWVHTWNkc1I3Z2R2YmxSSnJVQ3haeHV5V0UxY2NqcVNnZFM4SlJmQXRaWGVsVS9RVXFPZmprODNkc1EzTGQ4V2NEcENHZU5pajkxSnVFNmlZPQ%3D%3D')
@@ -112,7 +116,30 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://www63.zippyshare.com/v/ACM44jzR/file.html')
+                    expect(res.body.data.url).to.include('zippyshare.com')
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        console.log(res.body)
+                        return done(err)
+                    }
+                    done()
+                })
+        })
+    })
+
+    describe('hightech', function () {
+        it('should return 200 and a string of url', function (done) {
+            this.timeout(60000)
+            supertest(app).get('/api/shortlink?link=https%3A%2F%2Fhightech.web.id%2Fko82jkl9%2F%3Fxyzkl%3DaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL3VjP2lkPTFheVhtZlcwWV9VZjRGMDhqcjVjTDl0NDhDVnBmUlJ2Xw%3D%3D')
+                .expect(200)
+                .expect(function (res) {
+                    expect(res.body.status).to.equal(200)
+                    expect(res.body.message).to.equal('Success')
+                    expect(res.body.data).to.be.an('object')
+                    expect(res.body.data).to.has.property('url')
+                    expect(res.body.data.url).to.be.a('string')
+                    expect(res.body.data.url).to.include('google')
                 })
                 .end(function (err, res) {
                     if (err) {
@@ -135,7 +162,30 @@ describe('shortlink', function () {
                     expect(res.body.data).to.be.an('object')
                     expect(res.body.data).to.has.property('url')
                     expect(res.body.data.url).to.be.a('string')
-                    expect(res.body.data.url).to.equal('https://www32.zippyshare.com/v/IL24rZLX/file.html')
+                    expect(res.body.data.url).to.include('zippyshare.com')
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        console.log(res.body)
+                        return done(err)
+                    }
+                    done()
+                })
+        })
+    })
+
+    describe('coeg', function () {
+        it('should return 200 and a string of url', function (done) {
+            this.timeout(60000)
+            supertest(app).get('/api/shortlink?link=http%3A%2F%2Fcoeg.in%2Fd5uuo')
+                .expect(200)
+                .expect(function (res) {
+                    expect(res.body.status).to.equal(200)
+                    expect(res.body.message).to.equal('Success')
+                    expect(res.body.data).to.be.an('object')
+                    expect(res.body.data).to.has.property('url')
+                    expect(res.body.data.url).to.be.a('string')
+                    expect(res.body.data.url).to.include('solidfiles.com')
                 })
                 .end(function (err, res) {
                     if (err) {

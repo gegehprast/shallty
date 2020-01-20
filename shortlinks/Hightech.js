@@ -16,10 +16,26 @@ class Hightech {
             }
         }
 
-        const page = await Browser.newOptimizedPage()
+        if (params.xyzkl) {
+            return {
+                url: Util.base64Decode(params.xyzkl)
+            }
+        }
+
+        const page = await Browser.newPageWithNewContext()
 
         try {
             await page.goto(link)
+
+            const xyzklCookie = await Browser.getCookie(page, 'xyzkl')
+
+            if (xyzklCookie && xyzklCookie.value) {
+                await page.close()
+                
+                return {
+                    url: Util.base64Decode(xyzklCookie.value)
+                }
+            }
 
             await Util.sleep(8000)
             await page.waitForSelector('a[href="#generate"]')

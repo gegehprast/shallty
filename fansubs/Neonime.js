@@ -101,7 +101,7 @@ class Neonime {
                 const episode = await Browser.getPlainProperty(anchor, 'innerHTML')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(neonime_url, '')
-                const episodeMatches = episode.match(/([\d-]+)/g)
+                const episodeMatches = episode.match(/(?<=episode )([\d-]+)/gi)
                 const numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
 
                 episodes.push({

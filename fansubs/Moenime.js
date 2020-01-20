@@ -204,7 +204,7 @@ class Moenime {
     async parseOngoingEpisodeFiles(page, table, tRow) {
         const files = []
         let episode = await table.$eval('center', node => node.innerText)
-        const matches = episode.match(/Episode ([0-9])+/g)
+        const matches = episode.match(/Episode ([0-9])+/gi)
         if (!matches)
             return {}
 

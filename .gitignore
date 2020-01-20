@@ -1,4 +1,4 @@
 /node_modules
-/logs/*
+/logs
 config.json
 deploy-key

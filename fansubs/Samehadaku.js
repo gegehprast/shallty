@@ -22,7 +22,7 @@ class Samehadaku {
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
 
                 const parsedTitle = title.split(' Episode')[0]
-                const matches = rawLink.match(/(?<=episode-)(\d+)/)
+                const matches = rawLink.match(/(?<=episode-)(\d+)/gi)
                 if (matches && matches != null) {
                     const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 
@@ -92,24 +92,23 @@ class Samehadaku {
             const episodeList = await Browser.$$waitAndGet(page, 'div.episodelist > ul > li')
             await Util.asyncForEach(episodeList, async (item) => {
                 const anchor = await item.$('span.lefttitle > a')
-                const episode = await Browser.getPlainProperty(anchor, 'innerText')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(samehadaku_url, '')
-                let numeral = episode
+                let episode = link
 
                 if (!link.match(/(opening)/) && !link.match(/(ending)/)) {
-                    const episodeMatches = episode.match(/([\d-]+)/g)
+                    const episodeMatches = link.match(/(?<=episode-)([\d-]+)/g)
                     const ovaMatches = link.match(/-ova/)
                     const ovaMatches2 = link.match(/ova-/)
 
                     if (episodeMatches && episodeMatches != null) {
-                        numeral = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
+                        episode = episodeMatches[0].length == 1 ? '0' + episodeMatches[0] : episodeMatches[0]
                     } else if ((ovaMatches && ovaMatches != null) || (ovaMatches2 && ovaMatches2 != null)) {
-                        numeral = episode
+                        episode = await Browser.getPlainProperty(anchor, 'innerText')
                     }
 
                     episodes.push({
-                        episode: numeral,
+                        episode: episode,
                         link: link,
                         raw_link: rawLink
                     })
