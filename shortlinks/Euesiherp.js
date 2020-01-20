@@ -1,10 +1,10 @@
-const Browser = require('../../Browser')
-const Handler = require('../../exceptions/Handler')
-const Util = require('../../utils/utils')
+const Browser = require('../Browser')
+const Handler = require('../exceptions/Handler')
+const Util = require('../utils/utils')
 
 class Euesiherp {
     constructor() {
-        this.marker = 'euesiherp'
+        this.marker = 'eue.siherp.'
     }
 
     async parse(link) {
