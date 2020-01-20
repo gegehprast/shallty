@@ -16,6 +16,12 @@ class Hightech {
             }
         }
 
+        if (params.xyzkl) {
+            return {
+                url: Util.base64Decode(params.xyzkl)
+            }
+        }
+
         const page = await Browser.newPageWithNewContext()
 
         try {
