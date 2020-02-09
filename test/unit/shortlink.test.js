@@ -4,6 +4,10 @@ const Browser = require('../../Browser')
 const Shortlink = require('../../shortlinks')
 
 describe('shortlink', function () {
+    before(function () {
+        this.skip()
+    })
+    
     describe('teknoku', function () {
         it('should return an object which has url property', async function () {
             this.timeout(60000)
@@ -115,7 +119,7 @@ describe('shortlink', function () {
         it('should return an object which has a string url property', async function () {
             this.timeout(60000)
             await Browser.init()
-            const data = await Shortlink.parse('https%3A%2F%2Fneonime.org%2F%3Ffd3c883ce6%3DQzl4djNGUFpDZHVjZUJCWVdKenhwcWpOUndkV0crTThpaUh5d2k2dFVrL1czSWVRbExvUlFrRy8yWlBjTDhCQm9aNmhhdlp2UXNZVkQ4M0dwdEh3UHd6ZXFHMjdiSjB6cDlFQ1J5eDdSbVVVTUZTL0NEV3dXemV5TWxjN2IrSlE%3D')
+            const data = await Shortlink.parse('https://neonime.org/?940caec1dc=Z0g4dktlM2RLaWc5dVN2dEtqb3JQZVBMVm4vK2lPeCtxOWtBU3kwV1BwS09jdkNjTHVkTktZa0FiSjVUUXArdlE5ZjJGeVdsM0xhb3VSU0l4OS8xcTI1VS9WcGVscEoza0V6am1PcVFxbWovYkpnM1dIYmtFUXRqYWZBOTREZzM=')
             console.log(data)
 
             expect(data).to.be.an('object')
