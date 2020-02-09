@@ -5,6 +5,7 @@ const supertest = require('supertest'),
 
 describe('shortlink', function () {
     before(function (done) {
+        this.skip()
         this.timeout(5000)
         setTimeout(done, 3000)
     })

@@ -14,7 +14,18 @@ class Neonime {
             link = decodeURIComponent(link)
             await page.goto(link)
 
-            await Util.sleep(9500)
+            await Util.sleep(2500)
+            const currentUrl = page.url()
+            if (!currentUrl.includes('xmaster')) {
+                await page.close()
+
+                return {
+                    error: true,
+                    message: 'Something went wrong. Unknown reason.'
+                }
+            }
+
+            await Util.sleep(7000)
             await page.click('#generater')
             await Util.sleep(9500)
             await page.click('#showlink')
