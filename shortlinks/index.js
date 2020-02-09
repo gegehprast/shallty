@@ -7,6 +7,7 @@ const Hightech = require('./Hightech')
 const Jelajahinternet = require('./Jelajahinternet')
 const Kepoow = require('./Kepoow')
 const Kontenajaib = require('./Kontenajaib')
+const Neonime = require('./Neonime')
 const Semawur = require('./Semawur')
 const Sukakesehattan = require('./Sukakesehattan')
 const Teknoku = require('./Teknoku')
@@ -26,6 +27,7 @@ class Shortlink {
             Jelajahinternet, 
             Kepoow, 
             Kontenajaib, 
+            Neonime, 
             Semawur, 
             Sukakesehattan, 
             Teknoku, 
