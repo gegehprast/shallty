@@ -9,7 +9,8 @@ class Coeg {
             'siotong',
             'telondasmu',
             'greget',
-            'siherp'
+            'siherp',
+            'bucin'
         ]
     }
 

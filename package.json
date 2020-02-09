@@ -18,6 +18,7 @@
     "url": "https://github.com/gegehprast/shallty.git"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "puppeteer": "^2.0.0",

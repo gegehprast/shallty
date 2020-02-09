@@ -20,6 +20,16 @@ class Browser {
     }
 
     /**
+     * Create new page.
+     */
+    async newPage() {
+        const page = await this.browser.newPage()
+        page.setDefaultTimeout(30000)
+
+        return page
+    }
+
+    /**
      * Create new optimized asset page.
      */
     async newOptimizedPage() {
@@ -45,19 +55,23 @@ class Browser {
 
     /**
      * Get new tab page instance.
-     * @param page current page.
+     * 
+     * @param {Object} page Current page.
+     * @param {Boolean} optimized Optimized or not.
      */
-    async getNewTabPage(page) {
+    async getNewTabPage(page, optimized = true) {
         const pageTarget = page.target()
         const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
         const newPage = await newTarget.page()
         newPage.setDefaultTimeout(30000)
 
-        return await this.optimizePage(newPage)
+        return optimized ? await this.optimizePage(newPage) : newPage
     }
 
     /**
      * Optimize a page.
+     * 
+     * @param {Object} page Current page.
      */
     async optimizePage(page) {
         await page.setRequestInterception(true)
