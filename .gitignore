@@ -1,4 +1,5 @@
 /node_modules
 /logs
+/static/screenshot/*
 config.json
 deploy-key
