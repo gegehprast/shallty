@@ -17,6 +17,7 @@ class ScreenshotController {
             path: 'static/screenshot/' + name,
             fullPage: true
         })
+        await page.close()
 
         res.json({
             status: 200,
