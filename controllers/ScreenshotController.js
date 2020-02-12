@@ -1,3 +1,4 @@
+const path = require('path')
 const Browser = require('../Browser')
 const Util = require('../utils/utils')
 
@@ -15,7 +16,7 @@ class ScreenshotController {
 
             const name = Util.randomString(30) + '.png'
             await page.screenshot({
-                path: 'static/screenshot/' + name,
+                path: path.join(__dirname, '../static/screenshot/') + name,
                 fullPage: true
             })
             await page.close()
@@ -26,6 +27,8 @@ class ScreenshotController {
                 data: '/screenshot/' + name
             })
         } catch (error) {
+            await page.close()
+
             res.status(500).json({
                 status: 500,
                 message: 'Something went wrong. ' + error
