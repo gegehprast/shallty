@@ -34,6 +34,8 @@ app.use((req, res, next) => {
 
 app.use(isBrowserReady)
 
+app.use(express.static('static'))
+
 app.use('/api', routes)
 
 app.listen(runningPort, async () => {
