@@ -25,7 +25,7 @@ class Neonime {
                 }
             }
 
-            await Util.sleep(7000)
+            await Util.sleep(9000)
             await page.click('#generater')
             await Util.sleep(9500)
             await page.click('#showlink')
