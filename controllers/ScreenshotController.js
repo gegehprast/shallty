@@ -6,24 +6,31 @@ class ScreenshotController {
         const link = decodeURIComponent(req.query.link)
         const page = await Browser.newPage()
 
-        await page.goto(link, {
-            timeout: 300000
-        })
+        try {
+            await page.goto(link, {
+                timeout: 300000
+            })
 
-        await Util.sleep(5000)
+            await Util.sleep(5000)
 
-        const name = Util.randomString(30) + '.png'
-        await page.screenshot({
-            path: 'static/screenshot/' + name,
-            fullPage: true
-        })
-        await page.close()
+            const name = Util.randomString(30) + '.png'
+            await page.screenshot({
+                path: 'static/screenshot/' + name,
+                fullPage: true
+            })
+            await page.close()
 
-        res.json({
-            status: 200,
-            message: 'Success',
-            data: '/screenshot/' + name
-        })
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: '/screenshot/' + name
+            })
+        } catch (error) {
+            res.status(500).json({
+                status: 500,
+                message: 'Something went wrong. ' + error
+            })
+        }
     }
 }
 
