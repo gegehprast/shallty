@@ -8,7 +8,8 @@ class Neonime {
     }
 
     async parse(link) {
-        const page = await Browser.newOptimizedPage()
+        const newBrowser = await Browser.newBrowser()
+        const page = await Browser.newOptimizedPage(newBrowser.browser)
 
         try {
             link = decodeURIComponent(link)
@@ -18,6 +19,7 @@ class Neonime {
             const currentUrl = page.url()
             if (!currentUrl.includes('xmaster')) {
                 await page.close()
+                await Browser.destroyBrowser(newBrowser.id)
 
                 return {
                     error: true,
@@ -30,18 +32,20 @@ class Neonime {
             await Util.sleep(9500)
             await page.click('#showlink')
 
-            const finalPage = await Browser.getNewTabPage(page)
+            const finalPage = await Browser.getNewTabPage(page, false, newBrowser.browser)
             await Util.sleep(2000)
             const url = finalPage.url()
 
             await page.close()
             await finalPage.close()
+            await Browser.destroyBrowser(newBrowser.id)
 
             return {
                 url: url
             }
         } catch (error) {
             await page.close()
+            await Browser.destroyBrowser(newBrowser.id)
 
             return Handler.error(error)
         }
