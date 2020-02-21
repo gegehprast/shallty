@@ -3,3 +3,4 @@
 /static/screenshot/*.png
 config.json
 deploy-key
+ecosystem.config.js
