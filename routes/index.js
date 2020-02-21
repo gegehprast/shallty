@@ -7,6 +7,7 @@ const KusonimeController = require('../controllers/KusonimeController')
 const KiryuuController = require('../controllers/KiryuuController')
 const MoenimeController = require('../controllers/MoenimeController')
 const ShortlinkController = require('../controllers/ShortlinkController')
+const ScreenshotController = require('../controllers/ScreenshotController')
 
 route.get('/samehadaku/animeList', SamehadakuController.animeList)
 route.get('/samehadaku/episodes', SamehadakuController.episodes)
@@ -38,5 +39,7 @@ route.get('/kiryuu/images', KiryuuController.images)
 route.get('/kiryuu/newReleases', KiryuuController.newReleases)
 
 route.get('/shortlink', ShortlinkController.index)
+
+route.get('/screenshot', ScreenshotController.screenshot)
 
 module.exports = route
