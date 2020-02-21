@@ -1,9 +1,11 @@
 const puppeteer = require('puppeteer')
 const { app_env } = require('../config.json')
+const Util = require('../utils/utils')
 
 class Browser {
     constructor() {
         this.browser = null
+        this.browsers = []
     }
     
     async init() {
@@ -19,11 +21,42 @@ class Browser {
         return [this.browser, this.browser2]
     }
 
+    async newBrowser() {
+        const browsers = this.browsers
+        const browser = await puppeteer.launch({
+            headless: app_env == 'local' ? false : true,
+            args: ['--no-sandbox']
+        })
+        const newBrowser = {
+            id: Util.randomString(10),
+            browser: browser
+        }
+
+        browsers.push(newBrowser)
+        this.browsers = browsers
+
+        return newBrowser
+    }
+
+    async destroyBrowser(id) {
+        const browser = this.browsers.filter(x => x.id === id)
+
+        if (!Util.isEmpty(browser)) {
+            await browser[0].browser.close()
+
+            const filtered = this.browsers.filter(x => x.id !== id)
+            this.browsers = filtered
+        }
+
+        return true
+    }
+
     /**
      * Create new page.
      */
-    async newPage() {
-        const page = await this.browser.newPage()
+    async newPage(browserTarget = null) {
+        const browser = browserTarget ? browserTarget : this.browser
+        const page = await browser.newPage()
         page.setDefaultTimeout(30000)
 
         return page
@@ -32,8 +65,9 @@ class Browser {
     /**
      * Create new optimized asset page.
      */
-    async newOptimizedPage() {
-        const page = await this.browser.newPage()
+    async newOptimizedPage(browserTarget = null) {
+        const browser = browserTarget ? browserTarget : this.browser
+        const page = await browser.newPage()
         page.setDefaultTimeout(30000)
 
         return await this.optimizePage(page)
@@ -59,9 +93,10 @@ class Browser {
      * @param {Object} page Current page.
      * @param {Boolean} optimized Optimized or not.
      */
-    async getNewTabPage(page, optimized = true) {
+    async getNewTabPage(page, optimized = true, browserTarget = null) {
+        const browser = browserTarget ? browserTarget : this.browser
         const pageTarget = page.target()
-        const newTarget = await this.browser.waitForTarget(target => target.opener() === pageTarget)
+        const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget)
         const newPage = await newTarget.page()
         newPage.setDefaultTimeout(30000)
 
