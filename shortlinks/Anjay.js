@@ -1,6 +1,7 @@
 const Browser = require('../Browser')
 const Handler = require('../exceptions/Handler')
 const Util = require('../utils/utils')
+const Coeg = require('./Coeg')
 
 class Anjay {
     constructor() {
@@ -41,6 +42,12 @@ class Anjay {
         try {
             await Util.sleep(3000)
             const url = page.url()
+
+            if (url.includes('bucin')) {
+                await page.close()
+
+                return Coeg.parse(url)
+            }
 
             if (!url.includes('ahexa') && !url.includes('anjay')) {
                 await page.close()

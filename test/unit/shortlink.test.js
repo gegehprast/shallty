@@ -4,6 +4,10 @@ const Browser = require('../../Browser')
 const Shortlink = require('../../shortlinks')
 
 describe('shortlink', function () {
+    before(function () {
+        this.skip()
+    })
+    
     describe('teknoku', function () {
         it('should return an object which has url property', async function () {
             this.timeout(60000)
@@ -108,6 +112,20 @@ describe('shortlink', function () {
             expect(data).to.has.property('url')
             expect(data.url).to.be.a('string')
             expect(data.url).to.include('solidfiles.com')
+        })
+    })
+
+    describe('neonime', function () {
+        it('should return an object which has a string url property', async function () {
+            this.timeout(60000)
+            await Browser.init()
+            const data = await Shortlink.parse('https://neonime.org/?940caec1dc=Z0g4dktlM2RLaWc5dVN2dEtqb3JQZVBMVm4vK2lPeCtxOWtBU3kwV1BwS09jdkNjTHVkTktZa0FiSjVUUXArdlE5ZjJGeVdsM0xhb3VSU0l4OS8xcTI1VS9WcGVscEoza0V6am1PcVFxbWovYkpnM1dIYmtFUXRqYWZBOTREZzM=')
+            console.log(data)
+
+            expect(data).to.be.an('object')
+            expect(data).to.has.property('url')
+            expect(data.url).to.be.a('string')
+            expect(data.url).to.include('zippyshare')
         })
     })
 })

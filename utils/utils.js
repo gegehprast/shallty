@@ -9,13 +9,17 @@ class Util {
     }
     
     /**
-     * Check if an object is empty.
+     * Check if an array/object is empty.
      * 
-     * @param {Object} obj Object to check.
+     * @param {Object|Array} item Object/array to check.
      */
-    isEmpty(obj) {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key))
+    isEmpty(item) {
+        if (Array.isArray(item)) {
+            return item.length < 1
+        }
+
+        for (const key in item) {
+            if (Object.prototype.hasOwnProperty.call(item, key))
                 return false
         }
 
@@ -110,6 +114,16 @@ class Util {
         }
 
         return obj
+    }
+
+    randomString(length) {
+        var result = ''
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        var charactersLength = characters.length
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength))
+        }
+        return result
     }
 }
 
