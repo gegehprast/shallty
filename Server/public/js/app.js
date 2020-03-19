@@ -2,6 +2,7 @@
 $(function () {
     const socket = io('/');
     const fansub = io('/fansub');
+    const fantl = io('/fantl');
 
     socket.on('a', function (data) {
         console.log('A: ', data)
@@ -13,13 +14,13 @@ $(function () {
 
     function emitA() {
         fansub.emit('animeList', {
-            fansub: 'Moenime'
+            fansub: 'moenime'
         })
     }
 
     function emitB() {
-        socket.emit('b', {
-            msg: 'this is B'
+        fantl.emit('mangaList', {
+            fansub: 'kiryuu'
         })
     }
 
