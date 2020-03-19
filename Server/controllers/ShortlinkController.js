@@ -1,4 +1,4 @@
-const Shorlink = require('../shortlinks')
+const Shorlink = require('../../shortlinks')
 
 class ShortlinkController {
     async index(req, res) {

@@ -1,4 +1,4 @@
-const Browser = require('../Browser')
+const Browser = require('../../Browser')
 
 module.exports = (req, res, next) => {
     if (Browser.browser !== null) {

@@ -1,9 +1,8 @@
-const Moenime = require('../fansubs/Moenime')
+const Kusonime = require('../../fansubs/Kusonime')
 
-class MoenimeController {
+class KusonimeController {
     async animeList(req, res) {
-        const show = (['ongoing', 'movie'].includes(req.query.show)) ? req.query.show : 'all'
-        const anime = await Moenime.animeList(show)
+        const anime = await Kusonime.animeList()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -14,41 +13,41 @@ class MoenimeController {
                 status: 200,
                 message: 'Success',
                 data: anime
-            })
-        }
-    }
-
-    async links(req, res) {
-        const episodes = await Moenime.episodes(req.query.link)
-        if (episodes.error) {
-            res.status(500).json({
-                status: 500,
-                message: episodes.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: episodes
             })
         }
     }
 
     async newReleases(req, res) {
-        const anime = await Moenime.newReleases()
-        if (anime.error) {
+        const posts = await Kusonime.newReleases(req.query.page)
+        if (posts.error) {
             res.status(500).json({
                 status: 500,
-                message: anime.message
+                message: posts.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: anime
+                data: posts
+            })
+        }
+    }
+
+    async links(req, res) {
+        const data = await Kusonime.links(req.query.link)
+        if (data.error) {
+            res.status(500).json({
+                status: 500,
+                message: data.message
+            })
+        } else {
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: data
             })
         }
     }
 }
 
-module.exports = new MoenimeController
+module.exports = new KusonimeController

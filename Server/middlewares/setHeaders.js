@@ -1,5 +1,3 @@
-const Browser = require('../Browser')
-
 module.exports = (req, res, next) => {
     res.set('X-Powered-By', 'Shallty\'s Love')
     res.append('Access-Control-Allow-Origin', ['*'])

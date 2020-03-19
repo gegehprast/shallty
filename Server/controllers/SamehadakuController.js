@@ -1,5 +1,5 @@
-const Samehadaku = require('../fansubs/Samehadaku')
-const Util = require('../utils/utils')
+const Samehadaku = require('../../fansubs/Samehadaku')
+const Util = require('../../utils/utils')
 
 class SamehadakuController {
     async animeList(req, res) {

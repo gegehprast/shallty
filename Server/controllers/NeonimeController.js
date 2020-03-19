@@ -1,8 +1,8 @@
-const Oploverz = require('../fansubs/Oploverz')
+const Neonime = require('../../fansubs/Neonime')
 
-class OploverzController {
-    async animeList(req, res) {
-        const anime = await Oploverz.animeList()
+class NeonimeController {
+    async newReleases(req, res) {
+        const anime = await Neonime.newReleases()
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -17,8 +17,8 @@ class OploverzController {
         }
     }
 
-    async newReleases(req, res) {
-        const anime = await Oploverz.newReleases()
+    async animeList(req, res) {
+        const anime = await Neonime.animeList(req.query.link)
         if (anime.error) {
             res.status(500).json({
                 status: 500,
@@ -34,7 +34,7 @@ class OploverzController {
     }
 
     async episodes(req, res) {
-        const episodes = await Oploverz.episodes(req.query.link)
+        const episodes = await Neonime.episodes(req.query.link)
         if (episodes.error) {
             res.status(500).json({
                 status: 500,
@@ -50,20 +50,20 @@ class OploverzController {
     }
 
     async links(req, res) {
-        const links = await Oploverz.links(req.query.link)
-        if (links.error) {
+        const episodes = await Neonime.links(req.query.link)
+        if (episodes.error) {
             res.status(500).json({
                 status: 500,
-                message: links.message
+                message: episodes.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: links
+                data: episodes
             })
         }
     }
 }
 
-module.exports = new OploverzController
+module.exports = new NeonimeController

@@ -1,6 +1,6 @@
 const path = require('path')
-const Browser = require('../Browser')
-const Util = require('../utils/utils')
+const Browser = require('../../Browser')
+const Util = require('../../utils/utils')
 
 class ScreenshotController {
     async screenshot(req, res) {
