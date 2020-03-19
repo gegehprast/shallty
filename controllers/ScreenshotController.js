@@ -16,7 +16,7 @@ class ScreenshotController {
 
             const name = Util.randomString(30) + '.png'
             await page.screenshot({
-                path: path.join(__dirname, '../static/screenshot/') + name,
+                path: path.join(__dirname, '../public/images/screenshot/') + name,
                 fullPage: true
             })
             await page.close()
@@ -24,7 +24,7 @@ class ScreenshotController {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: '/screenshot/' + name
+                data: '/images/screenshot/' + name
             })
         } catch (error) {
             await page.close()
