@@ -1,6 +1,7 @@
 /* eslint-disable */
 $(function () {
     const socket = io('/');
+    const fansub = io('/fansub');
 
     socket.on('a', function (data) {
         console.log('A: ', data)
@@ -11,8 +12,8 @@ $(function () {
     })
 
     function emitA() {
-        socket.emit('a', {
-            msg: 'this is A'
+        fansub.emit('animeList', {
+            fansub: 'Moenime'
         })
     }
 

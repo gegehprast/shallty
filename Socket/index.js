@@ -1,14 +1,7 @@
 const socketIo = require('socket.io')
-const listen = require('./listeners')
+const { fansubListener, fantlListener } = require('./listeners')
 
 class Socket {
-    constructor() {
-        this.io = null
-
-        this.init = this.init.bind(this)
-        this.isRoomExist = this.isRoomExist.bind(this)
-    }
-
     /**
      * Init socket.
      * 
@@ -16,32 +9,30 @@ class Socket {
      */
     init(http, port) {
         const io = socketIo(http)
+        const fansub = io.of('/fansub')
+        const fantl = io.of('/fantl')
 
-        io.on('connection', function (socket) {
-            console.log('Connected')
-
-            // eslint-disable-next-line no-unused-vars
+        fansub.on('connection', function (socket) {
+            console.log('Connected to fansub')
+            
             socket.on('disconnect', function (reason) {
-
+                console.log(reason)
             })
 
-            listen(io, socket)
+            fansubListener(fansub, socket)
         })
 
-        this.io = io
+        fantl.on('connection', function (socket) {
+            console.log('Connected to fantl')
+            
+            socket.on('disconnect', function (reason) {
+                console.log(reason)
+            })
+
+            fantlListener(fantl, socket)
+        })
 
         console.log('\x1b[32m', `[Websocket Ready] You can access it at http://localhost:${port}`)
-    }
-
-    /**
-     * Check room existence.
-     * 
-     * @param {String} agent Agent.
-     */
-    isRoomExist(roomId) {
-        const room = this.io.sockets.adapter.rooms[roomId]
-
-        return room && typeof room !== 'undefined'
     }
 }
 
