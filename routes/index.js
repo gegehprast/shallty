@@ -1,5 +1,6 @@
 const express = require('express')
-const route = express.Router()
+const web = express.Router()
+const MainController = require('../controllers/MainController')
 const SamehadakuController = require('../controllers/SamehadakuController')
 const NeonimeController = require('../controllers/NeonimeController')
 const OploverzController = require('../controllers/OploverzController')
@@ -9,37 +10,42 @@ const MoenimeController = require('../controllers/MoenimeController')
 const ShortlinkController = require('../controllers/ShortlinkController')
 const ScreenshotController = require('../controllers/ScreenshotController')
 
-route.get('/samehadaku/animeList', SamehadakuController.animeList)
-route.get('/samehadaku/episodes', SamehadakuController.episodes)
-route.get('/samehadaku/links', SamehadakuController.links)
-route.get('/samehadaku/newReleases', SamehadakuController.newReleases)
+const api = web
 
-route.get('/neonime/animeList', NeonimeController.animeList)
-route.get('/neonime/episodes', NeonimeController.episodes)
-route.get('/neonime/links', NeonimeController.links)
-route.get('/neonime/newReleases', NeonimeController.newReleases)
+web.get('/', MainController.index)
+web.get('/fake', MainController.fake)
 
-route.get('/oploverz/animeList', OploverzController.animeList)
-route.get('/oploverz/episodes', OploverzController.episodes)
-route.get('/oploverz/links', OploverzController.links)
-route.get('/oploverz/newReleases', OploverzController.newReleases)
+api.get('/samehadaku/animeList', SamehadakuController.animeList)
+api.get('/samehadaku/episodes', SamehadakuController.episodes)
+api.get('/samehadaku/links', SamehadakuController.links)
+api.get('/samehadaku/newReleases', SamehadakuController.newReleases)
 
-route.get('/kusonime/animeList', KusonimeController.animeList)
-route.get('/kusonime/links', KusonimeController.links)
-route.get('/kusonime/newReleases', KusonimeController.newReleases)
+api.get('/neonime/animeList', NeonimeController.animeList)
+api.get('/neonime/episodes', NeonimeController.episodes)
+api.get('/neonime/links', NeonimeController.links)
+api.get('/neonime/newReleases', NeonimeController.newReleases)
 
-route.get('/moenime/animeList', MoenimeController.animeList)
-route.get('/moenime/links', MoenimeController.links)
-route.get('/moenime/newReleases', MoenimeController.newReleases)
+api.get('/oploverz/animeList', OploverzController.animeList)
+api.get('/oploverz/episodes', OploverzController.episodes)
+api.get('/oploverz/links', OploverzController.links)
+api.get('/oploverz/newReleases', OploverzController.newReleases)
 
-route.get('/kiryuu/mangaList', KiryuuController.mangaList)
-route.get('/kiryuu/mangaInfo', KiryuuController.mangaInfo)
-route.get('/kiryuu/chapters', KiryuuController.chapters)
-route.get('/kiryuu/images', KiryuuController.images)
-route.get('/kiryuu/newReleases', KiryuuController.newReleases)
+api.get('/kusonime/animeList', KusonimeController.animeList)
+api.get('/kusonime/links', KusonimeController.links)
+api.get('/kusonime/newReleases', KusonimeController.newReleases)
 
-route.get('/shortlink', ShortlinkController.index)
+api.get('/moenime/animeList', MoenimeController.animeList)
+api.get('/moenime/links', MoenimeController.links)
+api.get('/moenime/newReleases', MoenimeController.newReleases)
 
-route.get('/screenshot', ScreenshotController.screenshot)
+api.get('/kiryuu/mangaList', KiryuuController.mangaList)
+api.get('/kiryuu/mangaInfo', KiryuuController.mangaInfo)
+api.get('/kiryuu/chapters', KiryuuController.chapters)
+api.get('/kiryuu/images', KiryuuController.images)
+api.get('/kiryuu/newReleases', KiryuuController.newReleases)
 
-module.exports = route
+api.get('/shortlink', ShortlinkController.index)
+
+api.get('/screenshot', ScreenshotController.screenshot)
+
+module.exports = [web, api]

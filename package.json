@@ -1,6 +1,6 @@
 {
   "name": "shallty",
-  "version": "2.2.2",
+  "version": "2.3.4",
   "description": "Shallty adalah aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk Meownime, Samehadaku, Neonime, dan Oploverz. https://shallty.kyuun.id",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
+    "pug": "^2.0.4",
     "puppeteer": "^2.1.1",
     "socket.io": "^2.3.0",
     "winston": "^3.2.1",

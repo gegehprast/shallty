@@ -50,4 +50,4 @@ class Socket {
     }
 }
 
-module.exports = new Socket()
+module.exports = new Socket
