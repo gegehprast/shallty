@@ -1,4 +1,5 @@
 const socketIo = require('socket.io')
+const listen = require('./listeners')
 
 class Socket {
     constructor() {
@@ -16,21 +17,15 @@ class Socket {
     init(http, port) {
         const io = socketIo(http)
 
-        io.use((socket, next) => {
-            const agent = socket.handshake.query.agent
-
-            if (agent && agent !== '') {
-                return next()
-            }
-
-            // Handler.error('Authentication error. Disconnecting socket.', false)
-            console.log('Authentication error. Disconnecting socket.')
-
-            socket.disconnect(true)
-        })
-
         io.on('connection', function (socket) {
+            console.log('Connected')
 
+            // eslint-disable-next-line no-unused-vars
+            socket.on('disconnect', function (reason) {
+
+            })
+
+            listen(io, socket)
         })
 
         this.io = io

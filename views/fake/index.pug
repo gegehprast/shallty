@@ -4,13 +4,8 @@ html
         meta(name='agent', content=agent)
     body
         div(id="welcome") Hello!
-        div="Deposit: "
-            div(id="dp") 0
-        div="Withdraw: "
-            div(id="wd") 0
-        button(id="proDp") Proceed Deposit
-        button(id="proWd") Proceed Withdraw
-        button(id="getTotal") Get Current Total
+        button(id="emitA") Proceed A
+        button(id="emitB") Proceed B
         script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
         script(src='/js/app.js')
