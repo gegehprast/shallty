@@ -66,7 +66,7 @@ class KiryuuController {
     }
 
     async newReleases(req, res) {
-        const releases = await Kiryuu.newReleases(req.query.link)
+        const releases = await Kiryuu.newReleases()
         if (releases.error) {
             res.status(500).json({
                 status: 500,
