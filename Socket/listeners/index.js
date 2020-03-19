@@ -3,42 +3,42 @@ const fantl = require('./fantl')
 
 module.exports = {
     fansubListener: (io, socket) => {
-        socket.on('animeList', function (data) {
-            fansub.animeList(io, socket, data)
+        socket.on('animeList', function (param) {
+            fansub.animeList(io, socket, param)
         })
 
-        socket.on('episodes', function (data) {
-            fansub.episodes(io, socket, data)
+        socket.on('episodes', function (param) {
+            fansub.episodes(io, socket, param)
         })
 
-        socket.on('links', function (data) {
-            fansub.links(io, socket, data)
+        socket.on('links', function (param) {
+            fansub.links(io, socket, param)
         })
 
-        socket.on('newReleases', function (data) {
-            fansub.newReleases(io, socket, data)
+        socket.on('newReleases', function (param) {
+            fansub.newReleases(io, socket, param)
         })
     },
 
     fantlListener: (io, socket) => {
-        socket.on('mangaList', function (data) {
-            fantl.mangaList(io, socket, data)
+        socket.on('mangaList', function (param) {
+            fantl.mangaList(io, socket, param)
         })
 
-        socket.on('mangaInfo', function (data) {
-            fantl.mangaInfo(io, socket, data)
+        socket.on('mangaInfo', function (param) {
+            fantl.mangaInfo(io, socket, param)
         })
 
-        socket.on('chapters', function (data) {
-            fantl.chapters(io, socket, data)
+        socket.on('chapters', function (param) {
+            fantl.chapters(io, socket, param)
         })
 
-        socket.on('images', function (data) {
-            fantl.images(io, socket, data)
+        socket.on('images', function (param) {
+            fantl.images(io, socket, param)
         })
 
-        socket.on('newReleases', function (data) {
-            fantl.newReleases(io, socket, data)
+        socket.on('newReleases', function (param) {
+            fantl.newReleases(io, socket, param)
         })
     }
 }

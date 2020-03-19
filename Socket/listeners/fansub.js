@@ -1,9 +1,9 @@
 const fansubs = {
-    Kusonime: require('../../fansubs/Kusonime'), 
-    Moenime: require('../../fansubs/Moenime'), 
-    Neonime: require('../../fansubs/Neonime'), 
-    Oploverz: require('../../fansubs/Oploverz'), 
-    Samehadaku: require('../../fansubs/Samehadaku'), 
+    kusonime: require('../../fansubs/Kusonime'), 
+    moenime: require('../../fansubs/Moenime'), 
+    neonime: require('../../fansubs/Neonime'), 
+    oploverz: require('../../fansubs/Oploverz'), 
+    samehadaku: require('../../fansubs/Samehadaku'), 
 }
 
 module.exports = {
@@ -14,13 +14,13 @@ module.exports = {
     },
 
     episodes: async (io, socket, param) => {
-        const data = await fansubs[param.fansub].episodes()
+        const data = await fansubs[param.fansub].episodes(param.link)
 
         io.emit('episodes', data)
     },
 
     links: async (io, socket, param) => {
-        const data = await fansubs[param.fansub].links()
+        const data = await fansubs[param.fansub].links(param.link)
 
         io.emit('links', data)
     },
