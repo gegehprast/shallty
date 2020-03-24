@@ -1,5 +1,6 @@
 const fansub = require('./fansub')
 const fantl = require('./fantl')
+const shortlink = require('./shortlink')
 
 module.exports = {
     fansubListener: (io, socket) => {
@@ -39,6 +40,12 @@ module.exports = {
 
         socket.on('newReleases', function (param) {
             fantl.newReleases(io, socket, param)
+        })
+    },
+
+    shortlinkListener: (io, socket) => {
+        socket.on('parse', function (param) {
+            shortlink.parse(io, socket, param)
         })
     }
 }
