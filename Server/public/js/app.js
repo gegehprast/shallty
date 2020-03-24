@@ -27,13 +27,15 @@ function animeList() {
 
 function episodes() {
     fansub.emit('episodes', {
-        fansub: 'neonime'
+        fansub: 'neonime',
+        link: '/tvshows/black-clover-subtitle-indonesia/'
     })
 }
 
-function links() {
+function downloadLinks() {
     fansub.emit('links', {
-        fansub: 'moenime'
+        fansub: 'neonime',
+        link: '/episode/black-clover-1x112/'
     })
 }
 
