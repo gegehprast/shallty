@@ -1,7 +1,7 @@
 {
     "app_env": "production",
     "app_port": 8080,
-    "headfull": false,
+    "headless": true,
     "websocket": false,
     "meownime_url": "https://meownime.com",
     "samehadaku_url": "https://www.samehada.tv",
