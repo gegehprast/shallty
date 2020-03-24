@@ -12,7 +12,7 @@ class Browser {
         if (!this.browser) {
             this.browser = await puppeteer.launch({
                 headless: app_env !== 'production' && headfull ? false : true,
-                args: ['--no-sandbox']
+                args: ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox']
             })
         }
 
