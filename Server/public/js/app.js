@@ -1,33 +1,44 @@
 /* eslint-disable */
-$(function () {
-    const socket = io('/');
-    const fansub = io('/fansub');
-    const fantl = io('/fantl');
+const socket = io('/');
+const fansub = io('/fansub');
+const fantl = io('/fantl');
 
-    socket.on('a', function (data) {
-        console.log('A: ', data)
+fansub.on('animeList', function (data) {
+    console.log('animeList: ', data)
+})
+
+fansub.on('episodes', function (data) {
+    console.log('episodes: ', data)
+})
+
+fansub.on('links', function (data) {
+    console.log('links: ', data)
+})
+
+fansub.on('newReleases', function (data) {
+    console.log('newReleases: ', data)
+})
+
+function animeList() {
+    fansub.emit('animeList', {
+        fansub: 'moenime'
     })
+}
 
-    socket.on('b', function (data) {
-        console.log('B: ', data)
+function episodes() {
+    fansub.emit('episodes', {
+        fansub: 'neonime'
     })
+}
 
-    function emitA() {
-        fansub.emit('animeList', {
-            fansub: 'moenime'
-        })
-    }
-
-    function emitB() {
-        fantl.emit('mangaList', {
-            fansub: 'kiryuu'
-        })
-    }
-
-    $("#emitA").click(function () {
-        emitA()
+function links() {
+    fansub.emit('links', {
+        fansub: 'moenime'
     })
-    $("#emitB").click(function () {
-        emitB()
+}
+
+function newReleases() {
+    fansub.emit('newReleases', {
+        fansub: 'moenime'
     })
-});
+}
