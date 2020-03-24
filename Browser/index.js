@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer')
-const { app_env } = require('../config.json')
+const { app_env, headfull } = require('../config.json')
 const Util = require('../utils/utils')
 
 class Browser {
@@ -11,7 +11,7 @@ class Browser {
     async init() {
         if (!this.browser) {
             this.browser = await puppeteer.launch({
-                headless: app_env == 'local' ? false : true,
+                headless: app_env !== 'production' && headfull ? false : true,
                 args: ['--no-sandbox']
             })
         }
