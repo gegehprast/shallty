@@ -6,23 +6,23 @@ const { samehadaku_url } = require('../config.json')
 class Samehadaku {
     /**
      * Parse and get new released episodes.
-     * @param navPage Navigation page.
+     * @param {Object} options Param options.
      */
-    async newReleases(navPage = 1) {
+    async newReleases({ page }) {
         const episodes = []
-        const page = await Browser.newOptimizedPage()
+        const browserPage = await Browser.newOptimizedPage()
 
         try {
-            await page.goto(`${samehadaku_url}/page/${navPage}/`)
+            await browserPage.goto(`${samehadaku_url}/page/${page || 1}/`)
 
-            const posts = await Browser.$$waitAndGet(page, 'div.white.updateanime > ul > li')
+            const posts = await Browser.$$waitAndGet(browserPage, 'div.post-show > ul > li')
             await Util.asyncForEach(posts, async (post) => {
-                const anchor = await post.$('h2.entry-title a')
+                const anchor = await post.$('div.dtla h2.entry-title a')
                 const title = await Browser.getPlainProperty(anchor, 'innerText')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
 
                 const parsedTitle = title.split(' Episode')[0]
-                const matches = rawLink.match(/(?<=episode-)(\d+)/gi)
+                const matches = title.match(/(?<=Episode )(\d+)/g)
                 if (matches && matches != null) {
                     const numeral = matches[0].length == 1 ? '0' + matches[0] : matches[0]
 
@@ -35,11 +35,11 @@ class Samehadaku {
                 }
             })
 
-            await page.close()
+            await browserPage.close()
 
             return episodes
         } catch (error) {
-            await page.close()
+            await browserPage.close()
 
             return Handler.error(error)
         }
@@ -55,7 +55,7 @@ class Samehadaku {
         try {
             await page.goto(samehadaku_url + '/daftar-anime/?list')
 
-            const anchors = await Browser.$$waitAndGet(page, 'div.daftarkartun a.tip')
+            const anchors = await Browser.$$waitAndGet(page, 'div.listpst div.listttl a')
             await Util.asyncForEach(anchors, async (anchor) => {
                 const title = await Browser.getPlainProperty(anchor, 'innerHTML')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
@@ -89,9 +89,9 @@ class Samehadaku {
             link = decodeURIComponent(link)
             link = link.replace('/category/', '/anime/')
             await page.goto(samehadaku_url + link)
-            const episodeList = await Browser.$$waitAndGet(page, 'div.episodelist > ul > li')
+            const episodeList = await Browser.$$waitAndGet(page, 'div.lstepsiode > ul li')
             await Util.asyncForEach(episodeList, async (item) => {
-                const anchor = await item.$('span.lefttitle > a')
+                const anchor = await item.$('div.epsright a')
                 const rawLink = await Browser.getPlainProperty(anchor, 'href')
                 const link = rawLink.replace(samehadaku_url, '')
                 let episode = link
@@ -138,12 +138,11 @@ class Samehadaku {
             
             await page.waitForSelector('div.download-eps')
             const downloadDivs = await page.$$('div.download-eps')
+
             await Util.asyncForEach(downloadDivs, async downloadDiv => {
-                const p = await page.evaluateHandle(node => node.previousElementSibling, downloadDiv)
+                const p = await downloadDiv.$('p')
                 let format = await Browser.getPlainProperty(p, 'innerText')
-                format = format.replace('</b>', '')
-                    .replace('</b>', '')
-                    .replace(/(&amp;)/, '')
+                format = format.replace('</b>', '').replace('</b>', '').replace(/(&amp;)/, '')
 
                 if (format.match(/(3gp)/i)) {
                     return false
@@ -156,11 +155,13 @@ class Samehadaku {
                 }
 
                 const list = await downloadDiv.$$('li')
+
                 await Util.asyncForEach(list, async item => {
                     const strong = await item.$('strong')
                     if (strong && strong != null) {
                         const quality = await Browser.getPlainProperty(strong, 'innerText')
                         const anchors = await item.$$('a')
+                        
                         await Util.asyncForEach(anchors, async anchor => {
                             const host = await Browser.getPlainProperty(anchor, 'innerText')
                             const link = await Browser.getPlainProperty(anchor, 'href')
