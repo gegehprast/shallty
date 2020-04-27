@@ -1,5 +1,5 @@
 const socketIo = require('socket.io')
-const { fansubListener, fantlListener, shortlinkListener } = require('./listeners')
+const { fansubListener, fanscanListener, shortlinkListener } = require('./listeners')
 
 class Socket {
     /**
@@ -10,7 +10,7 @@ class Socket {
     init(http, port) {
         const io = socketIo(http)
         const fansub = io.of('/fansub')
-        const fantl = io.of('/fantl')
+        const fanscan = io.of('/fanscan')
         const shortlink = io.of('/shortlink')
 
         fansub.on('connection', function (socket) {
@@ -23,14 +23,14 @@ class Socket {
             fansubListener(fansub, socket)
         })
 
-        fantl.on('connection', function (socket) {
-            console.log('Connected to fantl')
+        fanscan.on('connection', function (socket) {
+            console.log('Connected to fanscan')
             
             socket.on('disconnect', function (reason) {
                 console.log(reason)
             })
 
-            fantlListener(fantl, socket)
+            fanscanListener(fanscan, socket)
         })
 
         shortlink.on('connection', function (socket) {
