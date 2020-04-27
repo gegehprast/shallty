@@ -20,7 +20,7 @@ class Fansub {
         const selected = this.list[fansub]
 
         if (!selected) {
-            return Handler.error('Error: Unknown shortlink.')
+            return Handler.error('Error: Unknown fansub.')
         }
 
         return await selected.animeList()
@@ -30,7 +30,7 @@ class Fansub {
         const selected = this.list[fansub]
 
         if (!selected) {
-            return Handler.error('Error: Unknown shortlink.')
+            return Handler.error('Error: Unknown fansub.')
         }
 
         return await selected.episodes(link)
@@ -40,7 +40,7 @@ class Fansub {
         const selected = this.list[fansub]
 
         if (!selected) {
-            return Handler.error('Error: Unknown shortlink.')
+            return Handler.error('Error: Unknown fansub.')
         }
 
         return await selected.links(link)
@@ -50,7 +50,7 @@ class Fansub {
         const selected = this.list[fansub]
 
         if (!selected) {
-            return Handler.error('Error: Unknown shortlink.')
+            return Handler.error('Error: Unknown fansub.')
         }
 
         return await selected.newReleases()
