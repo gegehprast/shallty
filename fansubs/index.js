@@ -6,7 +6,7 @@ const fansubFiles = fs.readdirSync('./Fansubs').filter(file => file !== 'index.j
 const fansubs = {}
 
 for (const file of fansubFiles) {
-    Object.defineProperty(fansubs, file.replace('.js', ''), {
+    Object.defineProperty(fansubs, file.toLowerCase().replace('.js', ''), {
         value: require(`./${file}`)
     })
 }

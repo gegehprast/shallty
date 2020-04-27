@@ -1,9 +1,8 @@
 const Fanscan = require('../../Fanscans')
-const Util = require('../../utils/utils')
 
 class FanscanController {
     async mangaList(req, res) {
-        const data = await Fanscan.mangaList(Util.ucfirst(req.params.fanscan))
+        const data = await Fanscan.mangaList(req.params.fanscan)
 
         if (data.error) {
             res.status(500).json({
@@ -20,7 +19,7 @@ class FanscanController {
     }
 
     async mangaInfo(req, res) {
-        const data = await Fanscan.mangaInfo(Util.ucfirst(req.params.fanscan), req.query.link)
+        const data = await Fanscan.mangaInfo(req.params.fanscan, req.query.link)
 
         if (data.error) {
             res.status(500).json({
@@ -37,7 +36,7 @@ class FanscanController {
     }
 
     async chapters(req, res) {
-        const data = await Fanscan.chapters(Util.ucfirst(req.params.fanscan), req.query.link)
+        const data = await Fanscan.chapters(req.params.fanscan, req.query.link)
 
         if (data.error) {
             res.status(500).json({
@@ -54,7 +53,7 @@ class FanscanController {
     }
 
     async images(req, res) {
-        const data = await Fanscan.images(Util.ucfirst(req.params.fanscan))
+        const data = await Fanscan.images(req.params.fanscan)
 
         if (data.error) {
             res.status(500).json({
@@ -71,7 +70,7 @@ class FanscanController {
     }
 
     async newReleases(req, res) {
-        const data = await Fanscan.newReleases(Util.ucfirst(req.params.fanscan))
+        const data = await Fanscan.newReleases(req.params.fanscan)
 
         if (data.error) {
             res.status(500).json({
