@@ -51,6 +51,9 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 https://documenter.getpostman.com/view/3762767/SWLh5STA?version=latest
 
+### Note:
+Catatan rilis bisa kamu lihat di [masing-masing rilisan](https://github.com/gegehprast/shallty/releases).
+
 ## Bantuan, Lapor Bug, dan Kritik dan Saran
 
 Server Discord: http://discord.gg/Ur4xJ4t

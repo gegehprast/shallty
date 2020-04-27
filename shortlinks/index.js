@@ -1,39 +1,18 @@
-const Ahexa = require('./Ahexa')
-const Anjay = require('./Anjay')
-const Euesiherp = require('./Euesiherp')
-const Coeg = require('./Coeg')
-const Hexa = require('./Hexa')
-const Hightech = require('./Hightech')
-const Jelajahinternet = require('./Jelajahinternet')
-const Kepoow = require('./Kepoow')
-const Kontenajaib = require('./Kontenajaib')
-const Neonime = require('./Neonime')
-const Semawur = require('./Semawur')
-const Sukakesehattan = require('./Sukakesehattan')
-const Teknoku = require('./Teknoku')
-const Travellinginfos = require('./Travellinginfos')
-const Xmaster = require('./Xmaster')
+const fs = require('fs')
+const path = require('path')
 const Handler = require('../exceptions/Handler')
+
+const shortlinkFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
+
+const shortlinks = []
+
+for (const file of shortlinkFiles) {
+    shortlinks.push(require(`./${file}`))
+}
 
 class Shortlink {
     constructor() {
-        this.shorterners = [
-            Ahexa,
-            Anjay, 
-            Euesiherp, 
-            Coeg, 
-            Hexa, 
-            Hightech, 
-            Jelajahinternet, 
-            Kepoow, 
-            Kontenajaib, 
-            Neonime, 
-            Semawur, 
-            Sukakesehattan, 
-            Teknoku, 
-            Travellinginfos,
-            Xmaster
-        ]
+        this.shorterners = shortlinks
     }
 
     async parse(link) {

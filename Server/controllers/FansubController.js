@@ -1,69 +1,73 @@
-const Oploverz = require('../fansubs/Oploverz')
+const Fansub = require('../../Fansubs')
 
-class OploverzController {
+class FansubController {
     async animeList(req, res) {
-        const anime = await Oploverz.animeList()
-        if (anime.error) {
-            res.status(500).json({
-                status: 500,
-                message: anime.message
-            })
-        } else {
-            res.json({
-                status: 200,
-                message: 'Success',
-                data: anime
-            })
-        }
-    }
+        const data = await Fansub.animeList(req.params.fansub, req.query)
 
-    async newReleases(req, res) {
-        const anime = await Oploverz.newReleases()
-        if (anime.error) {
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: anime.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: anime
+                data: data
             })
         }
     }
 
     async episodes(req, res) {
-        const episodes = await Oploverz.episodes(req.query.link)
-        if (episodes.error) {
+        const data = await Fansub.episodes(req.params.fansub, req.query.link, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: episodes.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: episodes
+                data: data
             })
         }
     }
 
     async links(req, res) {
-        const links = await Oploverz.links(req.query.link)
-        if (links.error) {
+        const data = await Fansub.links(req.params.fansub, req.query.link, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: links.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: links
+                data: data
+            })
+        }
+    }
+
+    async newReleases(req, res) {
+        const data = await Fansub.newReleases(req.params.fansub, req.query)
+
+        if (data.error) {
+            res.status(500).json({
+                status: 500,
+                message: data.message
+            })
+        } else {
+            res.json({
+                status: 200,
+                message: 'Success',
+                data: data
             })
         }
     }
 }
 
-module.exports = new OploverzController
+module.exports = new FansubController

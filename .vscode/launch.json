@@ -13,7 +13,7 @@
             "restart": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "args": ["--ignore", "test/*"]
+            "args": ["--ignore", "test/*", "--ignore", "public/*"]
         },
     ]
 }
