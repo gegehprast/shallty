@@ -7,7 +7,7 @@ describe('moenime', function () {
         it('should return an array of anime list with title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../fansubs/Moenime')
+            const Moenime = require('../../Fansubs/Moenime')
             const list = await Moenime.animeList()
 
             expect(list).to.be.an('array')
@@ -25,7 +25,7 @@ describe('moenime', function () {
         it('should return an object which has array of episodes each with its own quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../fansubs/Moenime')
+            const Moenime = require('../../Fansubs/Moenime')
             const episodes = await Moenime.episodes('%2Fabsolute-duo-sub-indo%2F')
 
             expect(episodes).to.be.an('object')
@@ -47,7 +47,7 @@ describe('moenime', function () {
         it('should return an array of anime list with episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Moenime = require('../../fansubs/Moenime')
+            const Moenime = require('../../Fansubs/Moenime')
             const list = await Moenime.newReleases()
 
             expect(list).to.be.an('array')

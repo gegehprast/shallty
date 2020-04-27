@@ -7,7 +7,7 @@ describe('samehadaku', function () {
         it('should return an array of anime list which has title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/Samehadaku')
+            const Samehadaku = require('../../Fansubs/Samehadaku')
             const list = await Samehadaku.animeList()
 
             expect(list).to.be.an('array')
@@ -25,7 +25,7 @@ describe('samehadaku', function () {
         it('should return an array of episodes which has episode, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/Samehadaku')
+            const Samehadaku = require('../../Fansubs/Samehadaku')
             const episodes = await Samehadaku.episodes('/anime/kakushigoto-tv/')
 
             expect(episodes).to.be.an('array')
@@ -42,7 +42,7 @@ describe('samehadaku', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/Samehadaku')
+            const Samehadaku = require('../../Fansubs/Samehadaku')
             const links = await Samehadaku.links('/kakushigoto-episode-4/')
 
             expect(links).to.be.an('array')
@@ -59,7 +59,7 @@ describe('samehadaku', function () {
         it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Samehadaku = require('../../fansubs/Samehadaku')
+            const Samehadaku = require('../../Fansubs/Samehadaku')
             const list = await Samehadaku.newReleases()
 
             expect(list).to.be.an('array')

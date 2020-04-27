@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const expect = require('chai').expect
 const Browser = require('../../Browser')
-const Shortlink = require('../../shortlinks')
+const Shortlink = require('../../Shortlinks')
 
 describe('shortlink', function () {
     before(function () {

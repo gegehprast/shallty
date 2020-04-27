@@ -7,7 +7,7 @@ describe('neonime', function () {
         it('should return an array of episodes which has episode, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = require('../../fansubs/Neonime')
+            const Neonime = require('../../Fansubs/Neonime')
             const episodes = await Neonime.episodes('%2Ftvshows%2Fa-i-c-o-incarnation-subtitle-indonesia%2F')
 
             expect(episodes).to.be.an('array')
@@ -24,7 +24,7 @@ describe('neonime', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = require('../../fansubs/Neonime')
+            const Neonime = require('../../Fansubs/Neonime')
             const links = await Neonime.links('/gleipnir-1x4-subtitle-indonesia/')
 
             expect(links).to.be.an('array')
@@ -41,7 +41,7 @@ describe('neonime', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = require('../../fansubs/Neonime')
+            const Neonime = require('../../Fansubs/Neonime')
             const links = await Neonime.links('%2Fbatch%2Fakame-ga-kill-bd-batch-subtitle-indonesia%2F')
 
             expect(links).to.be.an('array')
@@ -58,7 +58,7 @@ describe('neonime', function () {
         it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Neonime = require('../../fansubs/Neonime')
+            const Neonime = require('../../Fansubs/Neonime')
             const list = await Neonime.newReleases()
 
             expect(list).to.be.an('array')
