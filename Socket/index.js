@@ -1,5 +1,5 @@
 const socketIo = require('socket.io')
-const { fansubListener, fantlListener } = require('./listeners')
+const { fansubListener, fantlListener, shortlinkListener } = require('./listeners')
 
 class Socket {
     /**
@@ -11,6 +11,7 @@ class Socket {
         const io = socketIo(http)
         const fansub = io.of('/fansub')
         const fantl = io.of('/fantl')
+        const shortlink = io.of('/shortlink')
 
         fansub.on('connection', function (socket) {
             console.log('Connected to fansub')
@@ -30,6 +31,16 @@ class Socket {
             })
 
             fantlListener(fantl, socket)
+        })
+
+        shortlink.on('connection', function (socket) {
+            console.log('Connected to shortlink')
+
+            socket.on('disconnect', function (reason) {
+                console.log(reason)
+            })
+
+            shortlinkListener(shortlink, socket)
         })
 
         console.log('\x1b[32m', `[Websocket Ready] You can access it at http://localhost:${port}`)

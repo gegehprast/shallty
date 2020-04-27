@@ -1,10 +1,11 @@
 {
     "app_env": "production",
     "app_port": 8080,
+    "headless": true,
+    "websocket": false,
     "meownime_url": "https://meownime.com",
-    "samehadaku_url": "https://www.samehadaku.tv",
+    "samehadaku_url": "https://www.samehada.tv",
     "neonime_url": "https://neonime.org",
-    "samehadaku_magBoxContainer": 1,
     "oploverz_url": "https://www.oploverz.in",
     "kusonime_url": "https://kusonime.com",
     "mangaku_url": "https://mangaku.in",

@@ -6,8 +6,9 @@ html
         div(id="welcome") Hello!
         button(id="animeList" onclick="animeList()") Proceed animeList
         button(id="episodes" onclick="episodes()") Proceed episodes
-        button(id="links" onclick="links()") Proceed links
+        button(id="links" onclick="downloadLinks()") Proceed links
         button(id="newReleases" onclick="newReleases()") Proceed newReleases
+        button(id="parseShortlink" onclick="parseShortlink()") Proceed shortlink
         script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
         script(src='/js/app.js')
