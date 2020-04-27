@@ -20,6 +20,26 @@ fansub.on('newReleases', function (data) {
     console.log('newReleases: ', data)
 })
 
+fanscan.on('mangaList', function (data) {
+    console.log('mangaList: ', data)
+})
+
+fanscan.on('mangaInfo', function (data) {
+    console.log('mangaInfo: ', data)
+})
+
+fanscan.on('chapters', function (data) {
+    console.log('chapters: ', data)
+})
+
+fanscan.on('images', function (data) {
+    console.log('images: ', data)
+})
+
+fanscan.on('newReleases', function (data) {
+    console.log('newReleases: ', data)
+})
+
 shortlink.on('parse', function (data) {
     console.log('parse: ', data)
 })
@@ -47,6 +67,39 @@ function downloadLinks() {
 function newReleases() {
     fansub.emit('newReleases', {
         fansub: 'moenime'
+    })
+}
+
+function mangaList() {
+    fanscan.emit('mangaList', {
+        fanscan: 'kiryuu'
+    })
+}
+
+function mangaInfo() {
+    fanscan.emit('mangaInfo', {
+        fanscan: 'kiryuu',
+        link: '%2Fmanga%2Firon-ladies%2F'
+    })
+}
+
+function chapters() {
+    fanscan.emit('chapters', {
+        fanscan: 'kiryuu',
+        link: '%2Fmanga%2Firon-ladies%2F'
+    })
+}
+
+function images() {
+    fanscan.emit('images', {
+        fanscan: 'kiryuu',
+        link: '%2Firon-ladies-chapter-99-bahasa-indonesia%2F'
+    })
+}
+
+function newReleasesManga() {
+    fansub.emit('newReleases', {
+        fansub: 'kiryuu'
     })
 }
 
