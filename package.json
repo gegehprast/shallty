@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node ./node_modules/mocha/bin/mocha --recursive --exit",
+    "test": "npm run unit-test",
     "unit-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/",
     "int-test": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/integration/",
     "unit-test-filtered": "node ./node_modules/mocha/bin/mocha --recursive --exit ./test/unit/ --grep",
