@@ -8,14 +8,14 @@ class Samehadaku {
      * Parse and get new released episodes.
      * @param {Object} options Param options.
      */
-    async newReleases({ page }) {
+    async newReleases(options = {}) {
         const episodes = []
-        const browserPage = await Browser.newOptimizedPage()
+        const page = await Browser.newOptimizedPage()
 
         try {
-            await browserPage.goto(`${samehadaku_url}/page/${page || 1}/`)
+            await page.goto(`${samehadaku_url}/page/${options.page || 1}/`)
 
-            const posts = await Browser.$$waitAndGet(browserPage, 'div.post-show > ul > li')
+            const posts = await Browser.$$waitAndGet(page, 'div.post-show > ul > li')
             await Util.asyncForEach(posts, async (post) => {
                 const anchor = await post.$('div.dtla h2.entry-title a')
                 const title = await Browser.getPlainProperty(anchor, 'innerText')
@@ -35,11 +35,11 @@ class Samehadaku {
                 }
             })
 
-            await browserPage.close()
+            await page.close()
 
             return episodes
         } catch (error) {
-            await browserPage.close()
+            await page.close()
 
             return Handler.error(error)
         }
