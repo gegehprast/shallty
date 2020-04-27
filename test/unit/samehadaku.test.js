@@ -26,7 +26,7 @@ describe('samehadaku', function () {
             this.timeout(60000)
             await Browser.init()
             const Samehadaku = require('../../fansubs/Samehadaku')
-            const episodes = await Samehadaku.episodes('%2Fanime%2Fgegege-no-kitarou-2018%2F')
+            const episodes = await Samehadaku.episodes('/anime/kakushigoto-tv/')
 
             expect(episodes).to.be.an('array')
             episodes.forEach(item => {
@@ -43,7 +43,7 @@ describe('samehadaku', function () {
             this.timeout(60000)
             await Browser.init()
             const Samehadaku = require('../../fansubs/Samehadaku')
-            const links = await Samehadaku.links('%2Fgegege-no-kitarou-episode-87%2F')
+            const links = await Samehadaku.links('/kakushigoto-episode-4/')
 
             expect(links).to.be.an('array')
             links.forEach(item => {

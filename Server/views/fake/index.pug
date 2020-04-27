@@ -1,0 +1,26 @@
+html
+    head
+        title=title
+        meta(name='agent', content=agent)
+    body
+        div(id="welcome") Hello!
+
+        div(id="animeButtons", style="padding: 1rem;")
+            button(id="animeList" onclick="animeList()", style="margin: 0 1rem;") Proceed animeList
+            button(id="episodes" onclick="episodes()", style="margin: 0 1rem;") Proceed episodes
+            button(id="links" onclick="downloadLinks()", style="margin: 0 1rem;") Proceed links
+            button(id="newReleases" onclick="newReleases()", style="margin: 0 1rem;") Proceed newReleases
+
+        div(id="mangaButtons", style="padding: 1rem;")
+            button(id="mangaList" onclick="mangaList()", style="margin: 0 1rem;") Proceed mangaList
+            button(id="mangaInfo" onclick="mangaInfo()", style="margin: 0 1rem;") Proceed mangaInfo
+            button(id="chapters" onclick="chapters()", style="margin: 0 1rem;") Proceed chapters
+            button(id="images" onclick="images()", style="margin: 0 1rem;") Proceed images
+            button(id="newReleasesManga" onclick="newReleasesManga()", style="margin: 0 1rem;") Proceed newReleases
+
+        div(id="shortlinkButtons", style="padding: 1rem;")
+            button(id="parseShortlink" onclick="parseShortlink()", style="margin: 0 1rem;") Proceed shortlink
+
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+        script(src='/js/app.js')

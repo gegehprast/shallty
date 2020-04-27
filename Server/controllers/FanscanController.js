@@ -1,85 +1,90 @@
-const Kiryuu = require('../fantls/Kiryuu')
+const Fanscan = require('../../Fanscans')
 
-class KiryuuController {
+class FanscanController {
     async mangaList(req, res) {
-        const manga = await Kiryuu.mangaList()
-        if (manga.error) {
+        const data = await Fanscan.mangaList(req.params.fanscan, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: manga.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: manga
+                data: data
             })
         }
     }
 
     async mangaInfo(req, res) {
-        const result = await Kiryuu.mangaInfo(req.query.link)
-        if (result.error) {
+        const data = await Fanscan.mangaInfo(req.params.fanscan, req.query.link, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: result.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: result
+                data: data
             })
         }
     }
 
     async chapters(req, res) {
-        const chapters = await Kiryuu.chapters(req.query.link)
-        if (chapters.error) {
+        const data = await Fanscan.chapters(req.params.fanscan, req.query.link, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: chapters.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: chapters
+                data: data
             })
         }
     }
 
     async images(req, res) {
-        const images = await Kiryuu.images(req.query.link)
-        if (images.error) {
+        const data = await Fanscan.images(req.params.fanscan, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: images.message
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: images
+                data: data
             })
         }
     }
 
     async newReleases(req, res) {
-        const releases = await Kiryuu.newReleases(req.query.link)
-        if (releases.error) {
+        const data = await Fanscan.newReleases(req.params.fanscan, req.query)
+
+        if (data.error) {
             res.status(500).json({
                 status: 500,
-                message: releases.message,
+                message: data.message
             })
         } else {
             res.json({
                 status: 200,
                 message: 'Success',
-                data: releases
+                data: data
             })
         }
     }
 }
 
-module.exports = new KiryuuController
+module.exports = new FanscanController

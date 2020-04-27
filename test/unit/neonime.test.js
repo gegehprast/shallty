@@ -25,7 +25,7 @@ describe('neonime', function () {
             this.timeout(60000)
             await Browser.init()
             const Neonime = require('../../fansubs/Neonime')
-            const links = await Neonime.links('%2Fepisode%2Fa-i-c-o-incarnation-1x12')
+            const links = await Neonime.links('/gleipnir-1x4-subtitle-indonesia/')
 
             expect(links).to.be.an('array')
             links.forEach(item => {

@@ -125,6 +125,15 @@ class Util {
         }
         return result
     }
+
+    /**
+     * Upper case the first letter of a string.
+     * 
+     * @param {String} str string.
+     */
+    ucfirst(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    }
 }
 
 module.exports = new Util
