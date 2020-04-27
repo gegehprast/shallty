@@ -238,28 +238,40 @@ class Kiryuu {
             listupd = listupd[listupd.length - 1]
             const utaos = await listupd.$$('div.utao')
             await Util.asyncForEach(utaos, async (utao) => {
-                const { title, titleLink } = await utao.$eval('div.uta > div.luf > a.series', a => {
-                    return {
-                        title: a.title,
-                        titleLink: a.href
-                    }
-                })
+                const checkSeriesAnchor = await utao.$('div.uta > div.luf > a.series')
 
-                const { chapter, chapterLink } = await utao.$eval('div.uta > div.luf > ul > li > a', (a) => {
-                    return {
-                        chapter: a.innerText,
-                        chapterLink: a.href
-                    }
-                })
+                if (checkSeriesAnchor) {
+                    const { title, titleLink } = await utao.$eval('div.uta > div.luf > a.series', a => {
+                        return {
+                            title: a.title,
+                            titleLink: a.href
+                        }
+                    })
 
-                releases.push({
-                    title: title,
-                    title_url: titleLink.replace(kiryuu_url, ''),
-                    raw_title_url: titleLink,
-                    chapter: chapter.replace(/Ch. |Ch./gi, ''),
-                    chapter_url: chapterLink.replace(kiryuu_url, ''),
-                    raw_chapter_url: chapterLink
-                })
+                    const checkUlLiAnchor = await utao.$('div.uta > div.luf > ul > li > a')
+                    let chapter = '', chapterLink = ''
+
+                    if (checkUlLiAnchor) {
+                        const res = await utao.$eval('div.uta > div.luf > ul > li > a', (a) => {
+                            return {
+                                chapter: a.innerText,
+                                chapterLink: a.href
+                            }
+                        })
+
+                        chapter = res.chapter
+                        chapterLink = res.chapterLink
+                    }
+
+                    releases.push({
+                        title: title,
+                        title_url: titleLink.replace(kiryuu_url, ''),
+                        raw_title_url: titleLink,
+                        chapter: chapter.replace(/Ch. |Ch./gi, ''),
+                        chapter_url: chapterLink.replace(kiryuu_url, ''),
+                        raw_chapter_url: chapterLink
+                    })
+                }
             })
 
             await page.close()
