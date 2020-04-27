@@ -1,6 +1,6 @@
 /node_modules
 /logs
-/static/screenshot/*.png
+/Server/public/images/screenshot/*
 config.json
 deploy-key
 ecosystem.config.js
