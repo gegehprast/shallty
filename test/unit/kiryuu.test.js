@@ -7,7 +7,7 @@ describe('kiryuu', function () {
         it('should return an array of manga list which has title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kiryuu = require('../../fanscans/Kiryuu')
+            const Kiryuu = require('../../Fanscans/Kiryuu')
             const list = await Kiryuu.mangaList()
 
             expect(list).to.be.an('array')
@@ -25,7 +25,7 @@ describe('kiryuu', function () {
         it('should return an object which has title, cover, alterate title, synopsis, and author', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kiryuu = require('../../fanscans/Kiryuu')
+            const Kiryuu = require('../../Fanscans/Kiryuu')
             const data = await Kiryuu.mangaInfo('%2Fmanga%2Firon-ladies%2F')
 
             expect(data).to.be.an('object')
@@ -41,7 +41,7 @@ describe('kiryuu', function () {
         it('should return an array of chapters which has chapter, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kiryuu = require('../../fanscans/Kiryuu')
+            const Kiryuu = require('../../Fanscans/Kiryuu')
             const data = await Kiryuu.chapters('%2Fmanga%2Firon-ladies')
 
             expect(data).to.be.an('array')
@@ -58,7 +58,7 @@ describe('kiryuu', function () {
         it('should return an array of images which has index and url', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kiryuu = require('../../fanscans/Kiryuu')
+            const Kiryuu = require('../../Fanscans/Kiryuu')
             const data = await Kiryuu.images('%2Firon-ladies-chapter-99-bahasa-indonesia%2F')
 
             expect(data).to.be.an('object')
@@ -76,7 +76,7 @@ describe('kiryuu', function () {
         it('should return an array of manga which has title, title url, raw title url, chapter, chapter url, raw chapter url', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kiryuu = require('../../fanscans/Kiryuu')
+            const Kiryuu = require('../../Fanscans/Kiryuu')
             const data = await Kiryuu.newReleases()
 
             expect(data).to.be.an('array')
