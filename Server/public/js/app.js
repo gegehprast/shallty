@@ -1,7 +1,7 @@
 /* eslint-disable */
 const socket = io('/');
 const fansub = io('/fansub');
-const fantl = io('/fantl');
+const fanscan = io('/fanscan');
 const shortlink = io('/shortlink');
 
 fansub.on('animeList', function (data) {
