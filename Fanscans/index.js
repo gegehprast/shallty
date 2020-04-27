@@ -1,7 +1,8 @@
 const fs = require('fs')
+const path = require('path')
 const Handler = require('../exceptions/Handler')
 
-const fanscanFiles = fs.readdirSync('./Fanscans').filter(file => file !== 'index.js' && file.endsWith('.js'))
+const fanscanFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
 
 const fanscans = {}
 

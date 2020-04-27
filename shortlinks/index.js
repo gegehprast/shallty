@@ -1,7 +1,8 @@
 const fs = require('fs')
+const path = require('path')
 const Handler = require('../exceptions/Handler')
 
-const shortlinkFiles = fs.readdirSync('./Shortlinks').filter(file => file !== 'index.js' && file.endsWith('.js'))
+const shortlinkFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
 
 const shortlinks = []
 
