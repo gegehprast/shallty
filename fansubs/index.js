@@ -16,44 +16,44 @@ class Fansub {
         this.list = fansubs
     }
 
-    async animeList(fansub) {
+    async animeList(fansub, options = {}) {
         const selected = this.list[fansub]
 
         if (!selected) {
             return Handler.error('Error: Unknown fansub.')
         }
 
-        return await selected.animeList()
+        return await selected.animeList(options)
     }
 
-    async episodes(fansub, link) {
+    async episodes(fansub, link, options = {}) {
         const selected = this.list[fansub]
 
         if (!selected) {
             return Handler.error('Error: Unknown fansub.')
         }
 
-        return await selected.episodes(link)
+        return await selected.episodes(link, options)
     }
 
-    async links(fansub, link) {
+    async links(fansub, link, options = {}) {
         const selected = this.list[fansub]
 
         if (!selected) {
             return Handler.error('Error: Unknown fansub.')
         }
 
-        return await selected.links(link)
+        return await selected.links(link, options)
     }
 
-    async newReleases(fansub) {
+    async newReleases(fansub, options = {}) {
         const selected = this.list[fansub]
 
         if (!selected) {
             return Handler.error('Error: Unknown fansub.')
         }
 
-        return await selected.newReleases()
+        return await selected.newReleases(options)
     }
 }
 

@@ -16,54 +16,54 @@ class Fanscan {
         this.list = fanscans
     }
 
-    async mangaList(fanscan) {
+    async mangaList(fanscan, options = {}) {
         const selected = this.list[fanscan]
 
         if (!selected) {
             return Handler.error('Error: Unknown fanscan.')
         }
 
-        return await selected.mangaList()
+        return await selected.mangaList(options)
     }
 
-    async mangaInfo(fanscan, link) {
+    async mangaInfo(fanscan, link, options = {}) {
         const selected = this.list[fanscan]
 
         if (!selected) {
             return Handler.error('Error: Unknown fanscan.')
         }
 
-        return await selected.mangaInfo(link)
+        return await selected.mangaInfo(link, options)
     }
 
-    async chapters(fanscan, link) {
+    async chapters(fanscan, link, options = {}) {
         const selected = this.list[fanscan]
 
         if (!selected) {
             return Handler.error('Error: Unknown fanscan.')
         }
 
-        return await selected.chapters(link)
+        return await selected.chapters(link, options)
     }
 
-    async images(fanscan, link) {
+    async images(fanscan, link, options = {}) {
         const selected = this.list[fanscan]
 
         if (!selected) {
             return Handler.error('Error: Unknown fanscan.')
         }
 
-        return await selected.images(link)
+        return await selected.images(link, options)
     }
 
-    async newReleases(fanscan) {
+    async newReleases(fanscan, options = {}) {
         const selected = this.list[fanscan]
 
         if (!selected) {
             return Handler.error('Error: Unknown fanscan.')
         }
 
-        return await selected.newReleases()
+        return await selected.newReleases(options)
     }
 }
 

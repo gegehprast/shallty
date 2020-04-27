@@ -2,7 +2,7 @@ const Fansub = require('../../Fansubs')
 
 class FansubController {
     async animeList(req, res) {
-        const data = await Fansub.animeList(req.params.fansub)
+        const data = await Fansub.animeList(req.params.fansub, req.query)
 
         if (data.error) {
             res.status(500).json({
@@ -19,7 +19,7 @@ class FansubController {
     }
 
     async episodes(req, res) {
-        const data = await Fansub.episodes(req.params.fansub, req.query.link)
+        const data = await Fansub.episodes(req.params.fansub, req.query.link, req.query)
 
         if (data.error) {
             res.status(500).json({
@@ -36,7 +36,7 @@ class FansubController {
     }
 
     async links(req, res) {
-        const data = await Fansub.links(req.params.fansub, req.query.link)
+        const data = await Fansub.links(req.params.fansub, req.query.link, req.query)
 
         if (data.error) {
             res.status(500).json({
@@ -53,7 +53,7 @@ class FansubController {
     }
 
     async newReleases(req, res) {
-        const data = await Fansub.newReleases(req.params.fansub)
+        const data = await Fansub.newReleases(req.params.fansub, req.query)
 
         if (data.error) {
             res.status(500).json({
