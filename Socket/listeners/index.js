@@ -1,6 +1,6 @@
 const Fansub = require('../../Fansubs')
 const Fanscan = require('../../Fanscans')
-const Shortlink = require('../../shortlinks')
+const Shortlink = require('../../Shortlinks')
 
 module.exports = {
     fansubListener: (io, socket) => {

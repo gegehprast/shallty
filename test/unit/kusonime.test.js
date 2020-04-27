@@ -7,7 +7,7 @@ describe('kusonime', function () {
         it('should return an array of anime list which has title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kusonime = require('../../fansubs/Kusonime')
+            const Kusonime = require('../../Fansubs/Kusonime')
             const list = await Kusonime.animeList()
 
             expect(list).to.be.an('array')
@@ -25,7 +25,7 @@ describe('kusonime', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kusonime = require('../../fansubs/Kusonime')
+            const Kusonime = require('../../Fansubs/Kusonime')
             const links = await Kusonime.links('%2Ftiger-mask-w-batch-subtitle-indonesia%2F')
 
             expect(links).to.be.an('array')
@@ -40,7 +40,7 @@ describe('kusonime', function () {
         it('should return an array of download links which has quality, host, and link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kusonime = require('../../fansubs/Kusonime')
+            const Kusonime = require('../../Fansubs/Kusonime')
             const links = await Kusonime.links('/kenja-no-mago-batch-subtitle-indonesia/')
 
             expect(links).to.be.an('array')
@@ -57,7 +57,7 @@ describe('kusonime', function () {
         it('should return an array of episodes which has episode, title, link, and raw link', async function () {
             this.timeout(60000)
             await Browser.init()
-            const Kusonime = require('../../fansubs/Kusonime')
+            const Kusonime = require('../../Fansubs/Kusonime')
             const list = await Kusonime.newReleases()
 
             expect(list).to.be.an('array')
