@@ -1,5 +1,5 @@
 const fantls = {
-    kiryuu: require('../../fantls/Kiryuu'),
+    kiryuu: require('../../fanscans/Kiryuu'),
 }
 
 module.exports = {
