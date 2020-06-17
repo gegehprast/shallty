@@ -1,6 +1,5 @@
 const { createLogger, format, transports } = require('winston')
 require('winston-daily-rotate-file')
-const { app_env } = require('../config.json')
 
 const transport = new(transports.DailyRotateFile)({
     filename: 'shallty-%DATE%.log',
@@ -30,7 +29,7 @@ const logger = createLogger({
     ]
 })
 
-if (app_env !== 'production') {
+if (process.env.APP_ENV !== 'production') {
     logger.add(new transports.Console({
         format: format.combine(
             format.colorize()
