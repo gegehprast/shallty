@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Handler = require('../exceptions/Handler')
+const ShortlinkModel = require('../Models/Shortlink')
 
 const shortlinkFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
 
@@ -16,6 +17,24 @@ class Shortlink {
     }
 
     async parse(link) {
+        if (process.env.WITH_DATABASE === 'true') {
+            const fromDB = await ShortlinkModel.findOne({
+                original: link
+            })
+
+            if (fromDB) {
+                return {
+                    success: true,
+                    cached: true,
+                    id: fromDB._id,
+                    original: fromDB.original,
+                    url: fromDB.parsed,
+                    createdAt: fromDB.createdAt,
+                    updatedAt: fromDB.updatedAt,
+                }
+            }
+        }
+
         let shorterner = null
 
         for (const i of this.shorterners) {
@@ -46,6 +65,17 @@ class Shortlink {
 
         if (!parsed.error) {
             parsed.success = true
+
+            if (process.env.WITH_DATABASE === 'true') {
+                const newParsed = new ShortlinkModel({
+                    original: link,
+                    parsed: parsed.url
+                })
+
+                await newParsed.save()
+
+                parsed.cached = false
+            }
         }
 
         return parsed
