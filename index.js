@@ -14,9 +14,11 @@ let appplication = null
     if (process.env.WEBSOCKET === 'true') {
         Socket.init(http, process.env.APP_PORT)
     }
-    
-    Server.initRoute()
 
+    if (process.env.HTTP === 'true') {
+        Server.initRoute()
+    }
+    
     Browser.init()
 })()
 
