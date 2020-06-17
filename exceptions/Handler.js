@@ -44,14 +44,13 @@ class Handler {
      * 
      * @param {Error} err Error instance.
      */
-    error(err, isReturn = true) {
+    error(err) {
         logger.error(err)
 
-        if (isReturn)
-            return {
-                error: true,
-                message: 'Something went wrong. ' + err
-            }
+        return {
+            error: true,
+            message: 'Something went wrong. ' + err
+        }
     }
 }
 
