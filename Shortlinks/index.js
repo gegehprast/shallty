@@ -42,7 +42,13 @@ class Shortlink {
             return Handler.error('Error: Unknown shortlink.')
         }
 
-        return await shorterner.parse(link)
+        const parsed = await shorterner.parse(link)
+
+        if (!parsed.error) {
+            parsed.success = true
+        }
+
+        return parsed
     }
 }
 
