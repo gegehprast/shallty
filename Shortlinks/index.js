@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const Handler = require('../exceptions/Handler')
 const ShortlinkModel = require('../Models/Shortlink')
+const Queue = require('../Queue')
 
 const shortlinkFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
 
@@ -16,7 +17,7 @@ class Shortlink {
         this.shorterners = shortlinks
     }
 
-    async parse(link) {
+    async parse(link, options = {}) {
         if (process.env.WITH_DATABASE === 'true') {
             const fromDB = await ShortlinkModel.findOne({
                 original: link
@@ -35,7 +36,7 @@ class Shortlink {
             }
         }
 
-        let shorterner = null
+        let shorterner = null, parsed
 
         for (const i of this.shorterners) {
             if (Array.isArray(i.marker)) {
@@ -61,10 +62,19 @@ class Shortlink {
             return Handler.error('Error: Unknown shortlink.')
         }
 
-        const parsed = await shorterner.parse(link)
+        if (options.queue) {
+            const job = Queue.register(async () => {
+                return await shorterner.parse(link)
+            })
 
+            parsed = await Queue.dispatch(job)
+        } else {
+            parsed = await shorterner.parse(link)
+        }
+        
         if (!parsed.error) {
             parsed.success = true
+            parsed.cached = false
 
             if (process.env.WITH_DATABASE === 'true') {
                 const newParsed = new ShortlinkModel({
@@ -73,8 +83,6 @@ class Shortlink {
                 })
 
                 await newParsed.save()
-
-                parsed.cached = false
             }
         }
 
