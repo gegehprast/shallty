@@ -64,8 +64,7 @@ module.exports = {
     shortlinkListener: (io, socket) => {
         socket.on('parse', async function (params) {
             const data = await Shortlink.parse(params.link, { queue: true })
-
-            io.emit('parse', data)
+            io.to(socket.id).emit('parse', data)
         })
     }
 }
