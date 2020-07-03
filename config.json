@@ -1,8 +1,4 @@
 {
-    "app_env": "production",
-    "app_port": 8080,
-    "headless": true,
-    "websocket": false,
     "meownime_url": "https://meownime.com",
     "samehadaku_url": "https://samehadaku.vip",
     "neonime_url": "https://neonime.org",

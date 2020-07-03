@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+require('dotenv').config()
 const expect = require('chai').expect
 const Browser = require('../../Browser')
 const Shortlink = require('../../Shortlinks')
