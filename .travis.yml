@@ -1,5 +1,3 @@
 language: node_js
 node_js:
 - node
-before_install:
-- mv config.example.json config.json
