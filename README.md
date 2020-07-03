@@ -26,11 +26,23 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 ### Shortlink
 
-- Ahexa
-- Anjay
-- Hexa
-- Hightech
-- etc, etc.
+- ahexa
+- anjay
+- coeg
+- euesiherp
+- hexa
+- hightech
+- jelajahinternet
+- kepoow
+- kontenajaib
+- neonime
+- semawur
+- siotong
+- sukakesehatan
+- teknoku
+- telondasmu
+- travellinginfos
+- xmaster
 
 ## Instalasi
 
@@ -40,11 +52,9 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 3. Unzip dan masuk ke root direktori lalu jalankan `npm install`.
 
-4. Ganti nama file `config.example.json` menjadi `config.json`.
+4. Ganti nama file `.env.example` menjadi `.env`.
 
-5. Sesuaikan `config.json`, misalnya ganti `app_env` menjadi `local` untuk bisa melihat prosesnya secara langsung.
-
-6. Jalankan perintah `node index.js` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
+5. Jalankan perintah `node index.js` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
 
 
 ## Dokumentasi
