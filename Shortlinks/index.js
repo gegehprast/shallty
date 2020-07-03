@@ -4,8 +4,8 @@ const Handler = require('../exceptions/Handler')
 const ShortlinkModel = require('../Models/Shortlink')
 const Queue = require('../Queue')
 
+const WITH_DATABASE = process.env.WITH_DATABASE === 'true'
 const shortlinkFiles = fs.readdirSync(path.join(__dirname, './')).filter(file => file !== 'index.js' && file.endsWith('.js'))
-
 const shortlinks = []
 
 for (const file of shortlinkFiles) {
@@ -17,26 +17,56 @@ class Shortlink {
         this.shorterners = shortlinks
     }
 
-    async parse(link, options = {}) {
-        if (process.env.WITH_DATABASE === 'true') {
-            const fromDB = await ShortlinkModel.findOne({
-                original: link
-            })
+    /**
+     * Save new parsed shortlink to the database.
+     * 
+     * @param {String} originalLink 
+     * @param {String} parsedLink 
+     */
+    async cacheShortlink(originalLink, parsedLink) {
+        const newParsed = new ShortlinkModel({
+            original: originalLink,
+            parsed: parsedLink
+        })
 
-            if (fromDB) {
-                return {
-                    success: true,
-                    cached: true,
-                    id: fromDB._id,
-                    original: fromDB.original,
-                    url: fromDB.parsed,
-                    createdAt: fromDB.createdAt,
-                    updatedAt: fromDB.updatedAt,
-                }
-            }
+        await newParsed.save()
+    }
+
+    /**
+     * Get parsed shortlink by the original link from the database.
+     * 
+     * @param {String} link 
+     */
+    async getCachedShortlink(link) {
+        return await ShortlinkModel.findOne({
+            original: link
+        })
+    }
+
+    /**
+     * Response with the cached shortlink.
+     * 
+     * @param cachedShortlink 
+     */
+    async responseWithCached(cachedShortlink) {
+        return {
+            success: true,
+            cached: true,
+            id: cachedShortlink._id,
+            original: cachedShortlink.original,
+            url: cachedShortlink.parsed,
+            createdAt: cachedShortlink.createdAt,
+            updatedAt: cachedShortlink.updatedAt,
         }
+    }
 
-        let shorterner = null, parsed
+    /**
+     * Select the correct parser for the link.
+     * 
+     * @param {String} link 
+     */
+    selectParser(link) {
+        let shorterner = null
 
         for (const i of this.shorterners) {
             if (Array.isArray(i.marker)) {
@@ -58,9 +88,20 @@ class Shortlink {
             }
         }
 
-        if (!shorterner) {
-            return Handler.error('Error: Unknown shortlink.')
+        return shorterner
+    }
+
+    async parse(link, options = {}) {
+        if (WITH_DATABASE) {
+            const cachedShortlink = await this.getCachedShortlink(link)
+
+            if (cachedShortlink) return this.responseWithCached(cachedShortlink)
         }
+
+        let parsed
+        let shorterner = this.selectParser(link)
+        
+        if (!shorterner) return Handler.error('Error: Unknown shortlink.')
 
         if (options.queue) {
             const job = Queue.register(async () => {
@@ -76,14 +117,7 @@ class Shortlink {
             parsed.success = true
             parsed.cached = false
 
-            if (process.env.WITH_DATABASE === 'true') {
-                const newParsed = new ShortlinkModel({
-                    original: link,
-                    parsed: parsed.url
-                })
-
-                await newParsed.save()
-            }
+            if (WITH_DATABASE) await this.cacheShortlink(link, parsed.url)
         }
 
         return parsed
