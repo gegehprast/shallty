@@ -5,15 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "command": "npm run dev",
+            "name": "Run npm start",
             "request": "launch",
-            "name": "nodemon",
-            "runtimeExecutable": "nodemon",
-            "program": "${workspaceFolder}/index.js",
-            "restart": true,
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "args": ["--ignore", "test/*", "--ignore", "public/*"]
+            "type": "node-terminal"
         },
     ]
 }
