@@ -41,6 +41,8 @@ class BrowserManager {
         browsers.push(newBrowser)
         this.browsers = browsers
 
+        console.log('A new puppeteer browser has been initialized.')
+
         return newBrowser
     }
 
