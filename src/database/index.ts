@@ -19,7 +19,6 @@ const connect = async (retry = true): Promise<boolean> =>  {
         return true
     } catch (error) {
         console.error('Connection error: ', error)
-        console.log(process.env.MONGO_USERNAME, process.env.MONGO_PASSWORD)
 
         if (retry) {
             console.log('Retrying connection to MongoDB.')
