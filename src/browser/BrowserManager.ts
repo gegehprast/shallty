@@ -7,7 +7,7 @@ type Browser = {
 }
 
 class BrowserManager {
-    browsers: Browser[]
+    browsers: Browser[] = []
 
     constructor() {
         this.init()
@@ -17,9 +17,7 @@ class BrowserManager {
         if (this.browsers.length === 0) {
             await this.newBrowser(['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox'])
         }
-
-        console.log('\x1b[32m', '[Crawler Ready] You can start crawling using http via "/api" endpoint or using websocket via "/crawl" endpoint.')
-
+        
         return this.browsers
     }
 
