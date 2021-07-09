@@ -1,15 +1,11 @@
 import Parser from './Parser'
 import BrowserManager from '../browser/BrowserManager'
 
-/**
- * Abstract Class Parser.
- *
- * @class Parser
- */
 class Teknoku extends Parser {
+    public marker = 'teknoku'
+
     constructor() {
         super()
-        this.marker = 'teknoku'
     }
 
     async parse(link: string): Promise<string|null> {
@@ -40,9 +36,9 @@ class Teknoku extends Parser {
 
             return finalUrl
         } catch (error) {
-            await page.close()
-
             console.error(error)
+
+            await page.close()
         }
 
         return null

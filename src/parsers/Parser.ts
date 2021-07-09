@@ -3,18 +3,10 @@
  *
  * @class Parser
  */
-class Parser {
-    public marker: string
+abstract class Parser {
+    public abstract marker: string
 
-    constructor() {
-        if (this.constructor == Parser) {
-            throw new Error('Abstract classes can\'t be instantiated.')
-        }
-    }
-
-    async parse(link: string): Promise<string|null> {
-        return link
-    }
+    abstract parse(link: string): Promise<string|null>
 }
 
 export default Parser

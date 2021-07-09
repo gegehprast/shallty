@@ -16,7 +16,7 @@ interface IShortlinkResponse {
 
 class ParserManager {
     private WITH_DATABASE: boolean
-    private parsers: (typeof Parser)[]
+    private parsers: (new () => Parser)[] = []
 
     constructor() {
         this.WITH_DATABASE = process.env.WITH_DATABASE === 'true'
@@ -28,17 +28,19 @@ class ParserManager {
      * Read parser files.
      */
     readFiles() {
-        const shortlinkFiles = fs.readdirSync(path.join(__dirname, './'))
-            .filter(file => file !== 'Parser.ts' && 
-                file !== 'ParserManager.ts' && 
+        const parserFiles = fs.readdirSync(path.join(__dirname, './'))
+            .filter(file => file !== 'Parser.js' && 
+                file !== 'ParserManager.js' && 
                 file.endsWith('.js')
             )
-        const shortlinks: any[] = []
+        const parsers: any[] = []
 
-        for (const file of shortlinkFiles) {
+        for (const file of parserFiles) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
-            shortlinks.push(require(`./${file}`))
+            parsers.push((require(`./${file}`)).default)
         }
+
+        this.parsers = parsers
     }
 
     /**
@@ -135,13 +137,13 @@ class ParserManager {
         } else {
             parsed = await shorterner.parse(link)
         }
-
+        
         if (this.WITH_DATABASE && parsed != null) {
             await this.cacheShortlink(link, parsed)
         }
 
         return {
-            success: false,
+            success: parsed != null,
             cached: false,
             original: link,
             url: parsed
