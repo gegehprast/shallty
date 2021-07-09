@@ -29,8 +29,8 @@ export const ShortlinkSchema: Schema = new Schema({
 
 ShortlinkSchema.plugin(mongoosePaginate)
 
-interface ShortlinkModel<T extends Document> extends PaginateModel<T> { }
+interface IShortlinkModel<T extends Document> extends PaginateModel<T> { }
 
-const Shortlink: ShortlinkModel<IShortlink> = mongoose.model<IShortlink>('Shortlink', ShortlinkSchema) as ShortlinkModel<IShortlink>
+const Shortlink: IShortlinkModel<IShortlink> = mongoose.model<IShortlink>('Shortlink', ShortlinkSchema) as IShortlinkModel<IShortlink>
 
 export default Shortlink
