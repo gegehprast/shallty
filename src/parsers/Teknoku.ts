@@ -2,7 +2,7 @@ import Parser, { ParserResponse } from './Parser'
 import BrowserManager from '../browser/BrowserManager'
 
 class Teknoku extends Parser {
-    public marker = 'teknoku'
+    public marker = 'teknoku.'
 
     constructor() {
         super()
@@ -27,6 +27,7 @@ class Teknoku extends Parser {
             ])
 
             const fullContent = await page.content()
+            
             await page.close()
 
             // eslint-disable-next-line quotes
