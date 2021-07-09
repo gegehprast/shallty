@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import Shortlink, { IShortlink } from '../Models/Shortlink'
+import Shortlink from '../Models/Shortlink'
 import Parser from './Parser'
 
 interface IParsedResponse {
@@ -16,7 +16,7 @@ interface IParsedResponse {
 
 interface IParsedOptions {
     ignoreCache?: boolean
-    firstTime?: boolean
+    notFirstTime?: boolean
     oldData?: IParsedResponse
 }
 
@@ -68,27 +68,24 @@ class ParserManager {
     /**
      * Get parsed shortlink by the original link from the database.
      * 
-     * @param {string} link 
      */
-    async getCachedShortlink(link: string) {
-        return await Shortlink.findOne({
+    async getCached(link: string): Promise<IParsedResponse|null> {
+        const cached = await Shortlink.findOne({
             original: link
         })
-    }
 
-    /**
-     * Response with the cached shortlink.
-     * 
-     */
-    responseWithCached(cachedShortlink: IShortlink): IParsedResponse {
+        if (!cached) {
+            return null
+        }
+
         return {
             success: true,
             cached: true,
-            id: cachedShortlink._id,
-            original: cachedShortlink.original,
-            parsed: cachedShortlink.parsed,
-            createdAt: cachedShortlink.createdAt,
-            updatedAt: cachedShortlink.updatedAt,
+            id: cached._id,
+            original: cached.original,
+            parsed: cached.parsed,
+            createdAt: cached.createdAt,
+            updatedAt: cached.updatedAt,
         }
     }
 
@@ -131,63 +128,73 @@ class ParserManager {
      * Parse the shortlink using the correct parser.
      *  
      */
-    async parse(link: string, options: IParsedOptions = { firstTime: true }): Promise<IParsedResponse> {
-        // if using database, try getting the cached value first
-        if (!options.ignoreCache && process.env.WITH_DATABASE === 'true') {
-            const cachedShortlink = await this.getCachedShortlink(link)
-
-            if (cachedShortlink) {
-                console.info('\x1b[34m%s\x1b[0m', 'Parsed link found in cache. Returning the cached result.')
-
-                return this.responseWithCached(cachedShortlink)
-            }
-        }
-
-        console.info('\x1b[34m%s\x1b[0m', options.firstTime ? 'Parsing the link for the first time.' : 'Parsing the result link again.')
+    async parse(link: string, options?: IParsedOptions): Promise<IParsedResponse> {
+        console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : '\nParsing the link for the first time.')
 
         // default result
-        let result = options.firstTime ? {
+        let result = options.notFirstTime ? {
             success: false,
             cached: false,
             original: link,
             parsed: null,
             error: 'Parser not found.',
         } : options.oldData
+        let gotFromCache = false
 
-        // select the correct parser
-        const parser = this.selectParser(link)
-        
-        if (!parser) {
-            console.info('\x1b[34m%s\x1b[0m', 'No parser is found. Returning result with original link and success set to false.')
+        // if using database, try getting the cached value first
+        if (!options.ignoreCache && process.env.WITH_DATABASE === 'true') {
+            const cached = await this.getCached(link)
 
-            return result
-        }
+            // cached result exists, set the result
+            if (cached != null) {
+                console.info('\x1b[34m%s\x1b[0m', 'Parsed link found in cache. Using the cached result.')
 
-        // parse the shortlink
-        const parsed = await parser.parse(link)
-
-        // cache the result if using database
-        if (process.env.WITH_DATABASE === 'true' && parsed.success && parsed.result != null) {
-            await this.cacheShortlink(link, parsed.result)
+                result = cached
+                gotFromCache = true
+            }
         }
         
-        // update the result with the parsed data
-        result = {
-            success: parsed.success,
-            cached: false,
-            original: link,
-            parsed: parsed.result,
-            error: parsed.error,
+        // skip this if already got result from cache
+        if (!gotFromCache) {
+            // select the correct parser
+            const parser = this.selectParser(link)
+
+            // no parser found, return the last valid result
+            if (!parser) {
+                console.info('\x1b[34m%s\x1b[0m', 'No parser is found. Returning result with original link and success set to false.')
+
+                return result
+            }
+
+            // parse the shortlink
+            const parsed = await parser.parse(link)
+
+            // cache the result if using database
+            if (process.env.WITH_DATABASE === 'true' && parsed.success && parsed.result != null) {
+                await this.cacheShortlink(link, parsed.result)
+            }
+
+            // update the result with the parsed data
+            result = {
+                success: parsed.success,
+                cached: false,
+                original: link,
+                parsed: parsed.result,
+                error: parsed.error,
+            }
         }
         
-        // if successful and the result is not null, try parsing again
-        if (parsed.success && parsed.result != null) {
+        // if successful, and the result is not null, and is not the same as the link, try parsing again
+        if (result.success && result.parsed != null && result.parsed != link) {
             console.info('\x1b[34m%s\x1b[0m', 'The link has been parsed successfully. Attempting to parse the result link again.')
 
             result = await this.parse(result.parsed, {
-                firstTime: false,
-                oldData: result
+                ignoreCache: options.ignoreCache,
+                notFirstTime: true,
+                oldData: result,
             })
+        } else {
+            console.info('\x1b[34m%s\x1b[0m', 'Final result found.')
         }
 
         return result
