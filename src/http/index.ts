@@ -15,7 +15,7 @@ const init = () => {
 
     app.use('/api', api)
 
-    app.listen(process.env.APP_PORT || 3000, () => console.log('Server started!'))
+    app.listen(process.env.APP_PORT || 3000, () => console.info('\x1b[34m%s\x1b[0m', 'Server started!'))
 }
 
 export default init
