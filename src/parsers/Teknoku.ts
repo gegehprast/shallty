@@ -1,4 +1,4 @@
-import Parser from './Parser'
+import Parser, { ParserResponse } from './Parser'
 import BrowserManager from '../browser/BrowserManager'
 
 class Teknoku extends Parser {
@@ -8,7 +8,7 @@ class Teknoku extends Parser {
         super()
     }
 
-    async parse(link: string): Promise<string|null> {
+    async parse(link: string): Promise<ParserResponse> {
         const page = await BrowserManager.newOptimizedPage()
 
         try {
@@ -34,14 +34,21 @@ class Teknoku extends Parser {
             splitted = splitted[1].split(';window.open')
             const finalUrl = splitted[0].replace(/(['"])+/g, '')
 
-            return finalUrl
+            return {
+                success: true,
+                result: finalUrl
+            }
         } catch (error) {
             console.error(error)
 
             await page.close()
-        }
 
-        return null
+            return {
+                success: false,
+                result: null,
+                error: error
+            }
+        }
     }
 }
 

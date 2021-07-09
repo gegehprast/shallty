@@ -1,21 +1,20 @@
 import fs from 'fs'
 import path from 'path'
 import Shortlink, { IShortlink } from '../Models/Shortlink'
-import Queue from '../Queue'
 import Parser from './Parser'
 
-interface IShortlinkResponse {
+interface IParsedResponse {
     success: boolean
     cached: boolean
     original: string
-    url: string | null
+    parsed: string | null
     id?: string
     createdAt?: Date
     updatedAt?: Date
+    error?: any
 }
 
 class ParserManager {
-    private WITH_DATABASE: boolean
     private parsers: (new () => Parser)[] = []
 
     constructor() {
@@ -24,6 +23,7 @@ class ParserManager {
 
     /**
      * Read parser files.
+     * 
      */
     readFiles() {
         const parserFiles = fs.readdirSync(path.join(__dirname, './'))
@@ -46,12 +46,17 @@ class ParserManager {
      * 
      */
     async cacheShortlink(originalLink: string, parsedLink: string) {
-        const newParsed = new Shortlink({
-            original: originalLink,
-            parsed: parsedLink
-        })
-
-        await newParsed.save()
+        await Shortlink.findOneAndUpdate(
+            {
+                original: originalLink
+            }, {
+                original: originalLink,
+                parsed: parsedLink
+            }, {
+                upsert: true,
+                setDefaultsOnInsert: true
+            }
+        )
     }
 
     /**
@@ -69,13 +74,13 @@ class ParserManager {
      * Response with the cached shortlink.
      * 
      */
-    responseWithCached(cachedShortlink: IShortlink): IShortlinkResponse {
+    responseWithCached(cachedShortlink: IShortlink): IParsedResponse {
         return {
             success: true,
             cached: true,
             id: cachedShortlink._id,
             original: cachedShortlink.original,
-            url: cachedShortlink.parsed,
+            parsed: cachedShortlink.parsed,
             createdAt: cachedShortlink.createdAt,
             updatedAt: cachedShortlink.updatedAt,
         }
@@ -90,8 +95,10 @@ class ParserManager {
         let selected = null
 
         for (const item of this.parsers) {
+            // init the parser
             const parser = new item
 
+            // check the marker(s)
             if (Array.isArray(parser.marker)) {
                 for (const marker of parser.marker) {
                     if (link.includes(marker)) {
@@ -114,8 +121,13 @@ class ParserManager {
         return selected
     }
 
-    async parse(link: string, queue = false): Promise<IShortlinkResponse> {
-        if (process.env.WITH_DATABASE === 'true') {
+    /**
+     * Parse the shortlink using the correct parser.
+     *  
+     */
+    async parse(link: string, forceNew = false): Promise<IParsedResponse> {
+        // if using database, try getting the cached value first
+        if (!forceNew && process.env.WITH_DATABASE === 'true') {
             const cachedShortlink = await this.getCachedShortlink(link)
 
             if (cachedShortlink) {
@@ -123,28 +135,23 @@ class ParserManager {
             }
         }
 
-        let parsed
+        // select the correct parser
         const shorterner = this.selectParser(link)
 
-        if (queue) {
-            const job = Queue.register(async () => {
-                return await shorterner.parse(link)
-            })
-
-            parsed = await Queue.dispatch(job)
-        } else {
-            parsed = await shorterner.parse(link)
-        }
+        // parse the shortlink
+        const parse = await shorterner.parse(link)
         
-        if (process.env.WITH_DATABASE === 'true' && parsed != null) {
-            await this.cacheShortlink(link, parsed)
+        // cache the result if using database
+        if (process.env.WITH_DATABASE === 'true' && parse.success && parse.result != null) {
+            await this.cacheShortlink(link, parse.result)
         }
 
         return {
-            success: parsed != null,
+            success: parse.success,
             cached: false,
             original: link,
-            url: parsed
+            parsed: parse.result,
+            error: parse.error,
         }
     }
 }
