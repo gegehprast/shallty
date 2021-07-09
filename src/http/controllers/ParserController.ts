@@ -2,7 +2,9 @@ import { RequestHandler } from 'express'
 import ParserManager from '../../parsers/ParserManager'
 
 const index: RequestHandler = async (req, res) => {
-    const data = await ParserManager.parse(req.query.link as string)
+    const data = await ParserManager.parse(req.query.link as string, {
+        ignoreCache: req.query.ignoreCache ? true : false
+    })
 
     if (data.success) {
         return res.json({
