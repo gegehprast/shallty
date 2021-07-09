@@ -10,7 +10,7 @@
     "url": "https://github.com/gegehprast/shallty.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run cleandist && tsc",
     "watch": "npm run build -- -w",
     "nodemon": "nodemon .",
     "dev": "run-p watch nodemon",
