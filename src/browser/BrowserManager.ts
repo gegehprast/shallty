@@ -212,7 +212,7 @@ class BrowserManager {
      * @param element Element handle.
      * @param property Property.
      */
-    async getPlainProperty(element: puppeteer.ElementHandle<Element>, property: string) {
+    async getPlainProperty<T>(element: puppeteer.ElementHandle<Element>, property: string) : Promise<T> {
         return await element.getProperty(property).then(x => x.jsonValue())
     }
 
