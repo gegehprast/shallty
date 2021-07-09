@@ -25,6 +25,8 @@ class Drivemoe extends Parser {
 
             const url = await BrowserManager.getPlainProperty<string>(anchor, 'href')
 
+            await page.close()
+
             return {
                 success: true,
                 result: url
