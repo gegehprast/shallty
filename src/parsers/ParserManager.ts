@@ -19,8 +19,6 @@ class ParserManager {
     private parsers: (new () => Parser)[] = []
 
     constructor() {
-        this.WITH_DATABASE = process.env.WITH_DATABASE === 'true'
-
         this.readFiles()
     }
 
@@ -117,7 +115,7 @@ class ParserManager {
     }
 
     async parse(link: string, queue = false): Promise<IShortlinkResponse> {
-        if (this.WITH_DATABASE) {
+        if (process.env.WITH_DATABASE === 'true') {
             const cachedShortlink = await this.getCachedShortlink(link)
 
             if (cachedShortlink) {
@@ -138,7 +136,7 @@ class ParserManager {
             parsed = await shorterner.parse(link)
         }
         
-        if (this.WITH_DATABASE && parsed != null) {
+        if (process.env.WITH_DATABASE === 'true' && parsed != null) {
             await this.cacheShortlink(link, parsed)
         }
 
