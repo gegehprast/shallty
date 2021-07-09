@@ -2,25 +2,20 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import initHTTP from './http'
-import db from './models'
+import connectMongo from './database'
 
-db.mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@shalltycluster0.zxus0.mongodb.net/${process.env.MONGO_TEST_DB}?retryWrites=true&w=majority`,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-    }
-).then(() => {
-    console.log('Successfully connected to MongoDB.')
-
+async function init () {
     if (process.env.HTTP === 'true') {
         initHTTP()
     }
+    
+    if (process.env.WITH_DATABASE === 'true') {
+        process.env.WITH_DATABASE = 'false'
 
-}).catch(err => {
-    console.error('Connection error: ', err)
-    console.log(process.env.MONGO_USERNAME, process.env.MONGO_PASSWORD)
-    process.exit()
-})
+        const connect = await connectMongo()
+        
+        process.env.WITH_DATABASE = connect ? 'true' : 'false'
+    }
+}
+
+init()
