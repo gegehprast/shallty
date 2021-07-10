@@ -8,7 +8,7 @@ type Browser = {
 
 class BrowserManager {
     browsers: Browser[] = []
-    defaultTimeout = 1000
+    defaultTimeout = 30000
 
     constructor() {
         this.init()
