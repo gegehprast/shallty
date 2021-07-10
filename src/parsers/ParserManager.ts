@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import Shortlink from '../Models/Shortlink'
-import Parser from './Parser'
+import Parser, { ParserResponse } from './Parser'
 
 interface IParsedResponse {
     success: boolean
@@ -125,11 +125,37 @@ class ParserManager {
     }
 
     /**
+     * Actually parse the link using the appropriate parser.
+     * 
+     */
+    async parseResult(link: string): Promise<ParserResponse> {
+        // select the correct parser
+        const parser = this.selectParser(link)
+
+        // no parser found, return null
+        if (!parser) {
+            console.info('\x1b[34m%s\x1b[0m', 'No parser is found.')
+
+            return null
+        }
+
+        // parse the shortlink
+        const parsed = await parser.parse(link)
+
+        // cache the result if using database
+        if (process.env.WITH_DATABASE === 'true' && parsed.success && parsed.result != null) {
+            await this.cacheShortlink(link, parsed.result)
+        }
+
+        return parsed
+    }
+
+    /**
      * Parse the shortlink using the correct parser.
      *  
      */
     async parse(link: string, options?: IParsedOptions): Promise<IParsedResponse> {
-        console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : '\nParsing the link for the first time.')
+        console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : `\nParsing the link for the first time. ${link}`)
 
         // default result
         let result = options.notFirstTime ? options.oldData : {
@@ -156,31 +182,17 @@ class ParserManager {
         
         // skip this if already got result from cache
         if (!gotFromCache) {
-            // select the correct parser
-            const parser = this.selectParser(link)
+            const parsed = await this.parseResult(link)
 
-            // no parser found, return the last valid result
-            if (!parser) {
-                console.info('\x1b[34m%s\x1b[0m', 'No parser is found. Returning result with original link and success set to false.')
-
-                return result
-            }
-
-            // parse the shortlink
-            const parsed = await parser.parse(link)
-
-            // cache the result if using database
-            if (process.env.WITH_DATABASE === 'true' && parsed.success && parsed.result != null) {
-                await this.cacheShortlink(link, parsed.result)
-            }
-
-            // update the result with the parsed data
-            result = {
-                success: parsed.success,
-                cached: false,
-                original: link,
-                parsed: parsed.result,
-                error: parsed.error,
+            if (parsed != null) {
+                // update the result with the parsed data
+                result = {
+                    success: parsed.success,
+                    cached: false,
+                    original: link,
+                    parsed: parsed.result,
+                    error: parsed.error,
+                }
             }
         }
         
