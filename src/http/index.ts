@@ -1,8 +1,10 @@
 import express from 'express'
 import api from './routes'
+import http from 'http'
 
 const init = () => {
     const app = express()
+    const server = http.createServer(app)
 
     app.use(express.json())
     app.use(express.urlencoded({
@@ -15,7 +17,9 @@ const init = () => {
 
     app.use('/api', api)
 
-    app.listen(process.env.APP_PORT || 3000, () => console.info('\x1b[34m%s\x1b[0m', 'Server started!'))
+    server.listen(process.env.APP_PORT || 3000, () => console.info('\x1b[34m%s\x1b[0m', `[HTTP Server Ready] You can access it at http://localhost:${process.env.APP_PORT || 3000}`))
+
+    return { server, app }
 }
 
 export default init
