@@ -130,7 +130,7 @@ class ParserManager {
      * Actually parse the link using the appropriate parser.
      * 
      */
-    async parseResult(link: string): Promise<ParserResponse> {
+    async parseResult(link: string): Promise<ParserResponse|null> {
         // select the correct parser
         const parser = this.selectParser(link)
 
