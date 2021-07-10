@@ -9,8 +9,7 @@ const index: RequestHandler = async (req, res) => {
 
 const socketTester: RequestHandler = async (req, res) => {
     res.render('test/socket-tester.pug', {
-        title: 'Home',
-        agent: req.query.agent
+        title: 'Socket Tester'
     })
 }
 
