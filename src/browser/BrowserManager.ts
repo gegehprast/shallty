@@ -8,6 +8,7 @@ type Browser = {
 
 class BrowserManager {
     browsers: Browser[] = []
+    defaultTimeout = 30000
 
     constructor() {
         this.init()
@@ -96,7 +97,7 @@ class BrowserManager {
         const page = await browser.instance.newPage()
         
         // set default timeout for the page
-        page.setDefaultTimeout(30000)
+        page.setDefaultTimeout(this.defaultTimeout)
 
         return page
     }
@@ -114,7 +115,7 @@ class BrowserManager {
         const page = await browser.instance.newPage()
 
         // set default timeout for the page
-        page.setDefaultTimeout(30000)
+        page.setDefaultTimeout(this.defaultTimeout)
 
         return await this.optimizePage(page)
     }
@@ -136,7 +137,7 @@ class BrowserManager {
         const page = await browserContext.newPage()
         
         // set default timeout for the page
-        page.setDefaultTimeout(30000)
+        page.setDefaultTimeout(this.defaultTimeout)
 
         return await this.optimizePage(page)
     }
@@ -165,7 +166,7 @@ class BrowserManager {
         const newPage = await newPageTarget.page()
 
         // set default timeout for the page
-        newPage.setDefaultTimeout(30000)
+        newPage.setDefaultTimeout(this.defaultTimeout)
 
         return optimize ? await this.optimizePage(newPage) : newPage
     }
