@@ -136,7 +136,7 @@ class ParserManager {
 
         // no parser found, return null
         if (!parser) {
-            console.info('\x1b[34m%s\x1b[0m', 'No parser is found.')
+            console.info('\x1b[34m%s\x1b[0m', '[ParserManager] No parser is found.')
 
             return null
         }
@@ -157,7 +157,7 @@ class ParserManager {
      *  
      */
     async parse(link: string, options: IParsedOptions = {}): Promise<IParsedResponse> {
-        console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : `\nParsing the link for the first time. ${link}`)
+        console.info('\x1b[34m%s\x1b[0m', '[ParserManager] ' + options.notFirstTime ? '\nParsing the result link again. ' : '\nParsing the link for the first time. ' + link)
 
         // default result
         let result = options.notFirstTime ? options.oldData : {
@@ -175,7 +175,7 @@ class ParserManager {
 
             // cached result exists, set the result
             if (cached != null) {
-                console.info('\x1b[34m%s\x1b[0m', 'Parsed link found in cache. Using the cached result.')
+                console.info('\x1b[34m%s\x1b[0m', '[ParserManager] Parsed link found in cache. Using the cached result.')
 
                 result = cached
                 gotFromCache = true
@@ -200,7 +200,7 @@ class ParserManager {
         
         // if successful, and the result is not null, and is not the same as the link, try parsing again
         if (result.success && result.parsed != null && result.parsed != link) {
-            console.info('\x1b[34m%s\x1b[0m', 'The link has been parsed successfully. Attempting to parse the result link again.')
+            console.info('\x1b[34m%s\x1b[0m', '[ParserManager] The link has been parsed successfully. Attempting to parse the result link again.')
 
             result = await this.parse(result.parsed, {
                 ignoreCache: options.ignoreCache,
@@ -208,7 +208,7 @@ class ParserManager {
                 oldData: result,
             })
         } else {
-            console.info('\x1b[34m%s\x1b[0m', 'Final result found.')
+            console.info('\x1b[34m%s\x1b[0m', '[ParserManager] Final result found.')
         }
 
         return result

@@ -59,7 +59,7 @@ class BrowserManager {
         browsers.push(newBrowser)
         this.browsers = browsers
 
-        console.info('\x1b[34m%s\x1b[0m', 'A new puppeteer browser has been initialized.')
+        console.info('\x1b[34m%s\x1b[0m', '[Browser Manager] A new puppeteer browser has been initialized.')
 
         return newBrowser
     }
