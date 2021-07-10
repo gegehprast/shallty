@@ -1,48 +1,15 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast/shallty) [![Build Status](https://travis-ci.com/gegehprast/shallty.svg?branch=master)](https://travis-ci.com/gegehprast/shallty)
 
-# shallty
+# shallty v4
 
-Aplikasi untuk meng-crawl situs fastsub/fanshare Indonesia. Tujuan utamanya adalah untuk melewati berbagai halaman redirect dan mengambil tautan unduh aslinya. Saat ini Shallty telah mendukung crawling untuk Moenime, Samehadaku, Neonime, Kusonime dan Oploverz. **Shallty juga mendukung crawling untuk satu situs baca manga, Kiryuu.**
-
-Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggunakan aplikasi ini.
+Bypass shortlinks and get to the point!
 
 ## Fitur
 
-### Anime
-
-- Kusonime
-
-- Moenime
-
-- Neonime
-
-- Oploverz
-
-- Samehadaku
-
-### Manga
-
-- Kiryuu
-
 ### Shortlink
 
-- ahexa
-- anjay
-- coeg
-- euesiherp
-- hexa
-- hightech
-- jelajahinternet
-- kepoow
-- kontenajaib
-- neonime
-- semawur
-- siotong
-- sukakesehatan
 - teknoku
-- telondasmu
-- travellinginfos
-- xmaster
+- drivemoe
 
 ## Instalasi
 
@@ -50,11 +17,11 @@ Kunjungi https://shallty.moe/ untuk melihat satu contoh yang bisa dicapai menggu
 
 2. Download [rilisan terbaru Shallty](https://github.com/gegehprast/shallty/releases) atau clone repositori ini.
 
-3. Unzip dan masuk ke root direktori lalu jalankan `npm install`.
+3. Unzip (jika kamu memakai cara download) dan masuk ke root direktori lalu jalankan `npm install`.
 
 4. Ganti nama file `.env.example` menjadi `.env`.
 
-5. Jalankan perintah `node index.js` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server dan crawler ready jika tidak ada masalah.
+5. Jalankan perintah `npm run start` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server ready jika tidak ada masalah.
 
 
 ## Dokumentasi
