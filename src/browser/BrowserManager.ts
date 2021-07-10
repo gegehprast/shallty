@@ -14,11 +14,30 @@ class BrowserManager {
     }
 
     async init() {
+        console.log('init browser manager')
         if (this.browsers.length === 0) {
-            await this.newBrowser(['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox'])
+            await this.newBrowser(
+                this.getDefaultBrowserArgs()
+            )
         }
-        
-        return this.browsers
+    }
+
+    getDefaultBrowserArgs() {
+        return ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox']
+    }
+
+    /**
+     * Select the first browser instance. Create if currently there's no browser.
+     * 
+     */
+    async selectOrCreateBrowser() {
+        if (this.browsers.length === 0) {
+            return await this.newBrowser(
+                this.getDefaultBrowserArgs()
+            )
+        }
+
+        return this.browsers[0]
     }
 
     /**
@@ -72,7 +91,7 @@ class BrowserManager {
      * @returns 
      */
     async newPage(target: Browser = null): Promise<puppeteer.Page> {
-        const browser = target ? target : this.browsers[0]
+        const browser = target ? target : await this.selectOrCreateBrowser()
 
         // create the page
         const page = await browser.instance.newPage()
@@ -90,7 +109,7 @@ class BrowserManager {
      * @returns
      */
     async newOptimizedPage(target: Browser = null): Promise<puppeteer.Page> {
-        const browser = target ? target : this.browsers[0]
+        const browser = target ? target : await this.selectOrCreateBrowser()
 
         // create the page
         const page = await browser.instance.newPage()
@@ -109,7 +128,7 @@ class BrowserManager {
      * @returns
      */
     async newPageWithNewContext(target: Browser = null): Promise<puppeteer.Page> {
-        const browser = target ? target : this.browsers[0]
+        const browser = target ? target : await this.selectOrCreateBrowser()
 
         // create incognito context
         const browserContext = await browser.instance.createIncognitoBrowserContext()
@@ -131,7 +150,7 @@ class BrowserManager {
      * @param target Browser target.
      */
     async getPageFromNewTab(page: puppeteer.Page, optimize = true, target: Browser = null): Promise<puppeteer.Page|null> {
-        const browser = target ? target : this.browsers[0]
+        const browser = target ? target : await this.selectOrCreateBrowser()
 
         // get the page target of the source page 
         const pageTarget = page.target()
