@@ -16,7 +16,7 @@ const index: RequestHandler = async (req, res) => {
 
     return res.status(500).json({
         status: 500,
-        message: 'Something went wrong! ' + data.error,
+        message: data.error.toString(),
     })
 }
 
