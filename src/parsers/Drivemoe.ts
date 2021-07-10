@@ -32,7 +32,7 @@ class Drivemoe extends Parser {
                 result: url
             }
         } catch (error) {
-            console.error(error)
+            console.error('\x1b[31m%s\x1b[0m', error)
 
             await page.close()
 

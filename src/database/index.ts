@@ -18,7 +18,7 @@ const connect = async (retry = true): Promise<boolean> =>  {
 
         return true
     } catch (error) {
-        console.error('Connection error: ', error)
+        console.error('\x1b[31m%s\x1b[0m', 'Connection error: ', error)
 
         if (retry) {
             console.info('\x1b[34m%s\x1b[0m', '[Database] Retrying connection to MongoDB.')
