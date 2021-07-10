@@ -14,7 +14,6 @@ class BrowserManager {
     }
 
     async init() {
-        console.log('init browser manager')
         if (this.browsers.length === 0) {
             await this.newBrowser(
                 this.getDefaultBrowserArgs()
