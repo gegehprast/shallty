@@ -14,7 +14,7 @@
     "watch": "npm run build -- -w",
     "nodemon": "nodemon .",
     "dev": "run-p watch nodemon",
-    "prod": "npm run build && node .",
+    "start": "npm run build && node .",
     "test": "mocha -- --exit",
     "cleandist": "rimraf dist",
     "copyviews": "copyfiles -f src/views/*.html dist/views",
