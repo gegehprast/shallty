@@ -33,9 +33,11 @@ class ParserManager {
      */
     readFiles() {
         const parserFiles = fs.readdirSync(path.join(__dirname, './'))
-            .filter(file => file !== 'Parser.js' && 
-                file !== 'ParserManager.js' && 
-                file.endsWith('.js')
+            .filter(file => file !== 'Parser.js' &&
+                file !== 'Parser.ts' &&
+                file !== 'ParserManager.js' &&
+                file !== 'ParserManager.ts' &&
+                (file.endsWith('.js') || file.endsWith('.ts'))
             )
         const parsers: any[] = []
 
@@ -154,7 +156,7 @@ class ParserManager {
      * Parse the shortlink using the correct parser.
      *  
      */
-    async parse(link: string, options?: IParsedOptions): Promise<IParsedResponse> {
+    async parse(link: string, options: IParsedOptions = {}): Promise<IParsedResponse> {
         console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : `\nParsing the link for the first time. ${link}`)
 
         // default result
