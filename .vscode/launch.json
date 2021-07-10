@@ -5,8 +5,8 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "npm run dev",
-            "name": "Run npm start",
+            "command": "npm run dev-ts",
+            "name": "Run development script.",
             "request": "launch",
             "type": "node-terminal"
         },
