@@ -3,7 +3,13 @@ import { Server } from 'socket.io'
 import shortlinkListener from './listeners/shortlink'
 
 const Init = (server: http.Server) => {
-    const io = new Server(server)
+    const io = new Server(server, {
+        cors: {
+            origin: process.env.ALLOWED_ORIGINS,
+            methods: ['GET'],
+            credentials: true
+        }
+    })
     const shortlink = io.of('/shortlink')
 
     shortlink.on('connection', function (socket) {
