@@ -193,7 +193,7 @@ class ParserManager {
                     cached: false,
                     original: link,
                     parsed: parsed.result,
-                    error: parsed.error.toString(),
+                    error: parsed.error && parsed.error.toString(),
                 }
             }
         }
