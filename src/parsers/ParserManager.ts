@@ -157,7 +157,7 @@ class ParserManager {
      *  
      */
     async parse(link: string, options: IParsedOptions = {}): Promise<IParsedResponse> {
-        console.info('\x1b[34m%s\x1b[0m', '[ParserManager] ' + options.notFirstTime ? '\nParsing the result link again. ' : '\nParsing the link for the first time. ' + link)
+        console.info('\x1b[34m%s\x1b[0m', '[ParserManager] ' + (options.notFirstTime ? '\nParsing the result link again. ' : '\nParsing the link for the first time. ') + link)
 
         // default result
         let result = options.notFirstTime ? options.oldData : {
