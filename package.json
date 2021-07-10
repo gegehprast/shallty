@@ -17,7 +17,8 @@
     "prod": "npm run build && node .",
     "test": "mocha -- --exit",
     "cleandist": "rimraf dist",
-    "copyviews": "copyfiles -f src/views/*.html dist/views"
+    "copyviews": "copyfiles -f src/views/*.html dist/views",
+    "dev-ts": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\""
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
