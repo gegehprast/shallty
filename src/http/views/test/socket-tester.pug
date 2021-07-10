@@ -1,0 +1,13 @@
+html
+    head
+        title=title
+        meta(name='agent', content=agent)
+    body
+        div(id="welcome") Hello!
+
+        div(id="shortlinkButtons", style="padding: 1rem;")
+            button(id="parseShortlink" onclick="parseShortlink()", style="margin: 0;") Proceed shortlink
+
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+        script(src='/js/app.js')
