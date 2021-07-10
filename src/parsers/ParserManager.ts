@@ -132,13 +132,13 @@ class ParserManager {
         console.info('\x1b[34m%s\x1b[0m', options.notFirstTime ? `\nParsing the result link again. ${link}` : '\nParsing the link for the first time.')
 
         // default result
-        let result = options.notFirstTime ? {
+        let result = options.notFirstTime ? options.oldData : {
             success: false,
             cached: false,
             original: link,
             parsed: null,
             error: 'Parser not found.',
-        } : options.oldData
+        }
         let gotFromCache = false
 
         // if using database, try getting the cached value first
