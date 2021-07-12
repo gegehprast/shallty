@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import Shortlink from '../Models/Shortlink'
+import Shortlink from '../models/Shortlink'
 import Parser, { ParserResponse } from './Parser'
 
 interface IParsedResponse {
