@@ -10,11 +10,11 @@
     "url": "https://github.com/gegehprast/shallty.git"
   },
   "scripts": {
-    "build": "npm run cleandist && tsc",
+    "build": "tsc",
     "watch": "npm run build -- -w",
     "nodemon": "nodemon .",
     "dev": "run-p watch nodemon",
-    "start": "npm run build && node .",
+    "start": "node dist/",
     "test": "mocha -- --exit",
     "cleandist": "rimraf dist",
     "copyviews": "copyfiles -f src/views/*.html dist/views",
