@@ -18,6 +18,7 @@
     "test": "mocha -- --exit",
     "cleandist": "rimraf dist",
     "copyviews": "copyfiles -u 3 src/http/views/**/* dist/http/views",
+    "copypublic": "copyfiles -u 3 src/http/public/**/* dist/http/public",
     "dev-ts": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\""
   },
   "devDependencies": {
