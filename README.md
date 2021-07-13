@@ -23,6 +23,10 @@ Bypass shortlinks and get to the point!
 
 5. Jalankan perintah `npm run start` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server ready jika tidak ada masalah.
 
+## Dokumentasi
+
+Menyusul.
+
 ### Note:
 Catatan rilis bisa kamu lihat di [masing-masing rilisan](https://github.com/gegehprast/shallty/releases).
 
