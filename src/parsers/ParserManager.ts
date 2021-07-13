@@ -1,5 +1,7 @@
 import fs from 'fs'
 import path from 'path'
+import { BroadcastOperator, Namespace } from 'socket.io'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import Shortlink from '../models/Shortlink'
 import Parser, { ParserResponse } from './Parser'
 
@@ -18,6 +20,7 @@ interface IParsedOptions {
     ignoreCache?: boolean
     notFirstTime?: boolean
     oldData?: IParsedResponse
+    emiter?: Namespace | BroadcastOperator<DefaultEventsMap>
 }
 
 class ParserManager {
@@ -184,6 +187,10 @@ class ParserManager {
         
         // skip this if already got result from cache
         if (!gotFromCache) {
+            if (options.emiter) {
+                options.emiter.emit('firstimevisit', true)
+            }
+
             const parsed = await this.parseResult(link)
 
             if (parsed != null) {
