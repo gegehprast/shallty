@@ -37,7 +37,7 @@ const init = () => {
     app.get('/socket-tester', HomeController.socketTester)
 
     // api routes
-    if (process.env.WEBSOCKET === 'true') {
+    if (process.env.HTTP === 'true') {
         app.use('/api', api)
     }
 
