@@ -37,7 +37,9 @@ const init = () => {
     app.get('/socket-tester', HomeController.socketTester)
 
     // api routes
-    app.use('/api', api)
+    if (process.env.WEBSOCKET === 'true') {
+        app.use('/api', api)
+    }
 
     // listen
     server.listen(process.env.APP_PORT || 3000, () => console.info('\x1b[34m%s\x1b[0m', `[HTTP] Server Ready. You can access it at http://localhost:${process.env.APP_PORT || 3000}`))

@@ -6,12 +6,10 @@ import initWebsocket from './socket'
 import connectMongo from './database'
 
 async function init () {
-    if (process.env.HTTP === 'true') {
-        const { server } = initHTTP()
+    const { server } = initHTTP()
 
-        if (process.env.WEBSOCKET === 'true') {
-            initWebsocket(server)
-        }
+    if (process.env.WEBSOCKET === 'true') {
+        initWebsocket(server)
     }
     
     if (process.env.WITH_DATABASE === 'true') {
