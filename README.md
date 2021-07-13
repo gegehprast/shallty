@@ -23,11 +23,6 @@ Bypass shortlinks and get to the point!
 
 5. Jalankan perintah `npm run start` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server ready jika tidak ada masalah.
 
-
-## Dokumentasi
-
-https://documenter.getpostman.com/view/3762767/SWLh5STA?version=latest
-
 ### Note:
 Catatan rilis bisa kamu lihat di [masing-masing rilisan](https://github.com/gegehprast/shallty/releases).
 
