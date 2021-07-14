@@ -11,6 +11,8 @@ export type ParserResponse = {
  */
 abstract class Parser {
     public abstract marker: string
+    
+    public exposed = true
 
     abstract parse(link: string): Promise<ParserResponse>
 }

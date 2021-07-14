@@ -2,6 +2,7 @@ import Parser, { ParserResponse } from './Parser'
 
 class Google extends Parser {
     public marker = 'drive.google.com'
+    public exposed = false
 
     constructor() {
         super()
