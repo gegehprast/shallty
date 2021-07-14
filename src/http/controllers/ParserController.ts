@@ -20,6 +20,17 @@ const index: RequestHandler = async (req, res) => {
     })
 }
 
+const parsers: RequestHandler = async (req, res) => {
+    const parsers = ParserManager.getSupportedShortlinks()
+
+    return res.json({
+        status: 200,
+        message: 'Success',
+        data: parsers
+    })
+}
+
 export default {
-    index
+    index,
+    parsers
 }
