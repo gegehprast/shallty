@@ -53,6 +53,22 @@ class ParserManager {
     }
 
     /**
+     * Get supported short links.
+     * 
+     */
+    getSupportedShortlinks() {
+        return this.parsers.filter(item => {
+            const parser = new item
+
+            return parser.exposed === true
+        }).map(item => {
+            const parser = new item
+
+            return parser.marker
+        })
+    }
+
+    /**
      * Save new parsed shortlink to the database.
      * 
      */
@@ -97,7 +113,6 @@ class ParserManager {
     /**
      * Select the correct parser for the link.
      * 
-     * @param {string} link
      */
     selectParser(link: string): Parser {
         let selected = null
