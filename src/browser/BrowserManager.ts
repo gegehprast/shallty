@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer'
-import Util from '../utils/index'
+import Util from '../utils/Util'
 
 type Browser = {
     id: string

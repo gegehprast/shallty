@@ -1,6 +1,6 @@
 import Parser, { ParserResponse } from './Parser'
 import BrowserManager from '../browser/BrowserManager'
-import Util from '../utils'
+import Util from '../utils/Util'
 
 class Semawur extends Parser {
     public marker = 'semawur.'
