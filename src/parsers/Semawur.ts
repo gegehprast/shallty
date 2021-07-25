@@ -10,20 +10,20 @@ class Semawur extends Parser {
     }
 
     async parse(link: string): Promise<ParserResponse> {
-        link = decodeURIComponent(link)
-        const params = Util.getAllUrlParams(link)
+        const decodedLink = decodeURIComponent(link)
+        const urlQuery = Util.getUrlQueryParam(decodedLink, 'url')
 
-        if (Object.entries(params).length > 0 && params.url) {
+        if (urlQuery != null) {
             return {
                 success: true,
-                result: decodeURIComponent(params.url).replace(/\++/g, ' ')
+                result: urlQuery.replace(/\++/g, ' ')
             }
         }
 
         const page = await BrowserManager.newPageWithNewContext()
 
         try {
-            await page.goto(link)
+            await page.goto(decodedLink)
 
             await page.waitForSelector('#link-view > button')
             await Promise.all([
