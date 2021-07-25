@@ -135,8 +135,15 @@ class ParserManager {
                 }
             } else {
                 if (link.includes(parser.marker)) {
-                    selected = parser
-                    break
+                    if (!parser.ignoreIfContains) {
+                        selected = parser
+                        break
+                    }
+
+                    if (!link.includes(parser.ignoreIfContains)) {
+                        selected = parser
+                        break
+                    }
                 }
             }
         }
