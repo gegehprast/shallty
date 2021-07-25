@@ -1,0 +1,12 @@
+html
+    head
+        title=title
+    body
+        div(id="welcome") Hello!
+
+        div(id="shortlinkButtons", style="padding: 1rem;")
+            button(id="parseShortlink" onclick="parseShortlink()", style="margin: 0;") Proceed shortlink
+
+        script(src='https://cdn.socket.io/4.1.2/socket.io.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+        script(src='/js/app.js')

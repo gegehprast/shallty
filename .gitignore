@@ -1,6 +1,11 @@
+# dependencies
 /node_modules
-/logs
-/Server/public/images/screenshot/*
-deploy-key
-ecosystem.config.js
+
+# production
+/dist
+
+# local env files
 .env
+
+# storage
+/storage
