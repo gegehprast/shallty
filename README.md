@@ -10,6 +10,7 @@ Bypass shortlinks and get to the point!
 
 - teknoku
 - drivemoe
+- semawur
 
 ## Instalasi
 
