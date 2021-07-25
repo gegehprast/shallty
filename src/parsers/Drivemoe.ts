@@ -4,6 +4,8 @@ import BrowserManager from '../browser/BrowserManager'
 class Drivemoe extends Parser {
     public marker = 'drivemoe.'
 
+    public ignoreIfContains = 'semawur.'
+
     /** Anchor selector. */
     private $anchor = 'a[class="btn btn-primary moenime"]'
 
