@@ -22,7 +22,9 @@ Bypass shortlinks and get to the point!
 
 4. Ganti nama file `.env.example` menjadi `.env`.
 
-5. Jalankan perintah `npm run start` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server ready jika tidak ada masalah.
+5. Jalankan perintah `npm run build` di terminal untuk meng-compile.
+
+6. Jalankan perintah `npm run start` di terminal untuk memulai aplikasi. Kamu akan mendapatkan pesan server ready jika tidak ada masalah.
 
 ## Dokumentasi
 
