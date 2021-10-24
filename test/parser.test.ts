@@ -6,7 +6,7 @@ import ParserManager from '../src/parsers/ParserManager'
 
 const assert = chai.assert
 
-describe('Parser', function () {
+describe.skip('Parser', function () {
     this.timeout(30000)
 
     describe('#Teknoku', function () {
