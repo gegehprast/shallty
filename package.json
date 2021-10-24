@@ -1,6 +1,6 @@
 {
   "name": "shallty",
-  "version": "4.0.0",
+  "version": "4.1.1",
   "description": "Shallty adalah aplikasi untuk mem-bypass berbagai shortlink yang digunakan oleh fansub/fanshare anime Indonesia.",
   "main": "dist/index",
   "author": "gegehprast98",
