@@ -2,7 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import { BroadcastOperator, Namespace } from 'socket.io'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
+import BrowserManager from '../browser/BrowserManager'
 import Shortlink from '../models/Shortlink'
+import Util from '../utils/Util'
 import Parser, { ParserResponse } from './Parser'
 
 interface IParsedResponse {
@@ -241,6 +243,24 @@ class ParserManager {
         }
 
         return result
+    }
+
+    async test(link: string) {
+        const page = await BrowserManager.newOptimizedPage()
+
+        await page.goto(link)
+
+        await page.waitForNavigation({
+            waitUntil: 'domcontentloaded'
+        })
+
+        await Util.sleep(1000)
+
+        const base64img = await page.screenshot({ fullPage: true, encoding: 'base64' })
+        
+        page.close()
+
+        return base64img
     }
 }
 

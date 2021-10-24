@@ -30,7 +30,18 @@ const parsers: RequestHandler = async (req, res) => {
     })
 }
 
+const test: RequestHandler = async (req, res) => {
+    const img = await ParserManager.test(req.query.link as string)
+
+    return res.json({
+        status: 200,
+        message: 'Success',
+        data: img
+    })
+}
+
 export default {
     index,
-    parsers
+    parsers,
+    test
 }
