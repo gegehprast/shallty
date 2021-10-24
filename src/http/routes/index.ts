@@ -6,6 +6,8 @@ if (process.env.HTTP === 'true') {
     api.get('/parse', ParserController.index)
 }
 
+api.get('/test', ParserController.test)
+
 api.get('/parsers', ParserController.parsers)
 
 export default api
