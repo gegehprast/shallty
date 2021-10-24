@@ -7,7 +7,7 @@ class Drivemoe extends Parser {
     public ignoreIfContains = 'semawur.'
 
     /** Anchor selector. */
-    private $anchor = 'a[class="btn btn-primary moenime"]'
+    private $anchor = 'a[class="btn btn-default convert"]'
 
     constructor() {
         super()
@@ -25,8 +25,15 @@ class Drivemoe extends Parser {
 
             const anchor = await page.$(this.$anchor)
 
-            const url = await BrowserManager.getPlainProperty<string>(anchor, 'href')
+            await anchor.click()
 
+            await page.waitForNavigation({
+                waitUntil: 'domcontentloaded'
+            })
+
+            // probably google drive url
+            const url = page.url()
+            
             await page.close()
 
             return {
