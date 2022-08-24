@@ -43,7 +43,7 @@ class Semawur extends Parser {
                 classProp = await BrowserManager.getPlainProperty(downloadButton, 'className')
             } while (classProp !== 'get-link')
 
-            const downloadLinks = await BrowserManager.getPlainProperty<string>(downloadButton, 'href')
+            const downloadLinks = await BrowserManager.getPlainProperty(downloadButton, 'href')
 
             await BrowserManager.closePageWithContext(page)
             
