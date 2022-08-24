@@ -22,7 +22,7 @@ interface IParsedOptions {
     ignoreCache?: boolean
     notFirstTime?: boolean
     oldData?: IParsedResponse
-    emiter?: Namespace | BroadcastOperator<DefaultEventsMap>
+    emiter?: Namespace | BroadcastOperator<DefaultEventsMap, any>
 }
 
 class ParserManager {
