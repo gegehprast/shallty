@@ -1,33 +1,59 @@
-import db from '../models'
+import mongoose, { Mongoose } from 'mongoose'
 
-const connect = async (retry = true): Promise<boolean> =>  {
-    try {
-        console.info('\x1b[34m%s\x1b[0m', '[Database] Connecting to MongoDB.')
+const MONGODB_URI = process.env.MONGODB_URI
 
-        await db.mongoose.connect(
-            `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@shalltycluster0.zxus0.mongodb.net/${process.env.MONGO_TEST_DB}?retryWrites=true&w=majority`,
-            {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useFindAndModify: false,
-                useCreateIndex: true,
-            }
-        )
-
-        console.info('\x1b[34m%s\x1b[0m', '[Database] Successfully connected to MongoDB.')
-
-        return true
-    } catch (error) {
-        console.error('\x1b[31m%s\x1b[0m', 'Connection error: ', error)
-
-        if (retry) {
-            console.info('\x1b[34m%s\x1b[0m', '[Database] Retrying connection to MongoDB.')
-
-            return connect()
-        }
-
-        return false
-    }
+if (!MONGODB_URI) {
+    throw new Error(
+        'Please define the MONGODB_URI environment variable inside .env.local'
+    )
 }
 
-export default connect
+type Cached = { conn: null | Mongoose; promise: null | Promise<Mongoose> }
+
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
+// @ts-ignore: Unreachable code error
+let cached: Cached = global.mongoose
+
+if (!cached) {
+    // @ts-ignore: Unreachable code error
+    cached = global.mongoose = { conn: null, promise: null }
+}
+
+export async function dbConnect() {
+    if (cached.conn) {
+        return cached.conn
+    }
+
+    if (!cached.promise) {
+        const opts: mongoose.ConnectOptions = {
+            bufferCommands: false,
+            autoIndex: true,
+        }
+
+        cached.promise = mongoose
+            .connect(MONGODB_URI!, opts)
+            .then((mongoose) => {
+                console.log('DB connected.')
+                return mongoose
+            })
+            .catch((err) => {
+                console.log('DB connect error.', err)
+
+                return null
+            })
+    }
+    cached.conn = await cached.promise
+    return cached.conn
+}
+
+export async function dbDisconnect() {
+    if (cached.conn) {
+        await cached.conn.disconnect().then(() => {
+            console.log('DB disconnected.')
+        })
+    }
+}

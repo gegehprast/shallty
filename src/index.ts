@@ -3,7 +3,7 @@ dotenv.config()
 
 import initHTTP from './http'
 import initWebsocket from './socket'
-import connectMongo from './database'
+import { dbConnect } from './database'
 
 async function init () {
     const { server } = initHTTP()
@@ -15,9 +15,9 @@ async function init () {
     if (process.env.WITH_DATABASE === 'true') {
         process.env.WITH_DATABASE = 'false'
 
-        const connect = await connectMongo()
+        const connect = await dbConnect()
         
-        process.env.WITH_DATABASE = connect ? 'true' : 'false'
+        process.env.WITH_DATABASE = connect !== null ? 'true' : 'false'
     }
 }
 
