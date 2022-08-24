@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast/shallty) [![Build Status](https://travis-ci.com/gegehprast/shallty.svg?branch=master)](https://travis-ci.com/gegehprast/shallty)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/gegehprast/shallty) [![Build Status](https://app.travis-ci.com/gegehprast/shallty.svg?branch=master)](https://app.travis-ci.com/gegehprast/shallty)
 
 # shallty v4
 
